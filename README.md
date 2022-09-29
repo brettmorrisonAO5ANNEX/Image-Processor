@@ -7,9 +7,9 @@ just isn't as interesting as one would have hoped...
 that's where Pixel-8 comes in! Pixel-8 is intended to 
 be a basic image processing application that allows 
 users to choose an image from the web (and eventually 
-an image that they take with the webcam) and turn it 
+an image that they take with their webcam) and turn it 
 into a more pixelated style. The chosen image will be 
-subdivided into a grid-like manner where each section 
+subdivided in a grid-like manner where each section 
 of the grid becomes the average color of all pixels 
 inside of it. The user will also have the ability to 
 adjust the "level of pixelation" by adjusting the 
