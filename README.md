@@ -37,3 +37,10 @@ in exciting ways! Exploring a basic image processing
 application will allow me to gain a better understaning of 
 software development in the context of an industry that I have
 a personal interest in! 
+
+## *User Stories:*
+- As a user, I want to be able to add a new modified photo to my ***gallery***
+- As a user, I want to be able to remove a modified photo from my ***gallery***
+- As a user, I want to be able to adjust the pixelation of any individual image in my ***gallery***
+- As a user, I want to be able to apply simple photo filters onto
+any individual photo in my ***gallery***
