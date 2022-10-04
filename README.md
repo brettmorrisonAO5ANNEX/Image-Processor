@@ -6,14 +6,8 @@ Taking pictures is cool, but sometimes reality
 just isn't as interesting as one would have hoped... 
 that's where Pixel-8 comes in! Pixel-8 is intended to 
 be a basic image processing application that allows 
-users to choose an image from the web (and eventually 
-an image that they take with their webcam) and turn it 
-into a more pixelated style. The chosen image will be 
-subdivided in a grid-like manner where each section 
-of the grid becomes the average color of all pixels 
-inside of it. The user will also have the ability to 
-adjust the "level of pixelation" by adjusting the 
-number of subjections within the grid. 
+users manipulate a locally stored image by adding different
+color filters/editors.  
 
 ## *Who Will Use It?*
 - **recreational photographers** who want to warp reality with 
@@ -39,8 +33,8 @@ software development in the context of an industry that I have
 a personal interest in! 
 
 ## *User Stories:*
-- As a user, I want to be able to add a new modified photo to my ***gallery***
-- As a user, I want to be able to remove a modified photo from my ***gallery***
-- As a user, I want to be able to adjust the pixelation of any individual image in my ***gallery***
-- As a user, I want to be able to apply simple photo filters onto
-any individual photo in my ***gallery***
+- As a user, I want to be able to add a ***filter*** to my ***image***
+- As a user, I want to be able to remove (undo) a ***filter*** from my ***image***
+- As a user, I want to be able to remove all (undo all) ***filters*** from my ***image***
+- As a user, I want to be able to view a history of what filters have been applied to my photo
+- As a user, I want to be able to save my edited photo to an in-app gallery
