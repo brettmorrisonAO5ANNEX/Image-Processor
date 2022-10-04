@@ -36,5 +36,5 @@ a personal interest in!
 - As a user, I want to be able to add a ***filter*** to my ***image***
 - As a user, I want to be able to remove (undo) a ***filter*** from my ***image***
 - As a user, I want to be able to remove all (undo all) ***filters*** from my ***image***
-- As a user, I want to be able to view a history of what filters have been applied to my photo
-- As a user, I want to be able to save my edited photo to an in-app gallery
+- As a user, I want to be able to view a history of what ***filters*** have been applied to my ***image***
+- As a user, I want to be able to save my edited ***image*** to an in-app ***gallery***
