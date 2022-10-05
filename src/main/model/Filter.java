@@ -23,7 +23,7 @@ public class Filter {
     }
 
     //MODIFIES: img
-    //EFFECTS:
+    //EFFECTS: reverses pixel position in each row of pixels
     public void mirror(Image img){
         //stub
     }

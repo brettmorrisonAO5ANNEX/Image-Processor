@@ -47,6 +47,14 @@ public class Image {
         //stub
     }
 
+    public List<Filter> getlistOfFilter() {
+        return this.listOfFilter;
+    }
+
+    public int[][] getPixels() {
+        return this.pixels;
+    }
+
 }
 
 
