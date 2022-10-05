@@ -5,7 +5,7 @@ import java.util.List;
 
 // represents an instance of the locally stored image with a list of applied filters
 public class Image {
-    List<String> listOfFilter;
+    List<Filter> listOfFilter;
     int[][] pixels;
 
     //TODO: create blank canvas by converting 2D array to array of randomly colored pixels
@@ -16,11 +16,9 @@ public class Image {
         //stub
     }
 
-    //TODO: maybe scratch add noise if each new image canvas is already randomized
-    //REQUIRES: filter string must be one of "pixelate", "negative", "add noise", "mirror"
     //MODIFIES: this
     //EFFECTS: adds filter to an images listOfFilter field
-    public void addFilter(String filter) {
+    public void addFilter(Filter filter) {
         //stub
     }
 
@@ -31,10 +29,21 @@ public class Image {
         //stub
     }
 
-    //REQUIRES:
-    //MODIFIES:
-    //EFFECTS:
+    //REQUIRES: listOfFilter is not empty
+    //MODIFIES: this
+    //EFFECTS: clears an images listOfFilter
     public void undoAll() {
+        //stub
+    }
+
+    //EFFECTS: returns a string containing all filters in order of when they were applied
+    public void viewEditHistory() {
+        //stub
+    }
+
+    //MODIFIES: this
+    //EFFECTS: applies each filter in this.listOfFilter to this and updates pixels accordingly
+    public void processImage() {
         //stub
     }
 
