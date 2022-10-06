@@ -11,11 +11,12 @@ public class Image {
     //TODO: create blank canvas by converting 2D array to array of randomly colored pixels
     //REQUIRES: width, height > 0
     //EFFECTS: creates Image object with 2D pixel array with (width) columns, (height) rows, and
-    //         empty listOfFilter;
+    //         empty listOfFilter (each pixel in pixels has random RGB values)
     public Image(int width, int height) {
         //stub
     }
 
+    //REQUIRES: filter is not already in listOfFilter (no duplicates)
     //MODIFIES: this
     //EFFECTS: adds filter to an images listOfFilter field
     public void addFilter(Filter filter) {
@@ -25,7 +26,7 @@ public class Image {
     //REQUIRES: listOfFilter is not empty
     //MODIFIES: this
     //EFFECTS: removes the most recently added filter from listOfFilter
-    public void undo() {
+    public void undoLast() {
         //stub
     }
 
@@ -33,6 +34,13 @@ public class Image {
     //MODIFIES: this
     //EFFECTS: clears an images listOfFilter
     public void undoAll() {
+        //stub
+    }
+
+    //REQUIRES: listOfFilter is not empty
+    //MODIFIES: this
+    //EFFECTS: clears all instances of a type of filter from an images listOfFilter
+    public void removeAllOfOne() {
         //stub
     }
 
