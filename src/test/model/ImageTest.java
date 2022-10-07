@@ -135,4 +135,22 @@ public class ImageTest {
         assertEquals(mirror, i.getlistOfFilter().get(0));
         assertEquals(negative, i.getlistOfFilter().get(1));
     }
+
+    @Test
+    public void viewEditHistoryEmpty() {
+        assertEquals("no filteres applied", i.viewEditHistory());
+    }
+
+    @Test
+    public void viewEditHistoryNotEmpty() {
+        String result = "1: mirror 2: pixelate";
+        i.addFilter(mirror);
+        i.addFilter(pixelate);
+        assertEquals(result, i.viewEditHistory());
+    }
+
+    //todo: how to test random in java? (this.pixels will contain random values)
+    @Test
+    public void processImageEmptyListOfFilter() {
+    }
 }

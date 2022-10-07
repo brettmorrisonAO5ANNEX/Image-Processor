@@ -3,7 +3,9 @@ package model;
 public class Filter {
     String filterName;
 
-    //REQUIRES: filterType is one of "pixelate", "negative", "mirror"
+    //todo: can only be instantiated 3 times(??)
+    //REQUIRES: filterType can only be instanited 3 times with each intance having a unique name of:
+    //          "negative", "mirror", or "pixelate"
     //EFFECTS: creates a filter object with fiterName = filterType
     public Filter(String filterType){
         //stub

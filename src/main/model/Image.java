@@ -43,8 +43,8 @@ public class Image {
     }
 
     //EFFECTS: returns a string containing all filters in order of when they were applied
-    public void viewEditHistory() {
-        //stub
+    public String viewEditHistory() {
+        return "";
     }
 
     //MODIFIES: this
