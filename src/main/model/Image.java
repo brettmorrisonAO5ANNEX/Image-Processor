@@ -6,9 +6,8 @@ import java.util.List;
 // represents an instance of the locally stored image with a list of applied filters
 public class Image {
     List<Filter> listOfFilter;
-    int[][] pixels;
+    int[][] pixelArray;
 
-    //TODO: create blank canvas by converting 2D array to array of randomly colored pixels
     //REQUIRES: width, height > 0
     //EFFECTS: creates Image object with 2D pixel array with (width) columns, (height) rows, and
     //         empty listOfFilter (each pixel in pixels has random RGB values)
@@ -16,7 +15,6 @@ public class Image {
         //stub
     }
 
-    //REQUIRES: filter is not already in listOfFilter (no duplicates)
     //MODIFIES: this
     //EFFECTS: adds filter to an images listOfFilter field
     public void addFilter(Filter filter) {
@@ -37,10 +35,10 @@ public class Image {
         //stub
     }
 
-    //REQUIRES: listOfFilter is not empty
+    //REQUIRES: listOfFilter contains filter matching filterName at least once
     //MODIFIES: this
     //EFFECTS: clears all instances of a type of filter from an images listOfFilter
-    public void removeAllOfOne() {
+    public void removeAllOfOne(Filter filter) {
         //stub
     }
 
@@ -60,9 +58,16 @@ public class Image {
     }
 
     public int[][] getPixels() {
-        return this.pixels;
+        return this.pixelArray;
     }
 
+    public int getImageHeight() {
+        return this.pixelArray.length;
+    }
+
+    public int getImageWidth() {
+        return this.pixelArray[0].length;
+    }
 }
 
 
