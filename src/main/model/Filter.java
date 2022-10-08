@@ -2,11 +2,11 @@ package model;
 
 public class Filter {
     String filterName;
+    int numFilterInstantiations;
 
-    //todo: can only be instantiated 3 times(??)
     //REQUIRES: filterType can only be instanited 3 times with each intance having a unique name of:
     //          "negative", "mirror", or "pixelate"
-    //EFFECTS: creates a filter object with fiterName = filterType
+    //EFFECTS: creates a filter object with filterName = filterType
     public Filter(String filterType){
         //stub
     }
@@ -28,5 +28,9 @@ public class Filter {
     //EFFECTS: reverses pixel position in each row of pixels
     public void mirror(Image img){
         //stub
+    }
+
+    public String getFilterName() {
+        return ""; //stub
     }
 }

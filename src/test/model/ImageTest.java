@@ -21,17 +21,21 @@ public class ImageTest {
 
     @Test
     public void constructorTestBoundary() {
+        String[] testArray = {"ffffff"};
         assertEquals(1, i.getImageWidth());
         assertEquals(1, i.getImageHeight());
         assertEquals(0, i.getlistOfFilter().size());
+        assertEquals(testArray, i.getHexCodeArray());
     }
 
     @Test
     public void constructorTestNotBoundary() {
-        Image i2 = new Image(20, 40);
-        assertEquals(20, i2.getImageWidth());
-        assertEquals(40, i2.getImageHeight());
+        Image i2 = new Image(2, 2);
+        String[] testArrayTwo = {"ffffff", "ffffff", "ffffff", "ffffff"};
+        assertEquals(2, i2.getImageWidth());
+        assertEquals(2, i2.getImageHeight());
         assertEquals(0, i2.getlistOfFilter().size());
+        assertEquals(testArrayTwo, i2.getHexCodeArray());
     }
 
     @Test
@@ -149,7 +153,6 @@ public class ImageTest {
         assertEquals(result, i.viewEditHistory());
     }
 
-    //todo: how to test random in java? (this.pixels will contain random values)
     @Test
     public void processImageEmptyListOfFilter() {
     }

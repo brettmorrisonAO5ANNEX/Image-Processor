@@ -1,16 +1,17 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // represents an instance of the locally stored image with a list of applied filters
 public class Image {
     List<Filter> listOfFilter;
-    int[][] pixelArray;
+    int height;
+    int width;
+    String[] hexCodeArray;
 
     //REQUIRES: width, height > 0
     //EFFECTS: creates Image object with 2D pixel array with (width) columns, (height) rows, and
-    //         empty listOfFilter (each pixel in pixels has random RGB values)
+    //         empty listOfFilter (each pixel has color value in hex code)
     public Image(int width, int height) {
         //stub
     }
@@ -57,16 +58,16 @@ public class Image {
         return this.listOfFilter;
     }
 
-    public int[][] getPixels() {
-        return this.pixelArray;
+    public String[] getHexCodeArray() {
+        return this.hexCodeArray;
     }
 
     public int getImageHeight() {
-        return this.pixelArray.length;
+        return this.height;
     }
 
     public int getImageWidth() {
-        return this.pixelArray[0].length;
+        return this.width;
     }
 }
 
