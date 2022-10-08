@@ -14,21 +14,25 @@ public class ImageTest {
     private Filter negative = new Filter("negative");
     private Filter mirror = new Filter("mirror");
     private Filter pixelate = new Filter("pixelate");
-    private List<int[]> testArrayOne;
-    private List<int[]> testArrayTwo;
+    private List<int[]> testArrayOneElement;
+    private List<int[]> testArrayFourElement;
+    private List<int[]> testArraySixteenElement;
 
     @BeforeEach
     public void setup() {
-        testArrayOne = new ArrayList<>();
-        testArrayTwo = new ArrayList<>();
+        testArrayOneElement = new ArrayList<>();
+        testArrayFourElement = new ArrayList<>();
         i = new Image(1, 1);
 
-        testArrayOne.add(new int[]{255, 255, 255});
+        testArrayOneElement.add(new int[]{255, 255, 255});
 
-        testArrayTwo.add(new int[]{255, 255, 255});
-        testArrayTwo.add(new int[]{255, 255, 255});
-        testArrayTwo.add(new int[]{255, 255, 255});
-        testArrayTwo.add(new int[]{255, 255, 255});
+        for (int i = 0; i < 4; i++) {
+            testArrayFourElement.add(new int[] {255, 255, 255});
+        }
+
+        for (int i = 0; i < 16; i++) {
+            testArraySixteenElement.add(new int[] {255, 255, 255});
+        }
     }
 
     @Test
@@ -36,7 +40,7 @@ public class ImageTest {
         assertEquals(1, i.getImageWidth());
         assertEquals(1, i.getImageHeight());
         assertEquals(0, i.getlistOfFilter().size());
-        assertEquals(testArrayOne, i.getPixelArray());
+        assertEquals(testArrayOneElement, i.getPixelArray());
     }
 
     @Test
@@ -45,7 +49,7 @@ public class ImageTest {
         assertEquals(2, i2.getImageWidth());
         assertEquals(2, i2.getImageHeight());
         assertEquals(0, i2.getlistOfFilter().size());
-        assertEquals(testArrayTwo, i2.getPixelArray());
+        assertEquals(testArrayFourElement, i2.getPixelArray());
     }
 
     @Test

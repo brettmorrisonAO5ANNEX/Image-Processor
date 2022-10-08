@@ -1,10 +1,10 @@
-# Pixel-8: A Basic Image Processing Application
+# Imag.in(e): A Basic Image Processing Application
 
-## *What Does Pixel-8 Do?*
+## *What Does Imag.in(e) Do?*
 
 Taking pictures is cool, but sometimes reality 
 just isn't as interesting as one would have hoped... 
-that's where Pixel-8 comes in! Pixel-8 is intended to 
+that's where Imag.in(e) comes in! Imag.in(e) is intended to 
 be a basic image processing application that allows 
 users manipulate a locally stored image by adding different
 color filters/editors.  
@@ -19,7 +19,7 @@ image manipulation
 - **photo/video editors** looking to intrigue their 
 clients with new visual art styles
 
-## *Why Pixel-8 Interests Me:*
+## *Why Imag.in(e) Interests Me:*
 From self-driving cars to mobile applications,
 computer software has many uses. However,
 its artistic applications can easily go less appreciated. 

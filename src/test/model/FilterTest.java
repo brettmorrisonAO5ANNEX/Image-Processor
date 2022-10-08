@@ -10,13 +10,13 @@ class FilterTest {
     private Filter pixelate = new Filter("pixelate");
     private Filter mirror = new Filter("mirror");
     private Filter negative = new Filter("negative");
-    private Image imgTestOne;
-    private Image imgTestTwo;
+    private Image imgTestOneElement;
+    private Image imgTestTwoElement;
 
     @BeforeEach
     public void setup() {
-        imgTestOne = new Image(1, 1);
-        imgTestTwo = new Image(1, 2);
+        imgTestOneElement = new Image(1, 1);
+        imgTestTwoElement = new Image(1, 2);
     }
 
     @Test
@@ -35,18 +35,18 @@ class FilterTest {
     public void negativeTestOneElement(){
         int[][] testArrayBefore = {{255, 255, 255}};
         int[][] testArrayAfter = {{0, 0, 0}};
-        assertEquals(testArrayBefore, imgTestOne.getPixelArray());
-        negative.negative(imgTestOne);
-        assertEquals(testArrayAfter, imgTestOne.getPixelArray());
+        assertEquals(testArrayBefore, imgTestOneElement.getPixelArray());
+        negative.negative(imgTestOneElement);
+        assertEquals(testArrayAfter, imgTestOneElement.getPixelArray());
     }
 
     @Test
     public void negativeTestTwoElement(){
         int[][] testArrayBefore = {{255, 255, 255}, {255, 255, 255}};
         int[][] testArrayAfter = {{0, 0, 0}, {0, 0, 0}};
-        assertEquals(testArrayBefore, imgTestTwo.getPixelArray());
-        negative.negative(imgTestTwo);
-        assertEquals(testArrayAfter, imgTestTwo.getPixelArray());
+        assertEquals(testArrayBefore, imgTestTwoElement.getPixelArray());
+        negative.negative(imgTestTwoElement);
+        assertEquals(testArrayAfter, imgTestTwoElement.getPixelArray());
     }
 
 
