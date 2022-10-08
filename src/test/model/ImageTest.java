@@ -3,35 +3,45 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ImageTest {
     private Image i;
-    private Filter negative;
-    private Filter mirror;
-    private Filter pixelate;
+    private Filter negative = new Filter("negative");
+    private Filter mirror = new Filter("mirror");
+    private Filter pixelate = new Filter("pixelate");
+    private List<int[]> testArrayOne;
+    private List<int[]> testArrayTwo;
 
     @BeforeEach
     public void setup() {
+        testArrayOne = new ArrayList<>();
+        testArrayTwo = new ArrayList<>();
         i = new Image(1, 1);
-        negative = new Filter("negative");
-        mirror = new Filter("mirror");
-        pixelate = new Filter("pixelate");
+
+        testArrayOne.add(new int[]{255, 255, 255});
+
+        testArrayTwo.add(new int[]{255, 255, 255});
+        testArrayTwo.add(new int[]{255, 255, 255});
+        testArrayTwo.add(new int[]{255, 255, 255});
+        testArrayTwo.add(new int[]{255, 255, 255});
     }
 
     @Test
     public void constructorTestBoundary() {
-        int[][] testArray = {{255, 255, 255}};
         assertEquals(1, i.getImageWidth());
         assertEquals(1, i.getImageHeight());
         assertEquals(0, i.getlistOfFilter().size());
-        assertEquals(testArray, i.getPixelArray());
+        assertEquals(testArrayOne, i.getPixelArray());
     }
 
     @Test
     public void constructorTestNotBoundary() {
         Image i2 = new Image(2, 2);
-        int[][] testArrayTwo = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
         assertEquals(2, i2.getImageWidth());
         assertEquals(2, i2.getImageHeight());
         assertEquals(0, i2.getlistOfFilter().size());
@@ -153,6 +163,7 @@ public class ImageTest {
         assertEquals(result, i.viewEditHistory());
     }
 
+    //todo: finish filter tests first
     @Test
     public void processImageEmptyListOfFilter() {
     }
