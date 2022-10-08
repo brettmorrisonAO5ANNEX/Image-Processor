@@ -7,7 +7,7 @@ public class Image {
     List<Filter> listOfFilter;
     int height;
     int width;
-    String[] hexCodeArray;
+    int[][] pixelArray;
 
     //REQUIRES: width, height > 0
     //EFFECTS: creates Image object with 2D pixel array with (width) columns, (height) rows, and
@@ -58,8 +58,8 @@ public class Image {
         return this.listOfFilter;
     }
 
-    public String[] getHexCodeArray() {
-        return this.hexCodeArray;
+    public int[][] getPixelArray() {
+        return this.pixelArray;
     }
 
     public int getImageHeight() {

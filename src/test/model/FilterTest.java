@@ -33,20 +33,20 @@ class FilterTest {
 
     @Test
     public void negativeTestOneElement(){
-        String[] testArrayBefore = {"ffffff"};
-        String[] testArrayAfter = {"0"};
-        assertEquals(testArrayBefore, imgTestOne.getHexCodeArray());
+        int[][] testArrayBefore = {{255, 255, 255}};
+        int[][] testArrayAfter = {{0, 0, 0}};
+        assertEquals(testArrayBefore, imgTestOne.getPixelArray());
         negative.negative(imgTestOne);
-        assertEquals(testArrayAfter, imgTestOne.getHexCodeArray());
+        assertEquals(testArrayAfter, imgTestOne.getPixelArray());
     }
 
     @Test
     public void negativeTestTwoElement(){
-        String[] testArrayBefore = {"ffffff", "ffffff"};
-        String[] testArrayAfter = {"0", "0"};
-        assertEquals(testArrayBefore, imgTestTwo.getHexCodeArray());
+        int[][] testArrayBefore = {{255, 255, 255}, {255, 255, 255}};
+        int[][] testArrayAfter = {{0, 0, 0}, {0, 0, 0}};
+        assertEquals(testArrayBefore, imgTestTwo.getPixelArray());
         negative.negative(imgTestTwo);
-        assertEquals(testArrayAfter, imgTestTwo.getHexCodeArray());
+        assertEquals(testArrayAfter, imgTestTwo.getPixelArray());
     }
 
 

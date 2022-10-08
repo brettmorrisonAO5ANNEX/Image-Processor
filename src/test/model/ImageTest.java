@@ -21,21 +21,21 @@ public class ImageTest {
 
     @Test
     public void constructorTestBoundary() {
-        String[] testArray = {"ffffff"};
+        int[][] testArray = {{255, 255, 255}};
         assertEquals(1, i.getImageWidth());
         assertEquals(1, i.getImageHeight());
         assertEquals(0, i.getlistOfFilter().size());
-        assertEquals(testArray, i.getHexCodeArray());
+        assertEquals(testArray, i.getPixelArray());
     }
 
     @Test
     public void constructorTestNotBoundary() {
         Image i2 = new Image(2, 2);
-        String[] testArrayTwo = {"ffffff", "ffffff", "ffffff", "ffffff"};
+        int[][] testArrayTwo = {{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}};
         assertEquals(2, i2.getImageWidth());
         assertEquals(2, i2.getImageHeight());
         assertEquals(0, i2.getlistOfFilter().size());
-        assertEquals(testArrayTwo, i2.getHexCodeArray());
+        assertEquals(testArrayTwo, i2.getPixelArray());
     }
 
     @Test
@@ -142,7 +142,7 @@ public class ImageTest {
 
     @Test
     public void viewEditHistoryEmpty() {
-        assertEquals("no filteres applied", i.viewEditHistory());
+        assertEquals("no filters applied", i.viewEditHistory());
     }
 
     @Test
