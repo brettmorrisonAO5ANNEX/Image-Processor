@@ -40,7 +40,8 @@ public class Image {
     //MODIFIES: this
     //EFFECTS: removes the most recently added filter from listOfFilter
     public void undoLast() {
-        this.listOfFilter.remove(0);
+        int size = this.listOfFilter.size() - 1;
+        this.listOfFilter.remove(size);
     }
 
     //REQUIRES: listOfFilter is not empty
@@ -48,19 +49,15 @@ public class Image {
     //EFFECTS: clears an images listOfFilter
     public void undoAll() {
         for (int i = 0; i < this.listOfFilter.size(); i++) {
-            this.listOfFilter.remove(i);
+            this.listOfFilter.clear();
         }
     }
 
     //REQUIRES: listOfFilter contains filter matching filterName at least once
     //MODIFIES: this
     //EFFECTS: clears all instances of a type of filter from an images listOfFilter
-    public void removeAllOfOne(Filter filter) {
-        for (int i = 0; i < this.listOfFilter.size(); i++) {
-            if (this.listOfFilter.get(i) == filter) {
-                this.listOfFilter.remove(i);
-            }
-        }
+    public void removeAllOfType(String filterName) {
+        this.listOfFilter.removeIf(f -> (f.getFilterName() == filterName));
     }
 
     //EFFECTS: returns a string containing all filters in order of when they were applied
@@ -82,10 +79,9 @@ public class Image {
     //MODIFIES: this
     //EFFECTS: applies each filter in this.listOfFilter to this and updates pixels accordingly
     public void processImage() {
-        for (int i = 0; i < this.listOfFilter.size(); i++) {
-            Filter thisFilter = this.listOfFilter.get(i);
-            if (thisFilter.getFilterName() == "negative") {
-                thisFilter.negative(this);
+        for (Filter filter: this.listOfFilter) {
+            if (filter.getFilterName() == "negative") {
+                filter.negative(this);
             }
         }
     }
