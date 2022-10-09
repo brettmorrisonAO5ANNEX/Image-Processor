@@ -11,13 +11,17 @@ class FilterTest {
     private Filter mirror = new Filter("mirror");
     private Filter negative = new Filter("negative");
     private Image imgTestOneElement;
-    private Image imgTestTwoElement;
+    private Image imgTestNineElement;
+    private Image imgTestSixteenElement;
 
     @BeforeEach
     public void setup() {
         imgTestOneElement = new Image(1, 1);
-        imgTestTwoElement = new Image(1, 2);
+        imgTestNineElement = new Image(3,3);
+        imgTestSixteenElement = new Image(4, 4);
+
     }
+
 
     @Test
     public void constructorTestForName() {
@@ -25,29 +29,26 @@ class FilterTest {
     }
 
     @Test
-    public void constructorExceptionTest() {
-        assertThrows(IllegalStateException.class, () -> {
-            Filter pixelate2 = new Filter("pixelate");
-        });
+    public void constructorTestForNameAgain() {
+        assertEquals("mirror", mirror.getFilterName());
     }
 
     @Test
     public void negativeTestOneElement(){
-        int[][] testArrayBefore = {{255, 255, 255}};
-        int[][] testArrayAfter = {{0, 0, 0}};
-        assertEquals(testArrayBefore, imgTestOneElement.getPixelArray());
+        assertEquals(255, imgTestOneElement.pixelArray[0][0]);
+        assertEquals(255, imgTestOneElement.pixelArray[0][2]);
         negative.negative(imgTestOneElement);
-        assertEquals(testArrayAfter, imgTestOneElement.getPixelArray());
+        assertEquals(0, imgTestOneElement.pixelArray[0][0]);
+        assertEquals(0, imgTestOneElement.pixelArray[0][2]);
     }
 
     @Test
-    public void negativeTestTwoElement(){
-        int[][] testArrayBefore = {{255, 255, 255}, {255, 255, 255}};
-        int[][] testArrayAfter = {{0, 0, 0}, {0, 0, 0}};
-        assertEquals(testArrayBefore, imgTestTwoElement.getPixelArray());
-        negative.negative(imgTestTwoElement);
-        assertEquals(testArrayAfter, imgTestTwoElement.getPixelArray());
+    public void negativeTestNineElement() {
+        assertEquals(255, imgTestNineElement.pixelArray[0][0]);
+        assertEquals(255, imgTestNineElement.pixelArray[0][2]);
+        negative.negative(imgTestNineElement);
+        assertEquals(0, imgTestNineElement.pixelArray[0][0]);
+        assertEquals(0, imgTestNineElement.pixelArray[8][2]);
     }
-
 
 }
