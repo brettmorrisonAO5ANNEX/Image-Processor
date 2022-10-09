@@ -2,7 +2,6 @@ package model;
 
 public class Filter {
     String filterName;
-    int numFilterInstantiations;
 
     //REQUIRES: filterType can only be one of: "negative", "mirror", "pixelate"
     //EFFECTS: creates a filter object with filterName = filterType
