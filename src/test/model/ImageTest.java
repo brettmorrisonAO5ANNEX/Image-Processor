@@ -214,19 +214,32 @@ public class ImageTest {
 
     //TODO: update tests so that they show matrix version of image not linear array
     @Test
-    public void testViewPixelArrayOneElement() {
-        String result = "[0, 0, 0]";
+    public void testCreatVisArrayOneElement() {
+        String result = "[0, 0, 0]\n" + "";
         i.addFilter(negative);
         i.processImage();
-        assertEquals(result, i.createVisArray(i.width));
+        assertEquals(result, i.createVisArray(0));
     }
 
     @Test
-    public void testViewPixelArrayFourElement() {
-        String result = "[0, 0, 0] [0, 0, 0]\n" + "[0, 0, 0] [0, 0, 0]";
+    public void testCreateVisArrayFourElement() {
+        String result = "[0, 0, 0][0, 0, 0]\n" + "[0, 0, 0][0, 0, 0]\n" + "";
         Image i4 = new Image (2,2);
         i4.addFilter(negative);
         i4.processImage();
-        assertEquals(result, i4.createVisArray(i4.width));
+        assertEquals(result, i4.createVisArray(0));
+    }
+
+    @Test
+    public void testCreateRowOneElement() {
+        String row = "[255, 255, 255]";
+        assertEquals(row, i.createRow(0, i.width));
+    }
+
+    @Test
+    public void testCreateRowSixTeenElement() {
+        String row = "[255, 255, 255] [255, 255, 255] [255, 255, 255] [255, 255, 255]";
+        Image i16 = new Image(4,4);
+        String createdRow = i16.createRow(0, i.width);
     }
 }

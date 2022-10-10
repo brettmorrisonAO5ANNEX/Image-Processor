@@ -27,7 +27,7 @@ public class Image {
         this.width = width;
         this.height = height;
         this.pixelArray = new int[width * height][3];
-        this.imageResult = null;
+        this.imageResult = "";
 
         for (int r = 0; r < this.pixelArray.length; r++) {
             for (int c = 0; c < this.pixelArray[0].length; c++) {
@@ -110,19 +110,19 @@ public class Image {
         int currentRowSpan = row * width;
         int nextRowSpan = currentRowSpan + width;
 
-        if (row < height) {
-            imageResult = this.createRow(currentRowSpan, nextRowSpan) +  "\n" + this.createVisArray(row + 1);
+        if (row == height) {
+            this.imageResult =  imageResult;
         } else {
-            return this.imageResult;
+            this.imageResult = this.createRow(currentRowSpan, nextRowSpan)
+                               +  "\n" + this.createVisArray(row + 1);
         }
         return this.imageResult;
     }
 
-    //TODO: write tests for createRow()
     //MODIFIES: this
     //EFFECTS: creates a string version of an individual pixel within an image's pixel array
     public String createRow(int start, int end) {
-        String row = null;
+        String row = "";
         for (int i = start; i < end; i++) {
             row = row + Arrays.toString(this.pixelArray[i]);
         }
