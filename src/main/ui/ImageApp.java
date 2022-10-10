@@ -11,12 +11,10 @@ public class ImageApp {
     private Image myImage;
     private Filter negative;
     private Scanner input;
-    private String command = null;
     private boolean editing;
     private int width;
     private int height;
     private int editHistory;
-
 
     //EFFECTS: runs ImageApp
     public ImageApp() {
@@ -26,6 +24,7 @@ public class ImageApp {
     //MODIFIES: this
     //EFFECTS: accepts user input and processes it accordingly
     public void runImageApp() {
+        String command = null;
 
         init();
 
@@ -38,13 +37,10 @@ public class ImageApp {
             command = input.next();
             command = command.toLowerCase();
 
-            if (command == "p") {
-                editing = false;
-            } else {
-                processCommand(command);
-            }
+            processCommand(command);
         }
     }
+
 
     //MODIFIES: this
     //EFFECTS: initializes user input
@@ -57,46 +53,68 @@ public class ImageApp {
     //MODIFIES: this
     //EFFECTS: allows program to continue if user chooses to edit new image, exits otherwise
     public void createOrLeave() {
-        displayOpeningMenu();
+        boolean deciding = true;
+        String decisionCommand = null;
 
-        command = input.next();
-        command = command.toLowerCase();
+        while (deciding) {
+            displayOpeningMenu();
+            decisionCommand = input.next();
+            decisionCommand = decisionCommand.toLowerCase();
 
-        if (command == "y") {
-            editing = true;
-
-            System.out.println("\n please enter an (integer) width for your image: ");
-            processWidth(input.nextInt());
-
-            System.out.println("\n please enter an (integer) height for your image: ");
-            processHeight(input.nextInt());
-
-            createImage(width, height);
-
-        } else {
-            editing = false;
-            System.out.println("\n sorry to see you go... come back anytime to edit a new image!");
+            if (decisionCommand.equals("y")) {
+                doCreate();
+                deciding = false;
+            } else if (decisionCommand.equals("n")) {
+                doQuit();
+                deciding = false;
+            } else {
+                System.out.println("\n invalid command given...");
+            }
         }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: updates editing (boolean) state to true and creates image to users size specifications
+    public void doCreate() {
+        System.out.println("\n please enter an (integer) width for your image: ");
+        processWidth(input.nextInt());
+
+        System.out.println("\n please enter an (integer) height for your image: ");
+        processHeight(input.nextInt());
+
+        createImage(width, height);
+
+        editing = true;
+    }
+
+    //MODIFIES: this
+    //EFFECTS: quites program by updating editing (boolean) state to false
+    public void doQuit() {
+        System.out.println("\n sorry to see you go... come back anytime to edit a new image!");
+        editing = false;
+
     }
 
     //MODIFIES: width
     //EFFECTS: asks for new width if previous one was < 0 otherwise assigns width
     public void processWidth(int w) {
-        while (width < 0) {
+        if (w < 1) {
             System.out.println("\n oops... please enter a width that is greater than zero!");
             processWidth(input.nextInt());
+        } else {
+            width = w;
         }
-        width = w;
     }
 
     //MODIFIES: height
     //EFFECTS: asks for new height if previous one was < 0 otherwise assigns height
     public void processHeight(int h) {
-        while (height < 0) {
+        if (h < 1) {
             System.out.println("\n oops... please enter a height that is greater than zero!");
             processHeight(input.nextInt());
+        } else {
+            height = h;
         }
-        height = h;
     }
 
     //REQUIRES: width and height > 0
@@ -126,17 +144,17 @@ public class ImageApp {
     //MODIFIES: this
     //EFFECTS: processes user commands while editing
     public void processCommand(String command) {
-        if (command == "a") {
+        if (command.equals("a")) {
             doAddFilter();
-        } else if (command == "ul") {
+        } else if (command.equals("ul")) {
             doUndoLast();
-        } else if (command == "ua") {
+        } else if (command.equals("ua")) {
             doUndoAll();
-        } else if (command == "ut") {
+        } else if (command.equals("ut")) {
             doUndoType();
-        } else if (command == "v") {
+        } else if (command.equals("v")) {
             doViewHistory();
-        } else if (command == "p") {
+        } else if (command.equals("p")) {
             doProcessAndQuit();
         } else {
             System.out.println("\n invalid command given...");
@@ -147,10 +165,11 @@ public class ImageApp {
     //EFFECTS: adds filter to image
     public void doAddFilter() {
         displayFilterOptions();
-        if (input.next() == "nv") {
+        if (input.next().equals("nv")) {
             myImage.addFilter(negative);
         } else {
             System.out.println("\n invalid filter chosen");
+            doAddFilter();
         }
     }
 
@@ -192,27 +211,34 @@ public class ImageApp {
     //MODIFIES: this
     //EFFECTS: presents user with all unique filters used so they know which types they can remove
     public void displayAvailableFilters() {
-        System.out.println("\n you have used the following different filters: ");
+        System.out.println("\n you have used each of the following filters at least once: ");
         for (String filterName : myImage.getUniqueFiltersUsed()) {
-            if (filterName == "negative") {
+            if (filterName.equals("negative")) {
                 System.out.println("\t n -> negative");
-            } else if (filterName == "mirror") {
+            } else if (filterName.equals("mirror")) {
                 System.out.println("\t m -> mirror");
-            } else if (filterName == "pixelate") {
+            } else if (filterName.equals("pixelate")) {
                 System.out.println("\t px -> pixelate");
             }
         }
+        System.out.println("\n choose a type to remove from your image: ");
     }
 
     //MODIFIES: myImage
     //EFFECTS: removes all instances of a filterType from myImage that the user specified
     public void doRemoveChosen(String command) {
-        if (command == "n") {
+        if (command.equals("n")) {
             myImage.removeAllOfType("negative");
-        } else if (command == "m") {
+            System.out.println("\t all applications of (negative) have been removed");
+        } else if (command.equals("m")) {
             myImage.removeAllOfType("mirror");
-        } else if (command == "px") {
+            System.out.println("\t all applications of (mirror) have been removed");
+        } else if (command.equals("px")) {
             myImage.removeAllOfType("pixelate");
+            System.out.println("\t all applications of (pixelate) have been removed");
+        } else {
+            System.out.println("\n invalid option...");
+            doUndoType();
         }
     }
 
@@ -222,15 +248,20 @@ public class ImageApp {
         int historyEndInd = myImage.viewEditHistory().length() - 1;
         String history = myImage.viewEditHistory();
         String refinedHistory = history.substring(1, historyEndInd);
-        System.out.println("\n your edit history is: ");
-        System.out.printf("\t %s", refinedHistory);
+
+        if (history.equals("no filters applied")) {
+            System.out.printf("\t %s", refinedHistory);
+        } else {
+            System.out.println("\n your edit history is: ");
+            System.out.printf("\t %s", refinedHistory);
+        }
     }
 
     //MODIFIES: this
     //EFFECTS: quits program and displays exit message
     public void doProcessAndQuit() {
         myImage.processImage();
+        System.out.println("\n thank you... your image has been processed successfully!");
         editing = false;
-        System.out.println("\n your image has been processed successfully!");
     }
 }

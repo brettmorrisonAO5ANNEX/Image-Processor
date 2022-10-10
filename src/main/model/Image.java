@@ -71,7 +71,7 @@ public class Image {
     //MODIFIES: this
     //EFFECTS: clears all instances of a type of filter from an images listOfFilter
     public void removeAllOfType(String filterName) {
-        this.listOfFilter.removeIf(f -> (f.getFilterName() == filterName));
+        this.listOfFilter.removeIf(f -> (f.getFilterName().equals(filterName)));
     }
 
     //EFFECTS: returns a string containing all filters in order of when they were applied
@@ -80,7 +80,7 @@ public class Image {
         String[] history = new String[size];
 
         if (this.listOfFilter.size() == 0) {
-            return "no filters applied";
+            return "[no filters applied]";
         } else {
             for (int i = 0; i < size; i++) {
                 String item = this.listOfFilter.get(i).getFilterName();
@@ -94,7 +94,7 @@ public class Image {
     //EFFECTS: applies each filter in this.listOfFilter to this and updates pixels accordingly
     public void processImage() {
         for (Filter filter: this.listOfFilter) {
-            if (filter.getFilterName() == "negative") {
+            if (filter.getFilterName().equals("negative")) {
                 filter.negative(this);
             }
         }
