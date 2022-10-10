@@ -260,7 +260,7 @@ public class ImageApp {
     //MODIFIES: this
     //EFFECTS: quits program and displays exit message
     public void doProcessAndQuit() {
-        String result = myImage.createVisArray(width);
+        String result = myImage.createVisArray(0);
         myImage.processImage();
         System.out.println("\n thank you... your image has been processed successfully!");
         System.out.println("\n your image is represented by the following pixel array: ");
