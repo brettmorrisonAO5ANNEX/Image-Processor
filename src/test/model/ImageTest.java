@@ -212,7 +212,6 @@ public class ImageTest {
         assertEquals(255, i.getPixelArray()[0][2]);
     }
 
-    //TODO: update tests so that they show matrix version of image not linear array
     @Test
     public void testCreatVisArrayOneElement() {
         String result = "[0, 0, 0]\n" + "";
