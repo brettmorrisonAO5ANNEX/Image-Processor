@@ -11,10 +11,11 @@ public class Image {
     int[][] pixelArray;
     int height;
     int width;
+    String imageResult;
 
     //TODO: setup starting color constant (or parameter) for single point of control of what color each pixel is
     //      instantiated to be
-    //TODO: update testing to account for uniqueFiltersUsed field
+    //TODO: update testing to account result field
 
     //REQUIRES: width, height > 0
     //EFFECTS: creates Image object with "white colored" (RGB - 255) 2D pixel array with (width) columns,
@@ -26,6 +27,7 @@ public class Image {
         this.width = width;
         this.height = height;
         this.pixelArray = new int[width * height][3];
+        this.imageResult = null;
 
         for (int r = 0; r < this.pixelArray.length; r++) {
             for (int c = 0; c < this.pixelArray[0].length; c++) {
@@ -98,6 +100,33 @@ public class Image {
                 filter.negative(this);
             }
         }
+    }
+
+
+    //REQUIRES: processImage() has been called on image instance and method is initialized with 0
+    //MODIFIES: this
+    //EFFECTS: creates imageResult based on processed pixelArray
+    public String createVisArray(int row) {
+        int currentRowSpan = row * width;
+        int nextRowSpan = currentRowSpan + width;
+
+        if (row < height) {
+            imageResult = this.createRow(currentRowSpan, nextRowSpan) +  "\n" + this.createVisArray(row + 1);
+        } else {
+            return this.imageResult;
+        }
+        return this.imageResult;
+    }
+
+    //TODO: write tests for createRow()
+    //MODIFIES: this
+    //EFFECTS: creates a string version of an individual pixel within an image's pixel array
+    public String createRow(int start, int end) {
+        String row = null;
+        for (int i = start; i < end; i++) {
+            row = row + Arrays.toString(this.pixelArray[i]);
+        }
+        return row;
     }
 
     public List<Filter> getListOfFilter() {

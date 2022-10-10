@@ -170,7 +170,7 @@ public class ImageTest {
 
     @Test
     public void testViewEditHistoryEmpty() {
-        assertEquals("no filters applied", i.viewEditHistory());
+        assertEquals("[no filters applied]", i.viewEditHistory());
     }
 
     @Test
@@ -210,5 +210,23 @@ public class ImageTest {
         i.processImage();
         assertEquals(255, i.getPixelArray()[0][0]);
         assertEquals(255, i.getPixelArray()[0][2]);
+    }
+
+    //TODO: update tests so that they show matrix version of image not linear array
+    @Test
+    public void testViewPixelArrayOneElement() {
+        String result = "[0, 0, 0]";
+        i.addFilter(negative);
+        i.processImage();
+        assertEquals(result, i.createVisArray(i.width));
+    }
+
+    @Test
+    public void testViewPixelArrayFourElement() {
+        String result = "[0, 0, 0] [0, 0, 0]\n" + "[0, 0, 0] [0, 0, 0]";
+        Image i4 = new Image (2,2);
+        i4.addFilter(negative);
+        i4.processImage();
+        assertEquals(result, i4.createVisArray(i4.width));
     }
 }
