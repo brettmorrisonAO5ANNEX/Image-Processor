@@ -137,7 +137,7 @@ public class ImageApp {
         } else if (command == "v") {
             doViewHistory();
         } else if (command == "p") {
-            doQuit();
+            doProcessAndQuit();
         } else {
             System.out.println("\n invalid command given...");
         }
@@ -197,12 +197,14 @@ public class ImageApp {
         String history = myImage.viewEditHistory();
         String refinedHistory = history.substring(1, historyEndInd);
         System.out.println("\n your edit history is: ");
-        System.out.printf("\t %s", myImage.viewEditHistory());
+        System.out.printf("\t %s", refinedHistory);
     }
 
     //MODIFIES: this
-    //EFFECTS:
-    public void doQuit() {
-        //stub
+    //EFFECTS: quits program and displays exit message
+    public void doProcessAndQuit() {
+        myImage.processImage();
+        editing = false;
+        System.out.println("\n your image has been processed successfully!");
     }
 }
