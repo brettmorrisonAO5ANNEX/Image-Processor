@@ -32,7 +32,7 @@ public class ImageApp {
         createOrLeave();
 
         while (editing) {
-            editHistory = myImage.getlistOfFilter().size();
+            editHistory = myImage.getListOfFilter().size();
             displayToolMenu();
 
             command = input.next();
@@ -182,12 +182,38 @@ public class ImageApp {
         }
     }
 
-    //TODO: create method that keeps track of which unique filters a user has applied so when they ask to remove
-    //      all of a type they know their options
     //MODIFIES: this
     //EFFECTS: removes all filters of type given
     public void doUndoType() {
-        //stub
+        displayAvailableFilters();
+        doRemoveChosen(input.next());
+    }
+
+    //MODIFIES: this
+    //EFFECTS: presents user with all unique filters used so they know which types they can remove
+    public void displayAvailableFilters() {
+        System.out.println("\n you have used the following different filters: ");
+        for (String filterName : myImage.getUniqueFiltersUsed()) {
+            if (filterName == "negative") {
+                System.out.println("\t n -> negative");
+            } else if (filterName == "mirror") {
+                System.out.println("\t m -> mirror");
+            } else if (filterName == "pixelate") {
+                System.out.println("\t px -> pixelate");
+            }
+        }
+    }
+
+    //MODIFIES: myImage
+    //EFFECTS: removes all instances of a filterType from myImage that the user specified
+    public void doRemoveChosen(String command) {
+        if (command == "n") {
+            myImage.removeAllOfType("negative");
+        } else if (command == "m") {
+            myImage.removeAllOfType("mirror");
+        } else if (command == "px") {
+            myImage.removeAllOfType("pixelate");
+        }
     }
 
     //MODIFIES: this

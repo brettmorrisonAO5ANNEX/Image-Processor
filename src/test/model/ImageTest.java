@@ -18,146 +18,197 @@ public class ImageTest {
     }
 
     @Test
-    public void constructorTestBoundary() {
+    public void testConstructorBoundary() {
         assertEquals(1, i.getImageWidth());
         assertEquals(1, i.getImageHeight());
-        assertEquals(0, i.getlistOfFilter().size());
+        assertEquals(0, i.getListOfFilter().size());
+        assertEquals(0, i.getUniqueFiltersUsed().size());
         assertEquals(1, i.pixelArray.length);
         assertEquals(3, i.pixelArray[0].length);
         assertEquals(255, i.pixelArray[0][0]);
     }
 
     @Test
-    public void constructorTestNotBoundary() {
+    public void testsConstructorNotBoundary() {
         Image i2 = new Image(2, 2);
         assertEquals(2, i2.getImageWidth());
         assertEquals(2, i2.getImageHeight());
-        assertEquals(0, i2.getlistOfFilter().size());
+        assertEquals(0, i2.getListOfFilter().size());
+        assertEquals(0, i2.getUniqueFiltersUsed().size());
         assertEquals(4, i2.pixelArray.length);
-        assertEquals(3, i.pixelArray[0].length);
-        assertEquals(255, i.pixelArray[0][0]);
+        assertEquals(3, i2.pixelArray[0].length);
+        assertEquals(255, i2.pixelArray[0][0]);
     }
 
     @Test
-    public void addFilterTestToEmpty() {
+    public void testAddFilterToEmpty() {
         i.addFilter(negative);
-        assertEquals(1, i.getlistOfFilter().size());
-        assertEquals("negative", i.getlistOfFilter().get(0).getFilterName());
+        assertEquals(1, i.getListOfFilter().size());
+        assertEquals("negative", i.getListOfFilter().get(0).getFilterName());
     }
 
     @Test
-    public void addFilterTestDuplicate() {
+    public void testAddFilterDuplicate() {
         i.addFilter(mirror);
-        assertEquals(1, i.getlistOfFilter().size());
-        assertEquals("mirror", i.getlistOfFilter().get(0).getFilterName());
+        assertEquals(1, i.getListOfFilter().size());
+        assertEquals("mirror", i.getListOfFilter().get(0).getFilterName());
         i.addFilter(mirror);
-        assertEquals(2, i.getlistOfFilter().size());
-        assertEquals("mirror", i.getlistOfFilter().get(0).getFilterName());
-        assertEquals("mirror", i.getlistOfFilter().get(1).getFilterName());
+        assertEquals(2, i.getListOfFilter().size());
+        assertEquals("mirror", i.getListOfFilter().get(0).getFilterName());
+        assertEquals("mirror", i.getListOfFilter().get(1).getFilterName());
     }
 
     @Test
-    public void addFilterTestNotEmptyNotDuplicate() {
+    public void testAddFilterNotEmptyNotDuplicate() {
         i.addFilter(mirror);
-        assertEquals(1, i.getlistOfFilter().size());
-        assertEquals("mirror", i.getlistOfFilter().get(0).getFilterName());
+        assertEquals(1, i.getListOfFilter().size());
+        assertEquals("mirror", i.getListOfFilter().get(0).getFilterName());
         i.addFilter(negative);
-        assertEquals(2, i.getlistOfFilter().size());
-        assertEquals("mirror", i.getlistOfFilter().get(0).getFilterName());
-        assertEquals("negative", i.getlistOfFilter().get(1).getFilterName());
+        assertEquals(2, i.getListOfFilter().size());
+        assertEquals("mirror", i.getListOfFilter().get(0).getFilterName());
+        assertEquals("negative", i.getListOfFilter().get(1).getFilterName());
     }
 
     @Test
-    public void undoLastListOneElement() {
+    public void testAddIfUniqueIsUnique() {
+        assertEquals(0, i.getUniqueFiltersUsed().size());
+        i.addFilter(negative);
+        assertEquals(1, i.getUniqueFiltersUsed().size());
+        assertEquals("negative", i.getUniqueFiltersUsed().get(0));
+        i.addIfUnique(mirror);
+        assertEquals(2, i.getUniqueFiltersUsed().size());
+        assertEquals("negative", i.getUniqueFiltersUsed().get(0));
+        assertEquals("mirror", i.getUniqueFiltersUsed().get(1));
+    }
+
+    @Test
+    public void testAddIfUniqueNotUnique() {
+        assertEquals(0, i.getUniqueFiltersUsed().size());
         i.addFilter(pixelate);
-        assertEquals("pixelate", i.getlistOfFilter().get(0).getFilterName());
+        assertEquals(1, i.getUniqueFiltersUsed().size());
+        assertEquals("pixelate", i.getUniqueFiltersUsed().get(0));
+        i.addFilter(pixelate);
+        assertEquals(1, i.getUniqueFiltersUsed().size());
+        assertEquals("pixelate", i.getUniqueFiltersUsed().get(0));
+    }
+
+
+    @Test
+    public void testUndoLastListOneElement() {
+        i.addFilter(pixelate);
+        assertEquals("pixelate", i.getListOfFilter().get(0).getFilterName());
         i.undoLast();
-        assertEquals(0, i.getlistOfFilter().size());
+        assertEquals(0, i.getListOfFilter().size());
     }
 
     @Test
-    public void undoLastListTwoElements() {
+    public void testUndoLastListTwoElements() {
         i.addFilter(mirror);
         i.addFilter(negative);
-        assertEquals("mirror", i.getlistOfFilter().get(0).getFilterName());
-        assertEquals("negative", i.getlistOfFilter().get(1).getFilterName());
+        assertEquals("mirror", i.getListOfFilter().get(0).getFilterName());
+        assertEquals("negative", i.getListOfFilter().get(1).getFilterName());
         i.undoLast();
-        assertEquals("mirror", i.getlistOfFilter().get(0).getFilterName());
+        assertEquals("mirror", i.getListOfFilter().get(0).getFilterName());
     }
 
     @Test
-    public void undoAllListOneElement() {
+    public void testUndoAllListOneElement() {
         i.addFilter(mirror);
-        assertEquals(1, i.getlistOfFilter().size());
+        assertEquals(1, i.getListOfFilter().size());
         i.undoAll();
-        assertEquals(0, i.getlistOfFilter().size());
+        assertEquals(0, i.getListOfFilter().size());
     }
 
     @Test
-    public void undoAllListTwoElement() {
+    public void testUndoAllListTwoElement() {
         i.addFilter(mirror);
         i.addFilter(pixelate);
-        assertEquals(2, i.getlistOfFilter().size());
+        assertEquals(2, i.getListOfFilter().size());
         i.undoAll();
-        assertEquals(0, i.getlistOfFilter().size());
+        assertEquals(0, i.getListOfFilter().size());
     }
 
     @Test
-    public void removeAllOfOneOneElement() {
+    public void testRemoveAllOfOneOneElement() {
         i.addFilter(pixelate);
-        assertEquals("pixelate", i.getlistOfFilter().get(0).getFilterName());
+        assertEquals("pixelate", i.getListOfFilter().get(0).getFilterName());
         i.removeAllOfType(pixelate.getFilterName());
-        assertEquals(0, i.getlistOfFilter().size());
+        assertEquals(0, i.getListOfFilter().size());
     }
 
     @Test
-    public void removeAllOfTypeMultipleElementBeginningOfList() {
+    public void testRemoveAllOfTypeMultipleElementBeginningOfList() {
         i.addFilter(mirror);
         i.addFilter(mirror);
         i.addFilter(negative);
         i.addFilter(pixelate);
-        assertEquals("mirror", i.getlistOfFilter().get(0).getFilterName());
-        assertEquals("mirror", i.getlistOfFilter().get(1).getFilterName());
-        assertEquals("negative", i.getlistOfFilter().get(2).getFilterName());
-        assertEquals("pixelate", i.getlistOfFilter().get(3).getFilterName());
+        assertEquals("mirror", i.getListOfFilter().get(0).getFilterName());
+        assertEquals("mirror", i.getListOfFilter().get(1).getFilterName());
+        assertEquals("negative", i.getListOfFilter().get(2).getFilterName());
+        assertEquals("pixelate", i.getListOfFilter().get(3).getFilterName());
         i.removeAllOfType(mirror.getFilterName());
-        assertEquals(2, i.getlistOfFilter().size());
-        assertEquals("negative", i.getlistOfFilter().get(0).getFilterName());
-        assertEquals("pixelate", i.getlistOfFilter().get(1).getFilterName());
+        assertEquals(2, i.getListOfFilter().size());
+        assertEquals("negative", i.getListOfFilter().get(0).getFilterName());
+        assertEquals("pixelate", i.getListOfFilter().get(1).getFilterName());
     }
 
     @Test
-    public void removeAllOfTypeMultipleElementMiddleOfList() {
+    public void testRemoveAllOfTypeMultipleElementMiddleOfList() {
         i.addFilter(pixelate);
         i.addFilter(negative);
         i.addFilter(pixelate);
         i.addFilter(mirror);
-        assertEquals("pixelate", i.getlistOfFilter().get(0).getFilterName());
-        assertEquals("negative", i.getlistOfFilter().get(1).getFilterName());
-        assertEquals("pixelate", i.getlistOfFilter().get(2).getFilterName());
-        assertEquals("mirror", i.getlistOfFilter().get(3).getFilterName());
+        assertEquals("pixelate", i.getListOfFilter().get(0).getFilterName());
+        assertEquals("negative", i.getListOfFilter().get(1).getFilterName());
+        assertEquals("pixelate", i.getListOfFilter().get(2).getFilterName());
+        assertEquals("mirror", i.getListOfFilter().get(3).getFilterName());
         i.removeAllOfType(pixelate.getFilterName());
-        assertEquals(2, i.getlistOfFilter().size());
-        assertEquals("negative", i.getlistOfFilter().get(0).getFilterName());
-        assertEquals("mirror", i.getlistOfFilter().get(1).getFilterName());
+        assertEquals(2, i.getListOfFilter().size());
+        assertEquals("negative", i.getListOfFilter().get(0).getFilterName());
+        assertEquals("mirror", i.getListOfFilter().get(1).getFilterName());
     }
 
     @Test
-    public void viewEditHistoryEmpty() {
+    public void testViewEditHistoryEmpty() {
         assertEquals("no filters applied", i.viewEditHistory());
     }
 
     @Test
-    public void viewEditHistoryNotEmpty() {
+    public void testViewEditHistoryNotEmpty() {
         String result = "[1: mirror, 2: pixelate]";
         i.addFilter(mirror);
         i.addFilter(pixelate);
-        assertEquals(2, i.getlistOfFilter().size());
+        assertEquals(2, i.getListOfFilter().size());
         assertEquals(result, i.viewEditHistory());
     }
 
-    //todo: finish filter tests first
     @Test
-    public void processImageEmptyListOfFilter() {
+    public void testProcessImageEmptyListOfFilter() {
+        assertEquals(255, i.getPixelArray()[0][0]);
+        assertEquals(255, i.getPixelArray()[0][2]);
+        i.processImage();
+        assertEquals(255, i.getPixelArray()[0][0]);
+        assertEquals(255, i.getPixelArray()[0][2]);
+    }
+
+    @Test
+    public void testProcessImageOneInListOfFilter() {
+        i.addFilter(negative);
+        assertEquals(255, i.getPixelArray()[0][0]);
+        assertEquals(255, i.getPixelArray()[0][2]);
+        i.processImage();
+        assertEquals(0, i.getPixelArray()[0][0]);
+        assertEquals(0, i.getPixelArray()[0][2]);
+    }
+
+    @Test
+    public void testProcessImageMoreThanOneInListOfFilter() {
+        i.addFilter(negative);
+        i.addFilter(negative);
+        assertEquals(255, i.getPixelArray()[0][0]);
+        assertEquals(255, i.getPixelArray()[0][2]);
+        i.processImage();
+        assertEquals(255, i.getPixelArray()[0][0]);
+        assertEquals(255, i.getPixelArray()[0][2]);
     }
 }

@@ -19,6 +19,8 @@ public class Filter {
         }
     }
 
+    //TODO: create last two filters and test them
+
 //    //MODIFIES: img
 //    //EFFECTS: creates sub 2D arrays within img.get(pixels) and averages the RGB values within each sub array to
 //    //         get a new pixel array with pixelated appearance

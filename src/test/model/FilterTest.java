@@ -22,19 +22,18 @@ class FilterTest {
 
     }
 
-
     @Test
-    public void constructorTestForName() {
+    public void testConstructorForName() {
         assertEquals("pixelate", pixelate.getFilterName());
     }
 
     @Test
-    public void constructorTestForNameAgain() {
+    public void testConstructorForNameAgain() {
         assertEquals("mirror", mirror.getFilterName());
     }
 
     @Test
-    public void negativeTestOneElement(){
+    public void testNegativeOneElement(){
         assertEquals(255, imgTestOneElement.pixelArray[0][0]);
         assertEquals(255, imgTestOneElement.pixelArray[0][2]);
         negative.negative(imgTestOneElement);
@@ -43,7 +42,7 @@ class FilterTest {
     }
 
     @Test
-    public void negativeTestNineElement() {
+    public void testNegativeNineElement() {
         assertEquals(255, imgTestNineElement.pixelArray[0][0]);
         assertEquals(255, imgTestNineElement.pixelArray[0][2]);
         negative.negative(imgTestNineElement);

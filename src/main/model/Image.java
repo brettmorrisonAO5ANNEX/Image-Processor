@@ -7,18 +7,22 @@ import java.util.List;
 // represents an instance of the locally stored image with a list of applied filters
 public class Image {
     List<Filter> listOfFilter;
+    List<String> uniqueFiltersUsed;
+    int[][] pixelArray;
     int height;
     int width;
-    int[][] pixelArray;
 
-    //todo: setup starting color constant (or parameter) for single point of control of what color each pixel is
+    //TODO: setup starting color constant (or parameter) for single point of control of what color each pixel is
     //      instantiated to be
+    //TODO: update testing to account for uniqueFiltersUsed field
 
     //REQUIRES: width, height > 0
-    //EFFECTS: creates Image object with 2D pixel array with (width) columns, (height) rows, and
-    //         empty listOfFilter (each pixel has color value in hex code)
+    //EFFECTS: creates Image object with "white colored" (RGB - 255) 2D pixel array with (width) columns,
+    //         (height) rows, empty listOfFilter, and empty uniqueFiltersUsed
+
     public Image(int width, int height) {
         this.listOfFilter = new ArrayList<>();
+        this.uniqueFiltersUsed = new ArrayList<>();
         this.width = width;
         this.height = height;
         this.pixelArray = new int[width * height][3];
@@ -34,6 +38,16 @@ public class Image {
     //EFFECTS: adds filter to an images listOfFilter field
     public void addFilter(Filter filter) {
         this.listOfFilter.add(filter);
+        this.addIfUnique(filter);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: adds filterName to uniqueFiltersUsed
+    public void addIfUnique(Filter filter) {
+        String filterType = filter.getFilterName();
+        if (!this.uniqueFiltersUsed.contains(filterType)) {
+            this.uniqueFiltersUsed.add(filterType);
+        }
     }
 
     //REQUIRES: listOfFilter is not empty
@@ -86,8 +100,12 @@ public class Image {
         }
     }
 
-    public List<Filter> getlistOfFilter() {
+    public List<Filter> getListOfFilter() {
         return this.listOfFilter;
+    }
+
+    public List<String> getUniqueFiltersUsed() {
+        return this.uniqueFiltersUsed;
     }
 
     public int[][] getPixelArray() {
