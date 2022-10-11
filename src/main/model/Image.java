@@ -15,11 +15,9 @@ public class Image {
 
     //TODO: setup starting color constant (or parameter) for single point of control of what color each pixel is
     //      instantiated to be
-    //TODO: update testing to account result field
 
     //REQUIRES: width, height > 0
-    //EFFECTS: creates Image object with "white colored" (RGB - 255) 2D pixel array with (width) columns,
-    //         (height) rows, empty listOfFilter, and empty uniqueFiltersUsed
+    //EFFECTS: instantiates Image object with
 
     public Image(int width, int height) {
         this.listOfFilter = new ArrayList<>();
@@ -93,7 +91,7 @@ public class Image {
     }
 
     //MODIFIES: this
-    //EFFECTS: applies each filter in this.listOfFilter to this and updates pixels accordingly
+    //EFFECTS: applies each filter in this.listOfFilter to this
     public void processImage() {
         for (Filter filter: this.listOfFilter) {
             if (filter.getFilterName().equals("negative")) {

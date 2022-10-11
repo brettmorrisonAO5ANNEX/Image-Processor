@@ -4,13 +4,13 @@ public class Filter {
     String filterName;
 
     //REQUIRES: filterType can only be one of: "negative", "mirror", "pixelate"
-    //EFFECTS: creates a filter object with filterName = filterType
+    //EFFECTS: instantiates a filter object
     public Filter(String filterType) {
         this.filterName = filterType;
     }
 
     //MODIFIES: img
-    //EFFECTS: modifies each pixel in pixels to have RBG values of (255-R), (255-G), (255-B)
+    //EFFECTS: negates each pixel's RGB values in img
     public void negative(Image img) {
         for (int r = 0; r < img.pixelArray.length; r++) {
             for (int c = 0; c < img.pixelArray[0].length; c++) {
@@ -21,7 +21,7 @@ public class Filter {
 
     //REQUIRES: first mirror call MUST be with row = 0
     //MODIFIES: this
-    //EFFECTS: creates mirror of image by swapping pixel positions across the array in each column
+    //EFFECTS: creates mirror of image
     public void mirror(Image img) {
         int[][] mirroredArray = new int[img.width * img.height][3];
         for (int r = 0; r < img.height; r++) {
@@ -32,6 +32,13 @@ public class Filter {
             }
         }
         img.pixelArray = mirroredArray;
+    }
+
+    //REQUIRES: image width and height must both be even
+    //MODIFIES: this
+    //EFFECTS: creates pixelated version of image according to user's specifications
+    public void pixelate() {
+        //stub
     }
 
     public String getFilterName() {

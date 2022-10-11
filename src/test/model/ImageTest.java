@@ -26,6 +26,7 @@ public class ImageTest {
         assertEquals(1, i.pixelArray.length);
         assertEquals(3, i.pixelArray[0].length);
         assertEquals(255, i.pixelArray[0][0]);
+        assertEquals("", i.imageResult);
     }
 
     @Test
@@ -38,6 +39,7 @@ public class ImageTest {
         assertEquals(4, i2.pixelArray.length);
         assertEquals(3, i2.pixelArray[0].length);
         assertEquals(255, i2.pixelArray[0][0]);
+        assertEquals("", i2.imageResult);
     }
 
     @Test

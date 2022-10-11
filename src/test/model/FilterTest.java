@@ -89,4 +89,5 @@ class FilterTest {
         assertEquals(3, i4.pixelArray[3][0]);
     }
 
+    //TODO: add tests for pixelate (2x2), (4x4)
 }

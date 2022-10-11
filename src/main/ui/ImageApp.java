@@ -76,8 +76,9 @@ public class ImageApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: updates editing (boolean) state to true and creates image to users size specifications
+    //EFFECTS: creates image to users size specifications and initialized editing process
     public void doCreate() {
+        System.out.println("\n IMPORTANT: to use pixelate filter, your image width and height must be even...");
         System.out.println("\n please enter an (integer) width for your image: ");
         processWidth(input.nextInt());
 
@@ -90,7 +91,7 @@ public class ImageApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: quites program by updating editing (boolean) state to false
+    //EFFECTS: quits program
     public void doQuit() {
         System.out.println("\n sorry to see you go... come back anytime to edit a new image!");
         editing = false;
@@ -215,7 +216,7 @@ public class ImageApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: presents user with all unique filters used so they know which types they can remove
+    //EFFECTS: presents user with all unique filters used, so they know which types they can remove
     public void displayAvailableFilters() {
         System.out.println("\n you have used each of the following filters at least once: ");
         for (String filterName : myImage.getUniqueFiltersUsed()) {
