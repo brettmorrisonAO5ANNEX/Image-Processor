@@ -98,6 +98,8 @@ public class Image {
         for (Filter filter: this.listOfFilter) {
             if (filter.getFilterName().equals("negative")) {
                 filter.negative(this);
+            } else if (filter.getFilterName().equals("mirror")) {
+                filter.mirror(this);
             }
         }
     }
@@ -107,13 +109,13 @@ public class Image {
     //MODIFIES: this
     //EFFECTS: creates imageResult based on processed pixelArray
     public String createVisArray(int row) {
-        int currentRowSpan = row * width;
-        int nextRowSpan = currentRowSpan + width;
+        int currentRowStart = row * width;
+        int nextRowStart = currentRowStart + width;
 
         if (row == height) {
-            this.imageResult =  imageResult;
+            return imageResult;
         } else {
-            this.imageResult = this.createRow(currentRowSpan, nextRowSpan)
+            this.imageResult = this.createRow(currentRowStart, nextRowStart)
                                +  "\n" + this.createVisArray(row + 1);
         }
         return this.imageResult;

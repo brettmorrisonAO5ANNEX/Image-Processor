@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class ImageApp {
     private Image myImage;
     private Filter negative;
+    private Filter mirror;
     private Scanner input;
     private boolean editing;
     private int width;
@@ -46,6 +47,7 @@ public class ImageApp {
     //EFFECTS: initializes user input
     public void init() {
         negative = new Filter("negative");
+        mirror = new Filter("mirror");
         input = new Scanner(System.in);
         input.useDelimiter("\n");
     }
@@ -162,11 +164,14 @@ public class ImageApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: adds filter to image
+    //EFFECTS: adds selected filter to image
     public void doAddFilter() {
         displayFilterOptions();
-        if (input.next().equals("nv")) {
+        String filterChoice = input.next();
+        if (filterChoice.equals("nv")) {
             myImage.addFilter(negative);
+        } else if (filterChoice.equals("mr")) {
+            myImage.addFilter(mirror);
         } else {
             System.out.println("\n invalid filter chosen");
             doAddFilter();
@@ -177,6 +182,7 @@ public class ImageApp {
     public void displayFilterOptions() {
         System.out.println("\n choose a filter to apply: ");
         System.out.println("\t nv -> negative");
+        System.out.println("\t mr -> mirror");
     }
 
     //MODIFIES: this
@@ -214,9 +220,9 @@ public class ImageApp {
         System.out.println("\n you have used each of the following filters at least once: ");
         for (String filterName : myImage.getUniqueFiltersUsed()) {
             if (filterName.equals("negative")) {
-                System.out.println("\t n -> negative");
+                System.out.println("\t nv -> negative");
             } else if (filterName.equals("mirror")) {
-                System.out.println("\t m -> mirror");
+                System.out.println("\t mr -> mirror");
             } else if (filterName.equals("pixelate")) {
                 System.out.println("\t px -> pixelate");
             }

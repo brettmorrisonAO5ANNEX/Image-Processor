@@ -19,19 +19,20 @@ public class Filter {
         }
     }
 
-    //TODO: create last two filters and test them
-
-//    //MODIFIES: img
-//    //EFFECTS: creates sub 2D arrays within img.get(pixels) and averages the RGB values within each sub array to
-//    //         get a new pixel array with pixelated appearance
-//    public void pixelate(Image img){
-//        //stub
-//
-//    //MODIFIES: img
-//    //EFFECTS: reverses pixel position in each row of pixels
-//    public void mirror(Image img){
-//        //stub
-//    }
+    //REQUIRES: first mirror call MUST be with row = 0
+    //MODIFIES: this
+    //EFFECTS: creates mirror of image by swapping pixel positions across the array in each column
+    public void mirror(Image img) {
+        int[][] mirroredArray = new int[img.width * img.height][3];
+        for (int r = 0; r < img.height; r++) {
+            int rowStart = r * img.width;
+            int rowEnd = img.width * (r + 1) - 1;
+            for (int i = 0; i < img.width; i++) {
+                mirroredArray[i + rowStart] = img.pixelArray[rowEnd - i];
+            }
+        }
+        img.pixelArray = mirroredArray;
+    }
 
     public String getFilterName() {
         return this.filterName;
