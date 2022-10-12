@@ -231,13 +231,16 @@ public class ImageApp {
         System.out.println("\n choose a type to remove from your image: ");
     }
 
+    //TODO: if a filter is removed using undo or undo all or undo type, its corresponding name should
+    //      be removed from the images uniqueFiltersUsed
     //MODIFIES: myImage
     //EFFECTS: removes all instances of a filterType from myImage that the user specified
     public void doRemoveChosen(String command) {
-        if (command.equals("n")) {
+        if (command.equals("nv")) {
             myImage.removeAllOfType("negative");
             System.out.println("\t all applications of (negative) have been removed");
-        } else if (command.equals("m")) {
+//            myImage.getUniqueFiltersUsed().
+        } else if (command.equals("mr")) {
             myImage.removeAllOfType("mirror");
             System.out.println("\t all applications of (mirror) have been removed");
         } else if (command.equals("px")) {
