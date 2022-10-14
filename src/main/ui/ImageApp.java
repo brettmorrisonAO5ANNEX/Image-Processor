@@ -81,12 +81,9 @@ public class ImageApp {
         System.out.println("\n IMPORTANT: to use pixelate filter, your image width and height must be even...");
         System.out.println("\n please enter an (integer) width for your image: ");
         processWidth(input.nextInt());
-
         System.out.println("\n please enter an (integer) height for your image: ");
         processHeight(input.nextInt());
-
         createImage(width, height);
-
         editing = true;
     }
 
@@ -209,12 +206,17 @@ public class ImageApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: removes all filters of type given
+    //EFFECTS: removes all filters of type given, if there aren't any filters to remove, returns to menu
     public void doUndoType() {
-        displayAvailableFilters();
-        doRemoveChosen(input.next());
+        if (myImage.getUniqueFiltersUsed().size() > 0) {
+            displayAvailableFilters();
+            doRemoveChosen(input.next());
+        } else {
+            System.out.println("\n no filters to remove...");
+        }
     }
 
+    //TODO: return to main menu after displaying no filters to remove message
     //MODIFIES: this
     //EFFECTS: presents user with all unique filters used, so they know which types they can remove
     public void displayAvailableFilters() {
@@ -230,6 +232,8 @@ public class ImageApp {
         }
         System.out.println("\n choose a type to remove from your image: ");
     }
+
+
 
     //TODO: if a filter is removed using undo or undo all or undo type, its corresponding name should
     //      be removed from the images uniqueFiltersUsed

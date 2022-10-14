@@ -24,7 +24,6 @@ public class Image {
 
     //REQUIRES: width, height > 0
     //EFFECTS: instantiates Image object with
-
     public Image(int width, int height) {
         this.listOfFilter = new ArrayList<>();
         this.uniqueFiltersUsed = new ArrayList<>();
@@ -32,7 +31,6 @@ public class Image {
         this.height = height;
         this.pixelArray = new int[width * height][3];
         this.imageResult = "";
-
         for (int r = 0; r < this.pixelArray.length; r++) {
             for (int c = 0; c < this.pixelArray[0].length; c++) {
                 this.pixelArray[r][c] = 255;
@@ -56,27 +54,33 @@ public class Image {
         }
     }
 
+    //TODO: create isEmpty() method
     //REQUIRES: listOfFilter is not empty
     //MODIFIES: this
     //EFFECTS: removes the most recently added filter from listOfFilter and also removes the corresponding
     //         filter from uniqueFiltersUsed
     public void undoLast() {
-        int lastIndex = this.listOfFilter.size() - 1;
-        String lastFilter = this.listOfFilter.get(lastIndex).getFilterName();
-        this.listOfFilter.remove(lastIndex);
-        this.removeFromUnique(lastFilter);
+        if (0 < this.listOfFilter.size()) {
+            int lastIndex = this.listOfFilter.size() - 1;
+            String lastFilter = this.listOfFilter.get(lastIndex).getFilterName();
+            this.listOfFilter.remove(lastIndex);
+            this.removeFromUnique(lastFilter);
+        }
     }
 
     //REQUIRES: listOfFilter is not empty
     //MODIFIES: this
     //EFFECTS: clears an images listOfFilter and removes it from uniqueFiltersUsed
     public void undoAll() {
-        for (int i = 0; i < this.listOfFilter.size(); i++) {
-            this.listOfFilter.clear();
-            this.uniqueFiltersUsed.clear();
+        if (0 < this.listOfFilter.size()) {
+            for (int i = 0; i < this.listOfFilter.size(); i++) {
+                this.listOfFilter.clear();
+                this.uniqueFiltersUsed.clear();
+            }
         }
     }
 
+    //TODO: incorporate if statement to check whether the requires clause is met
     //REQUIRES: listOfFilter contains filter matching filterName at least once
     //MODIFIES: this
     //EFFECTS: clears all instances of a type of filter from an images listOfFilter and removes the corresponding
@@ -90,14 +94,15 @@ public class Image {
     //MODIFIES: this
     //EFFECTS: removes a given filter name from an Images uniqueFiltersUsed list
     public void removeFromUnique(String filterName) {
-        this.uniqueFiltersUsed.remove(listOfFilter);
+        if (filterName.equals("mirror") || filterName.equals("negative") || filterName.equals("pixelate")) {
+            this.uniqueFiltersUsed.remove(filterName);
+        }
     }
 
     //EFFECTS: returns a string containing all filters in order of when they were applied
     public String viewEditHistory() {
         int size = this.listOfFilter.size();
         String[] history = new String[size];
-
         if (this.listOfFilter.size() == 0) {
             return "[no filters applied]";
         } else {
@@ -128,7 +133,6 @@ public class Image {
     public String createVisArray(int row) {
         int currentRowStart = row * width;
         int nextRowStart = currentRowStart + width;
-
         if (row == height) {
             return imageResult;
         } else {
