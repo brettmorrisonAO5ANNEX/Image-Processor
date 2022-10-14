@@ -13,6 +13,8 @@ public class Image {
     int width;
     String imageResult;
 
+    //TODO: update effects clauses to include info about what outputs are produced and how any input values are
+    //      changed
     //TODO: setup starting color constant (or parameter) for single point of control of what color each pixel is
     //      instantiated to be
 
