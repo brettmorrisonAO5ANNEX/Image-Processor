@@ -15,8 +15,12 @@ public class Image {
 
     //TODO: update effects clauses to include info about what outputs are produced and how any input values are
     //      changed
+    //TODO: check test coverage for all branches
+    //TODO: update tests to cover removeFromUnique();
     //TODO: setup starting color constant (or parameter) for single point of control of what color each pixel is
     //      instantiated to be
+    //TODO: undo/undotype/undoall should only allow a user to input data IF there are filters in listOfFilter
+    //TODO: add cancel option to return back to menu
 
     //REQUIRES: width, height > 0
     //EFFECTS: instantiates Image object with
@@ -54,26 +58,39 @@ public class Image {
 
     //REQUIRES: listOfFilter is not empty
     //MODIFIES: this
-    //EFFECTS: removes the most recently added filter from listOfFilter
+    //EFFECTS: removes the most recently added filter from listOfFilter and also removes the corresponding
+    //         filter from uniqueFiltersUsed
     public void undoLast() {
-        int size = this.listOfFilter.size() - 1;
-        this.listOfFilter.remove(size);
+        int lastIndex = this.listOfFilter.size() - 1;
+        String lastFilter = this.listOfFilter.get(lastIndex).getFilterName();
+        this.listOfFilter.remove(lastIndex);
+        this.removeFromUnique(lastFilter);
     }
 
     //REQUIRES: listOfFilter is not empty
     //MODIFIES: this
-    //EFFECTS: clears an images listOfFilter
+    //EFFECTS: clears an images listOfFilter and removes it from uniqueFiltersUsed
     public void undoAll() {
         for (int i = 0; i < this.listOfFilter.size(); i++) {
             this.listOfFilter.clear();
+            this.uniqueFiltersUsed.clear();
         }
     }
 
     //REQUIRES: listOfFilter contains filter matching filterName at least once
     //MODIFIES: this
-    //EFFECTS: clears all instances of a type of filter from an images listOfFilter
+    //EFFECTS: clears all instances of a type of filter from an images listOfFilter and removes the corresponding
+    //         filter from uniqueFiltersUsed
     public void removeAllOfType(String filterName) {
         this.listOfFilter.removeIf(f -> (f.getFilterName().equals(filterName)));
+        this.removeFromUnique(filterName);
+    }
+
+    //REQUIRES: filterName is one of: "mirror" "negative" or "pixelate"
+    //MODIFIES: this
+    //EFFECTS: removes a given filter name from an Images uniqueFiltersUsed list
+    public void removeFromUnique(String filterName) {
+        this.uniqueFiltersUsed.remove(listOfFilter);
     }
 
     //EFFECTS: returns a string containing all filters in order of when they were applied
