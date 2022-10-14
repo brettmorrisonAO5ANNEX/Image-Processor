@@ -16,7 +16,6 @@ public class Image {
     //TODO: update effects clauses to include info about what outputs are produced and how any input values are
     //      changed
     //TODO: check test coverage for all branches
-    //TODO: update tests to cover removeFromUnique();
     //TODO: setup starting color constant (or parameter) for single point of control of what color each pixel is
     //      instantiated to be
     //TODO: undo/undotype/undoall should only allow a user to input data IF there are filters in listOfFilter

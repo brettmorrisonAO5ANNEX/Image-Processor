@@ -50,6 +50,13 @@ public class ImageApp {
         mirror = new Filter("mirror");
         input = new Scanner(System.in);
         input.useDelimiter("\n");
+        displayLogo();
+    }
+
+    //MODIFIES: this
+    //EFFECTS: displays app logo
+    public String displayLogo() {
+        return "";
     }
 
     //MODIFIES: this
@@ -216,7 +223,6 @@ public class ImageApp {
         }
     }
 
-    //TODO: return to main menu after displaying no filters to remove message
     //MODIFIES: this
     //EFFECTS: presents user with all unique filters used, so they know which types they can remove
     public void displayAvailableFilters() {
@@ -233,10 +239,6 @@ public class ImageApp {
         System.out.println("\n choose a type to remove from your image: ");
     }
 
-
-
-    //TODO: if a filter is removed using undo or undo all or undo type, its corresponding name should
-    //      be removed from the images uniqueFiltersUsed
     //MODIFIES: myImage
     //EFFECTS: removes all instances of a filterType from myImage that the user specified
     public void doRemoveChosen(String command) {
