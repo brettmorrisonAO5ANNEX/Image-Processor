@@ -1,5 +1,7 @@
 package model;
 
+import static java.lang.Math.*;
+
 public class Filter {
     String filterName;
 
@@ -37,8 +39,14 @@ public class Filter {
     //REQUIRES: image width and height must both be even
     //MODIFIES: this
     //EFFECTS: creates pixelated version of image according to user's specifications
-    public void pixelate() {
-        //stub
+    public void pixelate(Image img, int degPix) {
+        int minDim = min(img.width, img.height);
+        int actualDegPix = round(log();
+        int[][] upsizedPixelatedArray = new int[img.width * img.height][3];
+        int[][] downSizedArray;
+        if (degPix == 0) {
+            downSizedArray = new int[][3];
+        }
     }
 
     public String getFilterName() {
