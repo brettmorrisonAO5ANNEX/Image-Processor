@@ -45,6 +45,14 @@ public class Filter {
         int subSectionHeight = createSubsectionHeight(img, apparentDegPix);
         int[][] downSizedArray = new int[(int) pow(4, apparentDegPix)][3];
         int[][] upsizedPixelatedArray = new int[img.width * img.height][3];
+
+        //iterate as many times as there are elements in the downsized array
+        for (int e = 0; e < downSizedArray.length; e++) {
+            int pixXCoord = getCol(downSizedArray, e);
+            int pixYCoord = getRow(downSizedArray, e);
+
+            //
+        }
     }
 
     //TODO: test this method
@@ -78,6 +86,16 @@ public class Filter {
             subSectionHeight = (int) (img.height / pow(2, apparentDegPix));
         }
         return subSectionHeight;
+    }
+
+    //EFFECTS: returns the 'theoretical column' of a downsized array given a current position and the array
+    public static int getCol(int[][] array, int currPos) {
+        return 0; //stub
+    }
+
+    //EFFECTS: returns the 'theoretical row' of a downsized array given a current position and the array
+    public static int getRow(int[][] array, int currPos) {
+        return 0; //stub
     }
 
     public String getFilterName() {
