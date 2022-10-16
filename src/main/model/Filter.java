@@ -36,6 +36,7 @@ public class Filter {
         img.pixelArray = mirroredArray;
     }
 
+    //TODO: [0 =< degPix =< (log(minDim) / log(2))]
     //REQUIRES: image width and height must both be even
     //MODIFIES: this
     //EFFECTS: creates pixelated version of image according to user's specifications
@@ -43,16 +44,32 @@ public class Filter {
         int apparentDegPix = createApparentDegPix(img, degPix);
         int subSectionWidth = createSubSectionWidth(img, apparentDegPix);
         int subSectionHeight = createSubsectionHeight(img, apparentDegPix);
+        int numElemInSubSection = subSectionWidth * subSectionHeight;
         int[][] downSizedArray = new int[(int) pow(4, apparentDegPix)][3];
         int[][] upsizedPixelatedArray = new int[img.width * img.height][3];
 
-        //iterate as many times as there are elements in the downsized array
-        for (int e = 0; e < downSizedArray.length; e++) {
-            int pixXCoord = getCol(downSizedArray, e);
-            int pixYCoord = getRow(downSizedArray, e);
-
-            //
+        //CREATES DOWNSIZED ARRAY
+        //iterate as many times as there are rows in the downsized array
+        for (int r = 0; r < sqrt(downSizedArray.length); r++) {
+            //iterate as many times as there are columns in the downsized array
+            //EFFECT: changes element at current position in downsized array to be the corresponding
+            //        element in the original img.pixelArray
+            for (int c = 0; c < sqrt(downSizedArray.length); c++) {
+                int currPosInDSA = (r * numElemInSubSection) + c;
+                int corrPosInPixArray = (int) ((c * subSectionWidth) + (r * pow(numElemInSubSection, 2)));
+                downSizedArray[currPosInDSA] = img.pixelArray[corrPosInPixArray];
+            }
         }
+
+        //CREATES UPSIZED ARRAY THE SAME SIZE AS ORIGINAL img.pixelArray
+        //iterate as many times as there are rows in the upsized array
+        for (int r = 0; r < img.height; r++) {
+            //iterate as many times as there are columns in the downsized array
+            for (int c = 0; c < img.width; c++) {
+
+            }
+        }
+
     }
 
     //TODO: test this method
@@ -60,7 +77,7 @@ public class Filter {
     //         degree of pixelation more intuitive as degree 0 would intuitively correspond to the lowest amount
     //         of pixelation but this is the reverse in the algorithm, so I chose to invert them
     public static int createApparentDegPix(Image img, int degInt) {
-        int apparentDegPix = (int) ((log(min(img.width, img.height)) - log(2)) - degInt);
+        int apparentDegPix = (int) ((log(min(img.width, img.height)) / log(2)) - degInt);
         return apparentDegPix;
     }
 
@@ -86,16 +103,6 @@ public class Filter {
             subSectionHeight = (int) (img.height / pow(2, apparentDegPix));
         }
         return subSectionHeight;
-    }
-
-    //EFFECTS: returns the 'theoretical column' of a downsized array given a current position and the array
-    public static int getCol(int[][] array, int currPos) {
-        return 0; //stub
-    }
-
-    //EFFECTS: returns the 'theoretical row' of a downsized array given a current position and the array
-    public static int getRow(int[][] array, int currPos) {
-        return 0; //stub
     }
 
     public String getFilterName() {
