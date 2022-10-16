@@ -40,13 +40,44 @@ public class Filter {
     //MODIFIES: this
     //EFFECTS: creates pixelated version of image according to user's specifications
     public void pixelate(Image img, int degPix) {
-        int minDim = min(img.width, img.height);
-        int actualDegPix = round(log();
+        int apparentDegPix = createApparentDegPix(img, degPix);
+        int subSectionWidth = createSubSectionWidth(img, apparentDegPix);
+        int subSectionHeight = createSubsectionHeight(img, apparentDegPix);
+        int[][] downSizedArray = new int[(int) pow(4, apparentDegPix)][3];
         int[][] upsizedPixelatedArray = new int[img.width * img.height][3];
-        int[][] downSizedArray;
-        if (degPix == 0) {
-            downSizedArray = new int[][3];
+    }
+
+    //TODO: test this method
+    //EFFECTS: returns the apparent degree of pixelation relative to users input - makes user choices for
+    //         degree of pixelation more intuitive as degree 0 would intuitively correspond to the lowest amount
+    //         of pixelation but this is the reverse in the algorithm, so I chose to invert them
+    public static int createApparentDegPix(Image img, int degInt) {
+        int apparentDegPix = (int) ((log(min(img.width, img.height)) - log(2)) - degInt);
+        return apparentDegPix;
+    }
+
+    //TODO: test this method
+    //EFFECTS: returns grid subsection width based on apparent degree of pixelation
+    public static int createSubSectionWidth(Image img, int apparentDegPix) {
+        int subSectionWidth;
+        if (apparentDegPix == 0) {
+            subSectionWidth = img.width;
+        } else {
+            subSectionWidth = (int) (img.width / pow(2, apparentDegPix));
         }
+        return subSectionWidth;
+    }
+
+    //TODO: test this method
+    //EFFECTS: returns grid subsection height based on apparent degree of pixelation
+    public static int createSubsectionHeight(Image img, int apparentDegPix) {
+        int subSectionHeight;
+        if (apparentDegPix == 0) {
+            subSectionHeight = img.height;
+        } else {
+            subSectionHeight = (int) (img.height / pow(2, apparentDegPix));
+        }
+        return subSectionHeight;
     }
 
     public String getFilterName() {
