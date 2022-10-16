@@ -46,15 +46,16 @@ public class Filter {
         int subSectionHeight = createSubsectionHeight(img, apparentDegPix);
         int numElemInSubSection = subSectionWidth * subSectionHeight;
         int[][] downSizedArray = new int[(int) pow(4, apparentDegPix)][3];
+        int dimOfDSA = (int) sqrt(downSizedArray.length);
         int[][] upsizedPixelatedArray = new int[img.width * img.height][3];
 
         //CREATES DOWNSIZED ARRAY
         //iterate as many times as there are rows in the downsized array
-        for (int r = 0; r < sqrt(downSizedArray.length); r++) {
+        for (int r = 0; r < dimOfDSA; r++) {
             //iterate as many times as there are columns in the downsized array
             //EFFECT: changes element at current position in downsized array to be the corresponding
             //        element in the original img.pixelArray
-            for (int c = 0; c < sqrt(downSizedArray.length); c++) {
+            for (int c = 0; c < dimOfDSA; c++) {
                 int currPosInDSA = (r * numElemInSubSection) + c;
                 int corrPosInPixArray = (int) ((c * subSectionWidth) + (r * pow(numElemInSubSection, 2)));
                 downSizedArray[currPosInDSA] = img.pixelArray[corrPosInPixArray];
@@ -62,14 +63,21 @@ public class Filter {
         }
 
         //CREATES UPSIZED ARRAY THE SAME SIZE AS ORIGINAL img.pixelArray
-        //iterate as many times as there are rows in the upsized array
-        for (int r = 0; r < img.height; r++) {
-            //iterate as many times as there are columns in the downsized array
-            for (int c = 0; c < img.width; c++) {
+        //itereate as manu times as there are items in the downsized array
+        for (int e = 0; e < downSizedArray.length; e++) {
+            //iterate as many times as there are rows in each subspace
+            for (int r = 0; r < subSectionHeight; r++) {
+                //iterate as many times as there are columns in each subspace
+                for (int c = 0; c < subSectionWidth; c++) {
+                    int[] currElemInDSA = downSizedArray[e];
 
+                    //TODO: how to incorporate (e) into currPosUSA?
+
+                    int currPosInUSA = ((r * numElemInSubSection) + c);
+                    upsizedPixelatedArray[currPosInUSA] = downSizedArray[e];
+                }
             }
         }
-
     }
 
     //TODO: test this method
