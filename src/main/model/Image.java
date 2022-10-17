@@ -121,10 +121,11 @@ public class Image {
                 filter.negative(this);
             } else if (filter.getFilterName().equals("mirror")) {
                 filter.mirror(this);
+            } else {
+//                filter.pixelate(this, );
             }
         }
     }
-
 
     //REQUIRES: processImage() has been called on image instance and method is initialized with 0
     //MODIFIES: this

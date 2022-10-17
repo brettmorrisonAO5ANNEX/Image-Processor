@@ -3,23 +3,24 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import static model.Filter.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class FilterTest {
     private Filter pixelate = new Filter("pixelate");
     private Filter mirror = new Filter("mirror");
     private Filter negative = new Filter("negative");
     private Image imgTestOneElement;
+    private Image imgTestEightElement;
     private Image imgTestNineElement;
+    private Image imgTestSixteenElement;
 
     @BeforeEach
     public void setup() {
         imgTestOneElement = new Image(1, 1);
+        imgTestEightElement = new Image(2, 4);
         imgTestNineElement = new Image(3,3);
+        imgTestSixteenElement = new Image(4, 4);
     }
 
     @Test
@@ -92,54 +93,53 @@ class FilterTest {
         assertEquals(3, i4.pixelArray[3][0]);
     }
 
-    //TODO: add tests for pixelate (2x4), (4x4) with differnt d's
     @Test
     public void testPixelateFourByTwoDZero() {
-        //test 4x2 (rowxcol) arrray with each sub array having elements corresponding to its index + 1
-        Image twoByFour = new Image(2, 4);
-        for (int r = 0; r < twoByFour.pixelArray.length; r++) {
-            for (int c = 0; c < twoByFour.pixelArray[0].length; c++) {
-                twoByFour.pixelArray[r][c] = r + 1;
+        //test 4x2 (rowxcol) array with each sub array having elements corresponding to its index + 1
+        Image fourByTwo = new Image(2, 4);
+        for (int r = 0; r < fourByTwo.pixelArray.length; r++) {
+            for (int c = 0; c < fourByTwo.pixelArray[0].length; c++) {
+                fourByTwo.pixelArray[r][c] = r + 1;
             }
         }
-        twoByFour.addFilter(pixelate);
-        pixelate.pixelate(twoByFour, 0);
-        assertEquals(1, twoByFour.pixelArray[0][0]);
-        assertEquals(1, twoByFour.pixelArray[1][0]);
-        assertEquals(1, twoByFour.pixelArray[2][0]);
-        assertEquals(1, twoByFour.pixelArray[3][0]);
-        assertEquals(1, twoByFour.pixelArray[4][0]);
-        assertEquals(1, twoByFour.pixelArray[5][0]);
-        assertEquals(1, twoByFour.pixelArray[6][0]);
-        assertEquals(1, twoByFour.pixelArray[7][0]);
+        fourByTwo.addFilter(pixelate);
+        pixelate.pixelate(fourByTwo, 0);
+        assertEquals(1, fourByTwo.pixelArray[0][0]);
+        assertEquals(2, fourByTwo.pixelArray[1][0]);
+        assertEquals(1, fourByTwo.pixelArray[2][0]);
+        assertEquals(2, fourByTwo.pixelArray[3][0]);
+        assertEquals(5, fourByTwo.pixelArray[4][0]);
+        assertEquals(6, fourByTwo.pixelArray[5][0]);
+        assertEquals(5, fourByTwo.pixelArray[6][0]);
+        assertEquals(6, fourByTwo.pixelArray[7][0]);
 
     }
 
     @Test
     public void testPixelateFourByTwoDOne() {
         //test 4x2 (rowxcol) arrray with each sub array having elements corresponding to its index + 1
-        Image twoByFour = new Image(2, 4);
-        for (int r = 0; r < twoByFour.pixelArray.length; r++) {
-            for (int c = 0; c < twoByFour.pixelArray[0].length; c++) {
-                twoByFour.pixelArray[r][c] = r + 1;
+        Image fourByTwo = new Image(2, 4);
+        for (int r = 0; r < fourByTwo.pixelArray.length; r++) {
+            for (int c = 0; c < fourByTwo.pixelArray[0].length; c++) {
+                fourByTwo.pixelArray[r][c] = r + 1;
             }
         }
-        twoByFour.addFilter(pixelate);
-        pixelate.pixelate(twoByFour, 1);
-        assertEquals(1, twoByFour.pixelArray[0][0]);
-        assertEquals(2, twoByFour.pixelArray[1][0]);
-        assertEquals(1, twoByFour.pixelArray[2][0]);
-        assertEquals(2, twoByFour.pixelArray[3][0]);
-        assertEquals(5, twoByFour.pixelArray[4][0]);
-        assertEquals(6, twoByFour.pixelArray[5][0]);
-        assertEquals(5, twoByFour.pixelArray[6][0]);
-        assertEquals(6, twoByFour.pixelArray[7][0]);
+        fourByTwo.addFilter(pixelate);
+        pixelate.pixelate(fourByTwo, 1);
+        assertEquals(1, fourByTwo.pixelArray[0][0]);
+        assertEquals(1, fourByTwo.pixelArray[1][0]);
+        assertEquals(1, fourByTwo.pixelArray[2][0]);
+        assertEquals(1, fourByTwo.pixelArray[3][0]);
+        assertEquals(1, fourByTwo.pixelArray[4][0]);
+        assertEquals(1, fourByTwo.pixelArray[5][0]);
+        assertEquals(1, fourByTwo.pixelArray[6][0]);
+        assertEquals(1, fourByTwo.pixelArray[7][0]);
 
     }
 
     @Test
     public void testPixelateFourByFourDZero() {
-        //test 4x4 (rowxcol) arraywith each sub array having elements corresponding to its index + 1
+        //test 4x4 (rowxcol) array with each sub array having elements corresponding to its index + 1
         Image fourByFour = new Image(4, 4);
         for (int r = 0; r < fourByFour.pixelArray.length; r++) {
             for (int c = 0; c < fourByFour.pixelArray[0].length; c++) {
@@ -149,21 +149,21 @@ class FilterTest {
         fourByFour.addFilter(pixelate);
         pixelate.pixelate(fourByFour, 0);
         assertEquals(1, fourByFour.pixelArray[0][0]);
-        assertEquals(1, fourByFour.pixelArray[1][0]);
-        assertEquals(1, fourByFour.pixelArray[2][0]);
-        assertEquals(1, fourByFour.pixelArray[3][0]);
-        assertEquals(1, fourByFour.pixelArray[4][0]);
-        assertEquals(1, fourByFour.pixelArray[5][0]);
-        assertEquals(1, fourByFour.pixelArray[6][0]);
-        assertEquals(1, fourByFour.pixelArray[7][0]);
-        assertEquals(1, fourByFour.pixelArray[8][0]);
-        assertEquals(1, fourByFour.pixelArray[9][0]);
-        assertEquals(1, fourByFour.pixelArray[10][0]);
-        assertEquals(1, fourByFour.pixelArray[11][0]);
-        assertEquals(1, fourByFour.pixelArray[12][0]);
-        assertEquals(1, fourByFour.pixelArray[13][0]);
-        assertEquals(1, fourByFour.pixelArray[14][0]);
-        assertEquals(1, fourByFour.pixelArray[15][0]);
+        assertEquals(2, fourByFour.pixelArray[1][0]);
+        assertEquals(3, fourByFour.pixelArray[2][0]);
+        assertEquals(4, fourByFour.pixelArray[3][0]);
+        assertEquals(5, fourByFour.pixelArray[4][0]);
+        assertEquals(6, fourByFour.pixelArray[5][0]);
+        assertEquals(7, fourByFour.pixelArray[6][0]);
+        assertEquals(8, fourByFour.pixelArray[7][0]);
+        assertEquals(9, fourByFour.pixelArray[8][0]);
+        assertEquals(10, fourByFour.pixelArray[9][0]);
+        assertEquals(11, fourByFour.pixelArray[10][0]);
+        assertEquals(12, fourByFour.pixelArray[11][0]);
+        assertEquals(13, fourByFour.pixelArray[12][0]);
+        assertEquals(14, fourByFour.pixelArray[13][0]);
+        assertEquals(15, fourByFour.pixelArray[14][0]);
+        assertEquals(16, fourByFour.pixelArray[15][0]);
     }
 
     @Test
@@ -193,5 +193,59 @@ class FilterTest {
         assertEquals(9, fourByFour.pixelArray[13][0]);
         assertEquals(11, fourByFour.pixelArray[14][0]);
         assertEquals(11, fourByFour.pixelArray[15][0]);
+    }
+
+    @Test
+    public void testCreateApparentDegPixZeroFourByFour() {
+        int appDegPixTest = createApparentDegPix(imgTestSixteenElement, 0);
+        assertEquals(2, appDegPixTest);
+    }
+
+    @Test
+    public void testCreateApparentDegPixOneFourByFour()  {
+        int appDegPixTest = createApparentDegPix(imgTestSixteenElement, 1);
+        assertEquals(1, appDegPixTest);
+    }
+
+    @Test
+    public void testCreateApparentDegPixTwoFourByFour()  {
+        int appDegPixTest = createApparentDegPix(imgTestSixteenElement, 2);
+        assertEquals(0, appDegPixTest);
+    }
+
+    @Test
+    public void testCreateApparentDegPixZeroFourByTwo() {
+        int appDegPixTest = createApparentDegPix(imgTestEightElement, 0);
+        assertEquals(1, appDegPixTest);
+    }
+
+    @Test
+    public void testCreateApparentDegPixOneFourByTwo() {
+        int appDegPixTest = createApparentDegPix(imgTestEightElement, 1);
+        assertEquals(0, appDegPixTest);
+    }
+
+    @Test
+    public void testCreateSubsectionHeightTwoFourByFour() {
+        int testSubSecHeight = createSubsectionHeight(imgTestSixteenElement, 2);
+        assertEquals(1, testSubSecHeight);
+    }
+
+    @Test
+    public void testCreateSubsectionHeightOneFourByTwo() {
+        int testSubSecHeight = createSubsectionHeight(imgTestEightElement, 1);
+        assertEquals(2, testSubSecHeight);
+    }
+
+    @Test
+    public void testCreateSubsectionWidthZeroFourByFour() {
+        int testSubSecWidth = createSubsectionWidth(imgTestSixteenElement, 0);
+        assertEquals(4, testSubSecWidth);
+    }
+
+    @Test
+    public void testCreateSubsectionWidthOneFourByFour() {
+        int testSubSecWidth = createSubsectionWidth(imgTestSixteenElement, 1);
+        assertEquals(2, testSubSecWidth);
     }
 }
