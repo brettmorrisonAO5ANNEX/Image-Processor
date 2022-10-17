@@ -6,8 +6,7 @@ import model.Image;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import static java.lang.Math.log;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 
 //TODO: check over method documentation to make sure it makes sense
 
@@ -62,7 +61,10 @@ public class ImageApp {
     //MODIFIES: this
     //EFFECTS: displays app logo
     public String displayLogo() {
-        return "hello";
+        return "\n"
+               + "▀█▀ ░█▀▄▀█ ─█▀▀█ ░█▀▀█ ░█▀▀▀ ─ ▄▀ ▀█▀ ░█▄─░█ ▀▄ \n"
+               + "░█─ ░█░█░█ ░█▄▄█ ░█─▄▄ ░█▀▀▀ ▄ █─ ░█─ ░█░█░█ ─█ \n"
+               + "▄█▄ ░█──░█ ░█─░█ ░█▄▄█ ░█▄▄▄ █ ▀▄ ▄█▄ ░█──▀█ ▄▀";
     }
 
     //MODIFIES: this
@@ -199,12 +201,11 @@ public class ImageApp {
         int maxDegPix = (int) (log(minDim) / log(2));
         int[] degOptions = new int[maxDegPix + 1];
         System.out.println("\n choose one of the following numbers as your degree of pixelation:");
+        System.out.println("\t NOTE: 0 cause the lowest amount of pixelation");
         for (int o = 0; o < maxDegPix + 1; o++) {
             degOptions[o] = o;
         }
         System.out.println(Arrays.toString(degOptions));
-        System.out.println("\n note: 0 will return the least pixelated");
-        System.out.println("\n       the amount of pixelation increases relative to your choice!");
         myImage.degreeOfPixelation = input.nextInt();
     }
 
@@ -213,7 +214,32 @@ public class ImageApp {
         System.out.println("\n choose a filter to apply: ");
         System.out.println("\t nv -> negative");
         System.out.println("\t mr -> mirror");
-        System.out.println("\t px -> pixelate");
+        if (bothEven()) {
+            System.out.println("\t px -> pixelate");
+        } else {
+            System.out.println("\n NOTE: pixelate filter not available because your chosen "
+                    + whichOdd() + " odd...");
+        }
+    }
+
+    //EFFECTS: returns true if both myImage width and height are even
+    public boolean bothEven() {
+        boolean widthIsEven = (myImage.getImageWidth() % 2 == 0);
+        boolean heightIsEven = (myImage.getImageHeight() % 2 == 0);
+        return widthIsEven && heightIsEven;
+    }
+
+    //EFFECTS: returns true if either myImage width or height are odd
+    public String whichOdd() {
+        boolean widthIsEven = (myImage.getImageWidth() % 2 == 0);
+        boolean heightIsEven = (myImage.getImageHeight() % 2 == 0);
+        if (widthIsEven && !heightIsEven) {
+            return "(height) is";
+        } else if (!widthIsEven && heightIsEven) {
+            return "(width) is";
+        } else {
+            return "(width and height) are";
+        }
     }
 
     //MODIFIES: this
