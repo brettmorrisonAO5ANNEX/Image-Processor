@@ -205,7 +205,7 @@ public class ImageApp {
             degOptions[o] = o;
         }
         System.out.println(Arrays.toString(degOptions));
-        myImage.degreeOfPixelation = input.nextInt();
+        myImage.setDegreeOfPixelation(input.nextInt());
     }
 
     //EFFECTS: displays available filters

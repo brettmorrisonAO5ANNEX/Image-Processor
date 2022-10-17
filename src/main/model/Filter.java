@@ -6,7 +6,7 @@ import static java.lang.Math.*;
 
 //represents a filter with name filterName that can be applied to an image
 public class Filter {
-    String filterName;
+    private String filterName;
 
     //REQUIRES: filterType can only be one of: "negative", "mirror", "pixelate"
     //EFFECTS: instantiates a filter object
@@ -17,9 +17,9 @@ public class Filter {
     //MODIFIES: img
     //EFFECTS: negates each pixel's RGB values in img
     public void negative(Image img) {
-        for (int r = 0; r < img.pixelArray.length; r++) {
-            for (int c = 0; c < img.pixelArray[0].length; c++) {
-                img.pixelArray[r][c] = 255 - img.pixelArray[r][c];
+        for (int r = 0; r < img.getPixelArray().length; r++) {
+            for (int c = 0; c < img.getPixelArray()[0].length; c++) {
+                img.getPixelArray()[r][c] = 255 - img.getPixelArray()[r][c];
             }
         }
     }
@@ -28,12 +28,12 @@ public class Filter {
     //MODIFIES: this
     //EFFECTS: creates mirror of image
     public void mirror(Image img) {
-        int[][] mirroredArray = new int[img.width * img.height][3];
-        for (int r = 0; r < img.height; r++) {
-            int rowStart = r * img.width;
-            int rowEnd = img.width * (r + 1) - 1;
-            for (int i = 0; i < img.width; i++) {
-                mirroredArray[i + rowStart] = img.pixelArray[rowEnd - i];
+        int[][] mirroredArray = new int[img.getImageWidth() * img.getImageHeight()][3];
+        for (int r = 0; r < img.getImageHeight(); r++) {
+            int rowStart = r * img.getImageWidth();
+            int rowEnd = img.getImageWidth() * (r + 1) - 1;
+            for (int i = 0; i < img.getImageWidth(); i++) {
+                mirroredArray[i + rowStart] = img.getPixelArray()[rowEnd - i];
             }
         }
         img.pixelArray = mirroredArray;
@@ -45,21 +45,21 @@ public class Filter {
     //EFFECTS: creates pixelated version of image according to user's specifications
     @SuppressWarnings("methodlength")
     public void pixelate(Image img) {
-        int degPix = img.degreeOfPixelation;
+        int degPix = img.getDegreeOfPixelation();
         int apparentDegPix = createApparentDegPix(img, degPix);
         int subSectionWidth = createSubsectionWidth(img, apparentDegPix);
         int subSectionHeight = createSubsectionHeight(img, apparentDegPix);
         int numElemInSubSection = subSectionWidth * subSectionHeight;
         int[][] downSizedArray = new int[(int) pow(4, apparentDegPix)][3];
         int dimOfDSA = (int) sqrt(downSizedArray.length);
-        int[][] upsizedPixelatedArray = new int[img.width * img.height][3];
+        int[][] upsizedPixelatedArray = new int[img.getImageWidth() * img.getImageHeight()][3];
         // int[] containing all start positions for creation of the upsized array
         int[] corrStartInUSA = new int[downSizedArray.length];
 
         if (apparentDegPix == 0) {
             int[] firstElemInPixArray = img.pixelArray[0];
             Arrays.fill(upsizedPixelatedArray, firstElemInPixArray);
-        } else if (img.width == img.height && degPix == 0) {
+        } else if (img.getImageWidth() == img.getImageHeight() && degPix == 0) {
             upsizedPixelatedArray = img.pixelArray;
         } else {
             //CREATES DOWNSIZED ARRAY
@@ -96,16 +96,16 @@ public class Filter {
     //         degree of pixelation more intuitive as degree 0 would intuitively correspond to the lowest amount
     //         of pixelation but this is the reverse in the algorithm, so I chose to invert them
     public static int createApparentDegPix(Image img, int degPix) {
-        return (int) ((log(min(img.width, img.height)) / log(2)) - degPix);
+        return (int) ((log(min(img.getImageWidth(), img.getImageHeight())) / log(2)) - degPix);
     }
 
     //EFFECTS: returns grid subsection width based on apparent degree of pixelation
     public static int createSubsectionWidth(Image img, int apparentDegPix) {
         int subSectionWidth;
         if (apparentDegPix == 0) {
-            subSectionWidth = img.width;
+            subSectionWidth = img.getImageWidth();
         } else {
-            subSectionWidth = (int) (img.width / pow(2, apparentDegPix));
+            subSectionWidth = (int) (img.getImageWidth() / pow(2, apparentDegPix));
         }
         return subSectionWidth;
     }
@@ -114,9 +114,9 @@ public class Filter {
     public static int createSubsectionHeight(Image img, int apparentDegPix) {
         int subSectionHeight;
         if (apparentDegPix == 0) {
-            subSectionHeight = img.height;
+            subSectionHeight = img.getImageHeight();
         } else {
-            subSectionHeight = (int) (img.height / pow(2, apparentDegPix));
+            subSectionHeight = (int) (img.getImageHeight() / pow(2, apparentDegPix));
         }
         return subSectionHeight;
     }

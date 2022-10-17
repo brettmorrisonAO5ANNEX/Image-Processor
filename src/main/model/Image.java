@@ -6,13 +6,13 @@ import java.util.List;
 
 // represents an instance of an image with a list of applied filters
 public class Image {
-    List<Filter> listOfFilter;
-    List<String> uniqueFiltersUsed;
+    private List<Filter> listOfFilter;
+    private List<String> uniqueFiltersUsed;
     int[][] pixelArray;
-    int height;
-    int width;
-    public int degreeOfPixelation;
-    String imageResult;
+    private int height;
+    private int width;
+    private int degreeOfPixelation;
+    private String imageResult;
 
     //TODO: update effects clauses to include info about what outputs are produced and how any input values are
     //      changed
@@ -153,6 +153,12 @@ public class Image {
         return row;
     }
 
+    //MODIFIES: this
+    //EFFECTS: sets this.degreeOfPixelation to the given value (d)
+    public void setDegreeOfPixelation(int d) {
+        this.degreeOfPixelation = d;
+    }
+
     public List<Filter> getListOfFilter() {
         return this.listOfFilter;
     }
@@ -175,6 +181,10 @@ public class Image {
 
     public int getDegreeOfPixelation() {
         return this.degreeOfPixelation;
+    }
+
+    public String getImageResult() {
+        return this.imageResult;
     }
 }
 
