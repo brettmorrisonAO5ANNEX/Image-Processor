@@ -233,6 +233,17 @@ public class ImageTest {
     }
 
     @Test
+    public void testProcessImageOneInListOfFilterPixelate() {
+        i.degreeOfPixelation = 0;
+        i.addFilter(pixelate);
+        assertEquals(255, i.getPixelArray()[0][0]);
+        assertEquals(255, i.getPixelArray()[0][2]);
+        i.processImage();
+        assertEquals(255, i.getPixelArray()[0][0]);
+        assertEquals(255, i.getPixelArray()[0][2]);
+    }
+
+    @Test
     public void testProcessImageOneInListOfFilter() {
         i.addFilter(negative);
         assertEquals(255, i.getPixelArray()[0][0]);
@@ -281,5 +292,18 @@ public class ImageTest {
         String row = "[255, 255, 255] [255, 255, 255] [255, 255, 255] [255, 255, 255]";
         Image i16 = new Image(4,4);
         String createdRow = i16.createRow(0, i.width);
+    }
+
+    // tested because they were not used in other tests
+    @Test
+    public void testGetDegreeOfPixelationOne() {
+        i.degreeOfPixelation = 1;
+        assertEquals(1, i.getDegreeOfPixelation());
+    }
+
+    @Test
+    public void testGetDegreeOfPixelationTwo() {
+        i.degreeOfPixelation = 2;
+        assertEquals(2, i.getDegreeOfPixelation());
     }
 }
