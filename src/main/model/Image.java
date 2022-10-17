@@ -11,6 +11,7 @@ public class Image {
     int[][] pixelArray;
     int height;
     int width;
+    public int degreeOfPixelation;
     String imageResult;
 
     //TODO: update effects clauses to include info about what outputs are produced and how any input values are
@@ -122,7 +123,7 @@ public class Image {
             } else if (filter.getFilterName().equals("mirror")) {
                 filter.mirror(this);
             } else {
-//                filter.pixelate(this, );
+                filter.pixelate(this);
             }
         }
     }
@@ -170,6 +171,10 @@ public class Image {
 
     public int getImageWidth() {
         return this.width;
+    }
+
+    public int getDegreeOfPixelation() {
+        return this.degreeOfPixelation;
     }
 }
 

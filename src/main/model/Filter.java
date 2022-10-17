@@ -42,7 +42,8 @@ public class Filter {
     //REQUIRES: image width and height must both be even
     //MODIFIES: this
     //EFFECTS: creates pixelated version of image according to user's specifications
-    public void pixelate(Image img, int degPix) {
+    public void pixelate(Image img) {
+        int degPix = img.degreeOfPixelation;
         int apparentDegPix = createApparentDegPix(img, degPix);
         int subSectionWidth = createSubsectionWidth(img, apparentDegPix);
         int subSectionHeight = createSubsectionHeight(img, apparentDegPix);

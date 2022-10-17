@@ -3,7 +3,11 @@ package ui;
 import model.Filter;
 import model.Image;
 
+import java.util.Arrays;
 import java.util.Scanner;
+
+import static java.lang.Math.log;
+import static java.lang.Math.min;
 
 //TODO: check over method documentation to make sure it makes sense
 
@@ -11,6 +15,7 @@ public class ImageApp {
     private Image myImage;
     private Filter negative;
     private Filter mirror;
+    private Filter pixelate;
     private Scanner input;
     private boolean editing;
     private int width;
@@ -25,7 +30,7 @@ public class ImageApp {
     //MODIFIES: this
     //EFFECTS: accepts user input and processes it accordingly
     public void runImageApp() {
-        String command = null;
+        String command;
 
         init();
 
@@ -48,22 +53,23 @@ public class ImageApp {
     public void init() {
         negative = new Filter("negative");
         mirror = new Filter("mirror");
+        pixelate = new Filter("pixelate");
         input = new Scanner(System.in);
         input.useDelimiter("\n");
-        displayLogo();
+        System.out.println(displayLogo());
     }
 
     //MODIFIES: this
     //EFFECTS: displays app logo
     public String displayLogo() {
-        return "";
+        return "hello";
     }
 
     //MODIFIES: this
     //EFFECTS: allows program to continue if user chooses to edit new image, exits otherwise
     public void createOrLeave() {
         boolean deciding = true;
-        String decisionCommand = null;
+        String decisionCommand;
 
         while (deciding) {
             displayOpeningMenu();
@@ -177,10 +183,29 @@ public class ImageApp {
             myImage.addFilter(negative);
         } else if (filterChoice.equals("mr")) {
             myImage.addFilter(mirror);
+        } else if (filterChoice.equals("px")) {
+            doDisplayPixOptions();
+            myImage.addFilter(pixelate);
         } else {
             System.out.println("\n invalid filter chosen");
             doAddFilter();
         }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: returns user options for which degree of pixelation they'd like
+    public void doDisplayPixOptions() {
+        int minDim = min(myImage.getImageWidth(), myImage.getImageHeight());
+        int maxDegPix = (int) (log(minDim) / log(2));
+        int[] degOptions = new int[maxDegPix + 1];
+        System.out.println("\n choose one of the following numbers as your degree of pixelation:");
+        for (int o = 0; o < maxDegPix + 1; o++) {
+            degOptions[o] = o;
+        }
+        System.out.println(Arrays.toString(degOptions));
+        System.out.println("\n note: 0 will return the least pixelated");
+        System.out.println("\n       the amount of pixelation increases relative to your choice!");
+        myImage.degreeOfPixelation = input.nextInt();
     }
 
     //EFFECTS: displays available filters
@@ -188,6 +213,7 @@ public class ImageApp {
         System.out.println("\n choose a filter to apply: ");
         System.out.println("\t nv -> negative");
         System.out.println("\t mr -> mirror");
+        System.out.println("\t px -> pixelate");
     }
 
     //MODIFIES: this

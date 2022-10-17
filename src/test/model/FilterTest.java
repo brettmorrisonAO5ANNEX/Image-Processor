@@ -97,13 +97,14 @@ class FilterTest {
     public void testPixelateFourByTwoDZero() {
         //test 4x2 (rowxcol) array with each sub array having elements corresponding to its index + 1
         Image fourByTwo = new Image(2, 4);
+        fourByTwo.degreeOfPixelation = 0;
         for (int r = 0; r < fourByTwo.pixelArray.length; r++) {
             for (int c = 0; c < fourByTwo.pixelArray[0].length; c++) {
                 fourByTwo.pixelArray[r][c] = r + 1;
             }
         }
         fourByTwo.addFilter(pixelate);
-        pixelate.pixelate(fourByTwo, 0);
+        pixelate.pixelate(fourByTwo);
         assertEquals(1, fourByTwo.pixelArray[0][0]);
         assertEquals(2, fourByTwo.pixelArray[1][0]);
         assertEquals(1, fourByTwo.pixelArray[2][0]);
@@ -119,13 +120,14 @@ class FilterTest {
     public void testPixelateFourByTwoDOne() {
         //test 4x2 (rowxcol) arrray with each sub array having elements corresponding to its index + 1
         Image fourByTwo = new Image(2, 4);
+        fourByTwo.degreeOfPixelation = 1;
         for (int r = 0; r < fourByTwo.pixelArray.length; r++) {
             for (int c = 0; c < fourByTwo.pixelArray[0].length; c++) {
                 fourByTwo.pixelArray[r][c] = r + 1;
             }
         }
         fourByTwo.addFilter(pixelate);
-        pixelate.pixelate(fourByTwo, 1);
+        pixelate.pixelate(fourByTwo);
         assertEquals(1, fourByTwo.pixelArray[0][0]);
         assertEquals(1, fourByTwo.pixelArray[1][0]);
         assertEquals(1, fourByTwo.pixelArray[2][0]);
@@ -141,13 +143,14 @@ class FilterTest {
     public void testPixelateFourByFourDZero() {
         //test 4x4 (rowxcol) array with each sub array having elements corresponding to its index + 1
         Image fourByFour = new Image(4, 4);
+        fourByFour.degreeOfPixelation = 0;
         for (int r = 0; r < fourByFour.pixelArray.length; r++) {
             for (int c = 0; c < fourByFour.pixelArray[0].length; c++) {
                 fourByFour.pixelArray[r][c] = r + 1;
             }
         }
         fourByFour.addFilter(pixelate);
-        pixelate.pixelate(fourByFour, 0);
+        pixelate.pixelate(fourByFour);
         assertEquals(1, fourByFour.pixelArray[0][0]);
         assertEquals(2, fourByFour.pixelArray[1][0]);
         assertEquals(3, fourByFour.pixelArray[2][0]);
@@ -170,13 +173,14 @@ class FilterTest {
     public void testPixelateFourByFourDOne() {
         //test 4x4 (rowxcol) arraywith each sub array having elements corresponding to its index + 1
         Image fourByFour = new Image(4, 4);
+        fourByFour.degreeOfPixelation = 1;
         for (int r = 0; r < fourByFour.pixelArray.length; r++) {
             for (int c = 0; c < fourByFour.pixelArray[0].length; c++) {
                 fourByFour.pixelArray[r][c] = r + 1;
             }
         }
         fourByFour.addFilter(pixelate);
-        pixelate.pixelate(fourByFour, 1);
+        pixelate.pixelate(fourByFour);
         assertEquals(1, fourByFour.pixelArray[0][0]);
         assertEquals(1, fourByFour.pixelArray[1][0]);
         assertEquals(3, fourByFour.pixelArray[2][0]);
