@@ -8,8 +8,7 @@ import java.util.Scanner;
 
 import static java.lang.Math.*;
 
-//TODO: check over method documentation to make sure it makes sense
-
+//represents image editing app that is interactive
 public class ImageApp {
     private Image myImage;
     private Filter negative;

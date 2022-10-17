@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import static java.lang.Math.*;
 
+//represents a filter with name filterName that can be applied to an image
 public class Filter {
     String filterName;
 

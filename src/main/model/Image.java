@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-// represents an instance of the locally stored image with a list of applied filters
+// represents an instance of an image with a list of applied filters
 public class Image {
     List<Filter> listOfFilter;
     List<String> uniqueFiltersUsed;

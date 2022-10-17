@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static model.Filter.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+//represents test cases for Filter class methods
 class FilterTest {
     private Filter pixelate = new Filter("pixelate");
     private Filter mirror = new Filter("mirror");

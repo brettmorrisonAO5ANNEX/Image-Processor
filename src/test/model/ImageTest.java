@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//represents test cases for Image class methods
 public class ImageTest {
     private Image i;
     private Filter negative = new Filter("negative");
