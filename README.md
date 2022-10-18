@@ -1,10 +1,10 @@
-# Imag.in(e): A Basic Image Processing Application
+# Image.(in): A Basic Image Processing Application
 
-## *What Does Imag.in(e) Do?*
+## *What Does Image.(in) Do?*
 
 Taking pictures is cool, but sometimes reality 
 just isn't as interesting as one would have hoped... 
-that's where Imag.in(e) comes in! Imag.in(e) is intended to 
+that's where Image.(in) comes in! Image.(in) is intended to 
 be a basic image processing application that allows 
 users manipulate a locally stored image by adding different
 color filters/editors.  
@@ -19,7 +19,7 @@ image manipulation
 - **photo/video editors** looking to intrigue their 
 clients with new visual art styles
 
-## *Why Imag.in(e) Interests Me:*
+## *Why Image.(in) Interests Me:*
 From self-driving cars to mobile applications,
 computer software has many uses. However,
 its artistic applications can easily go less appreciated. 
@@ -28,7 +28,7 @@ and, in the process, have discovered wonderful applications
 such as Apple's Final Cut Pro, which combine software with
 human creativity to manipulate videos and images 
 in exciting ways! Exploring a basic image processing 
-application will allow me to gain a better understaning of 
+application will allow me to gain a better understanding of 
 software development in the context of an industry that I have
 a personal interest in! 
 
@@ -38,4 +38,6 @@ a personal interest in!
 - As a user, I want to be able to remove all (undo all) ***filters*** from my ***image***
 - As a user, I want to be able to remove all of one type of ***filter*** from my ***image***
 - As a user, I want to be able to view a history of what ***filters*** have been applied to my ***image***
-- As a user, I want to be able to save my edited ***image*** to an in-app ***gallery***
+- As a user, I want to be able to save my edits current progress to file ***before*** final processing 
+- As a user, I want to be able to ***revert to the last saved version*** of my edit either while still 
+editing or after I've previously closed the application and want to continue working
