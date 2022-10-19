@@ -4,13 +4,14 @@ import model.Filter;
 import model.Image;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+//CODE PARTIALLY MODELED AFTER: JsonSerializationDemo:
+//                              https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
 //represents a reader that reads image from JSON data in file
 public class JsonReader {
     private String source;

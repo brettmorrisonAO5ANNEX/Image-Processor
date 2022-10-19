@@ -2,11 +2,11 @@ package persistence;
 
 import model.Image;
 import org.json.JSONObject;
-
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+//CODE PARTIALLY MODELED AFTER: JsonSerializationDemo:
+//                              https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
 // Represents a writer that writes JSON representation of image to file
 public class JsonWriter {
     private static final int TAB = 4;
