@@ -40,12 +40,11 @@ public class JsonReader {
 
     //EFFECTS: parses image from JSON object and returns it
     private Image parseImage(JSONObject jsonObject) {
-        int width = Integer.parseInt(jsonObject.getString("width"));
-        int height = Integer.parseInt(jsonObject.getString("height"));
+        int width = jsonObject.getInt("width");
+        int height = jsonObject.getInt("height");
         Image img = new Image(width, height);
         addListOfFilter(img, jsonObject);
         addDegreeOfPixelation(img, jsonObject);
-        addImageResult(img, jsonObject);
         return img;
     }
 
@@ -71,7 +70,7 @@ public class JsonReader {
     //MODIFIES: img
     //EFFECTS: parses degreeOfPixelation from JSON object and adds it to image
     private void addDegreeOfPixelation(Image img, JSONObject jsonObject) {
-        int degreeOfPixelation = Integer.parseInt(jsonObject.getString("degreeOfPixelation"));
+        int degreeOfPixelation = jsonObject.getInt("degreeOfPixelation");
         img.setDegreeOfPixelation(degreeOfPixelation);
     }
 

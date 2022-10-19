@@ -38,6 +38,7 @@ public class ImageTest {
 
     @Test
     public void testConstructorBoundary() {
+        assertEquals(0, i.getDegreeOfPixelation());
         assertEquals(1, i.getImageWidth());
         assertEquals(1, i.getImageHeight());
         assertEquals(0, i.getListOfFilter().size());
@@ -51,6 +52,7 @@ public class ImageTest {
     @Test
     public void testsConstructorNotBoundary() {
         Image i2 = new Image(2, 2);
+        assertEquals(0, i2.getDegreeOfPixelation());
         assertEquals(2, i2.getImageWidth());
         assertEquals(2, i2.getImageHeight());
         assertEquals(0, i2.getListOfFilter().size());

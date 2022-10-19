@@ -24,13 +24,15 @@ public class Image implements Writable {
     //TODO: add cancel option to return back to menu
 
     //REQUIRES: width, height > 0
-    //EFFECTS: instantiates Image object with
+    //EFFECTS: instantiates Image object with pixelArrray of length width*height and default values of
+    //         "" for image result and 0 for degreeOfPixelation
     public Image(int width, int height) {
         this.listOfFilter = new ArrayList<>();
         this.uniqueFiltersUsed = new ArrayList<>();
+        this.pixelArray = new int[width * height][3];
         this.width = width;
         this.height = height;
-        this.pixelArray = new int[width * height][3];
+        this.degreeOfPixelation = 0;
         this.imageResult = "";
         for (int r = 0; r < this.pixelArray.length; r++) {
             for (int c = 0; c < this.pixelArray[0].length; c++) {
@@ -43,9 +45,9 @@ public class Image implements Writable {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("listOfFilter", listOfFilterToJson());
-        json.put("width", widthToJson());
-        json.put("height", heightToJson());
-        json.put("degreeOfPixelation", degreeOfPixelationToJson());
+        json.put("width", width);
+        json.put("height", height);
+        json.put("degreeOfPixelation", degreeOfPixelation);
         return json;
     }
 
