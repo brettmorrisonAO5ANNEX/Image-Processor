@@ -13,11 +13,13 @@ public class Image implements Writable {
     private List<Filter> listOfFilter;
     private List<String> uniqueFiltersUsed;
     int[][] pixelArray;
-    private int height;
     private int width;
+    private int height;
     private int degreeOfPixelation;
     private String imageResult;
 
+    //TODO: update save ability to also account for a processed image (if a user wants to reedit a previously
+    //      edited image)
     //TODO: undo/undotype/undoall should only allow a user to input data IF there are filters in listOfFilter
     //TODO: add cancel option to return back to menu
 
@@ -41,10 +43,9 @@ public class Image implements Writable {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("listOfFilter", listOfFilterToJson());
-        json.put("height", height);
-        json.put("width", width);
-        json.put("degreeOfPixelation", degreeOfPixelation);
-        json.put("imageResult", imageResult);
+        json.put("width", widthToJson());
+        json.put("height", heightToJson());
+        json.put("degreeOfPixelation", degreeOfPixelationToJson());
         return json;
     }
 
