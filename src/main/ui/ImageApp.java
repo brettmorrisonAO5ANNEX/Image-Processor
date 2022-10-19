@@ -12,6 +12,8 @@ import java.util.Scanner;
 
 import static java.lang.Math.*;
 
+//CODE PARTIALLY MODELED AFTER: JsonSerializationDemo:
+//                              https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
 //represents image editing app that is interactive
 public class ImageApp {
     private static final String JSON_STORE = "./data/myImage.json";
@@ -28,6 +30,8 @@ public class ImageApp {
     private JsonReader jsonReader;
 
     //TODO: create feature that allows users to choose the "myImage" part of "./data/myImage.json" destination file
+    //TODO: create 'choose from gallery option'
+    //TODO: add feature where user can revert back to previously saved version if they want to (while still editing)
     //EFFECTS: runs ImageApp
     public ImageApp() {
         jsonWriter = new JsonWriter(JSON_STORE);
