@@ -3,13 +3,13 @@ package persistence;
 import model.Filter;
 import model.Image;
 import org.junit.jupiter.api.Test;
-
-import javax.sql.rowset.JdbcRowSet;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+//CODE PARTIALLY MODELED AFTER: JsonSerializationDemo:
+//                              https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
+//represents test class for JsonWriter
 public class JsonWriterTest {
 
     @Test
