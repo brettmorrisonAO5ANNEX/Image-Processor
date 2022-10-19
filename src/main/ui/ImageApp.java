@@ -2,7 +2,11 @@ package ui;
 
 import model.Filter;
 import model.Image;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -10,6 +14,7 @@ import static java.lang.Math.*;
 
 //represents image editing app that is interactive
 public class ImageApp {
+    private static final String JSON_STORE = "./data/myImape.json";
     private Image myImage;
     private Filter negative;
     private Filter mirror;
@@ -19,20 +24,31 @@ public class ImageApp {
     private int width;
     private int height;
     private int editHistory;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
+    //TODO: create feature that allows users to choose the "myImage" part of "./data/myImage.json" destination file
     //EFFECTS: runs ImageApp
     public ImageApp() {
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runImageApp();
     }
 
     //MODIFIES: this
     //EFFECTS: accepts user input and processes it accordingly
-    public void runImageApp() {
-        String command;
-
+    private void runImageApp() {
         init();
-
         createOrLeave();
+        nonRedundantRunApp();
+    }
+
+    //MODIFIES: this
+    //EFFECTS: accepts user input and processes it accordingly - extracts portion of program that does
+    //         not include redundant loading in info so that when user loads previous project they can
+    //         jump straight into working rather than viewing redundant info
+    private void nonRedundantRunApp() {
+        String command;
 
         while (editing) {
             editHistory = myImage.getListOfFilter().size();
@@ -48,7 +64,7 @@ public class ImageApp {
 
     //MODIFIES: this
     //EFFECTS: initializes user input
-    public void init() {
+    private void init() {
         negative = new Filter("negative");
         mirror = new Filter("mirror");
         pixelate = new Filter("pixelate");
@@ -59,16 +75,16 @@ public class ImageApp {
 
     //MODIFIES: this
     //EFFECTS: displays app logo
-    public String displayLogo() {
+    private String displayLogo() {
         return "\n"
-               + "▀█▀ ░█▀▄▀█ ─█▀▀█ ░█▀▀█ ░█▀▀▀ ─ ▄▀ ▀█▀ ░█▄─░█ ▀▄ \n"
-               + "░█─ ░█░█░█ ░█▄▄█ ░█─▄▄ ░█▀▀▀ ▄ █─ ░█─ ░█░█░█ ─█ \n"
-               + "▄█▄ ░█──░█ ░█─░█ ░█▄▄█ ░█▄▄▄ █ ▀▄ ▄█▄ ░█──▀█ ▄▀";
+                + "▀█▀ ░█▀▄▀█ ─█▀▀█ ░█▀▀█ ░█▀▀▀ ─ ▄▀ ▀█▀ ░█▄─░█ ▀▄ \n"
+                + "░█─ ░█░█░█ ░█▄▄█ ░█─▄▄ ░█▀▀▀ ▄ █─ ░█─ ░█░█░█ ─█ \n"
+                + "▄█▄ ░█──░█ ░█─░█ ░█▄▄█ ░█▄▄▄ █ ▀▄ ▄█▄ ░█──▀█ ▄▀";
     }
 
     //MODIFIES: this
     //EFFECTS: allows program to continue if user chooses to edit new image, exits otherwise
-    public void createOrLeave() {
+    private void createOrLeave() {
         boolean deciding = true;
         String decisionCommand;
 
@@ -77,10 +93,16 @@ public class ImageApp {
             decisionCommand = input.next();
             decisionCommand = decisionCommand.toLowerCase();
 
-            if (decisionCommand.equals("y")) {
-                doCreate();
+            if (decisionCommand.equals("n")) {
+                doCreateNew();
                 deciding = false;
-            } else if (decisionCommand.equals("n")) {
+                editing = true;
+            } else if (decisionCommand.equals("l")) {
+                doLoadPrevious();
+                editing = true;
+                deciding = false;
+                nonRedundantRunApp();
+            } else if (decisionCommand.equals("q")) {
                 doQuit();
                 deciding = false;
             } else {
@@ -89,9 +111,17 @@ public class ImageApp {
         }
     }
 
+    //EFFECTS: displays opening menu to user
+    private void displayOpeningMenu() {
+        System.out.println("\n welcome to Image.(in)!");
+        System.out.println("\t n -> create and edit a new image");
+        System.out.println("\t l -> load a previous project");
+        System.out.println("\t q -> quit application");
+    }
+
     //MODIFIES: this
     //EFFECTS: creates image to users size specifications and initialized editing process
-    public void doCreate() {
+    private void doCreateNew() {
         System.out.println("\n IMPORTANT: to use pixelate filter, your image width and height must be even...");
         System.out.println("\n please enter an (integer) width for your image: ");
         processWidth(input.nextInt());
@@ -102,8 +132,18 @@ public class ImageApp {
     }
 
     //MODIFIES: this
+    private void doLoadPrevious() {
+        try {
+            myImage = jsonReader.read();
+            System.out.println("your previous image has been loaded from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("sorry, we were unable to load your work from " + JSON_STORE);
+        }
+    }
+
+    //MODIFIES: this
     //EFFECTS: quits program
-    public void doQuit() {
+    private void doQuit() {
         System.out.println("\n sorry to see you go... come back anytime to edit a new image!");
         editing = false;
 
@@ -111,7 +151,7 @@ public class ImageApp {
 
     //MODIFIES: width
     //EFFECTS: asks for new width if previous one was < 0 otherwise assigns width
-    public void processWidth(int w) {
+    private void processWidth(int w) {
         if (w < 1) {
             System.out.println("\n oops... please enter a width that is greater than zero!");
             processWidth(input.nextInt());
@@ -122,7 +162,7 @@ public class ImageApp {
 
     //MODIFIES: height
     //EFFECTS: asks for new height if previous one was < 0 otherwise assigns height
-    public void processHeight(int h) {
+    private void processHeight(int h) {
         if (h < 1) {
             System.out.println("\n oops... please enter a height that is greater than zero!");
             processHeight(input.nextInt());
@@ -133,31 +173,25 @@ public class ImageApp {
 
     //REQUIRES: width and height > 0
     //EFFECTS: instantiates an image with width w and height h
-    public void createImage(int w, int h) {
+    private void createImage(int w, int h) {
         myImage = new Image(w, h);
     }
 
-    //EFFECTS: displays opening menu to user
-    public void displayOpeningMenu() {
-        System.out.println("\n would you like to edit a new image?");
-        System.out.println("\t y -> yes");
-        System.out.println("\t n -> no");
-    }
-
     //EFFECTS: displays tool menu to user
-    public void displayToolMenu() {
-        System.out.println("\n continue editing or processes final image:");
+    private void displayToolMenu() {
+        System.out.println("\n Tool Menu:");
         System.out.println("\t a -> add filter");
         System.out.println("\t ul -> undo last edit");
         System.out.println("\t ua -> undo all edits");
         System.out.println("\t ut -> undo all filters of a certain type");
         System.out.println("\t v -> view edit history");
+        System.out.println("\t qs -> quit and save progress");
         System.out.println("\t p -> process final image");
     }
 
     //MODIFIES: this
     //EFFECTS: processes user commands while editing
-    public void processCommand(String command) {
+    private void processCommand(String command) {
         if (command.equals("a")) {
             doAddFilter();
         } else if (command.equals("ul")) {
@@ -168,6 +202,8 @@ public class ImageApp {
             doUndoType();
         } else if (command.equals("v")) {
             doViewHistory();
+        } else if (command.equals("qs")) {
+            doSaveAndQuit();
         } else if (command.equals("p")) {
             doProcessAndQuit();
         } else {
@@ -175,9 +211,22 @@ public class ImageApp {
         }
     }
 
+    //EFFECTS: saves current progress to .json file
+    private void doSaveAndQuit() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(myImage);
+            jsonWriter.close();
+            System.out.println("your image was successfully saved to " + JSON_STORE);
+            editing = false;
+        } catch (FileNotFoundException e) {
+            System.out.println("sorry, we were unable to write your image to " + JSON_STORE);
+        }
+    }
+
     //MODIFIES: this
     //EFFECTS: adds selected filter to image
-    public void doAddFilter() {
+    private void doAddFilter() {
         displayFilterOptions();
         String filterChoice = input.next();
         if (filterChoice.equals("nv")) {
@@ -195,7 +244,7 @@ public class ImageApp {
 
     //MODIFIES: this
     //EFFECTS: returns user options for which degree of pixelation they'd like
-    public void doDisplayPixOptions() {
+    private void doDisplayPixOptions() {
         int minDim = min(myImage.getImageWidth(), myImage.getImageHeight());
         int maxDegPix = (int) (log(minDim) / log(2));
         int[] degOptions = new int[maxDegPix + 1];
@@ -209,7 +258,7 @@ public class ImageApp {
     }
 
     //EFFECTS: displays available filters
-    public void displayFilterOptions() {
+    private void displayFilterOptions() {
         System.out.println("\n choose a filter to apply: ");
         System.out.println("\t nv -> negative");
         System.out.println("\t mr -> mirror");
@@ -222,14 +271,14 @@ public class ImageApp {
     }
 
     //EFFECTS: returns true if both myImage width and height are even
-    public boolean bothEven() {
+    private boolean bothEven() {
         boolean widthIsEven = (myImage.getImageWidth() % 2 == 0);
         boolean heightIsEven = (myImage.getImageHeight() % 2 == 0);
         return widthIsEven && heightIsEven;
     }
 
     //EFFECTS: returns true if either myImage width or height are odd
-    public String whichOdd() {
+    private String whichOdd() {
         boolean widthIsEven = (myImage.getImageWidth() % 2 == 0);
         boolean heightIsEven = (myImage.getImageHeight() % 2 == 0);
         if (widthIsEven && !heightIsEven) {
@@ -243,7 +292,7 @@ public class ImageApp {
 
     //MODIFIES: this
     //EFFECTS: undoes last edit
-    public void doUndoLast() {
+    private void doUndoLast() {
         if (editHistory == 0) {
             System.out.println("\n no filters to remove...");
         } else {
@@ -254,7 +303,7 @@ public class ImageApp {
 
     //MODIFIES: this
     //EFFECTS: removes all added filters
-    public void doUndoAll() {
+    private void doUndoAll() {
         if (editHistory == 0) {
             System.out.println("\n no filters to remove...");
         } else {
@@ -265,7 +314,7 @@ public class ImageApp {
 
     //MODIFIES: this
     //EFFECTS: removes all filters of type given, if there aren't any filters to remove, returns to menu
-    public void doUndoType() {
+    private void doUndoType() {
         if (myImage.getUniqueFiltersUsed().size() > 0) {
             displayAvailableFilters();
             doRemoveChosen(input.next());
@@ -276,7 +325,7 @@ public class ImageApp {
 
     //MODIFIES: this
     //EFFECTS: presents user with all unique filters used, so they know which types they can remove
-    public void displayAvailableFilters() {
+    private void displayAvailableFilters() {
         System.out.println("\n you have used each of the following filters at least once: ");
         for (String filterName : myImage.getUniqueFiltersUsed()) {
             if (filterName.equals("negative")) {
@@ -292,7 +341,7 @@ public class ImageApp {
 
     //MODIFIES: myImage
     //EFFECTS: removes all instances of a filterType from myImage that the user specified
-    public void doRemoveChosen(String command) {
+    private void doRemoveChosen(String command) {
         if (command.equals("nv")) {
             myImage.removeAllOfType("negative");
             System.out.println("\t all applications of (negative) have been removed");
@@ -311,7 +360,7 @@ public class ImageApp {
 
     //MODIFIES: this
     //EFFECTS: provides user with edit history
-    public void doViewHistory() {
+    private void doViewHistory() {
         int historyEndInd = myImage.viewEditHistory().length() - 1;
         String history = myImage.viewEditHistory();
         String refinedHistory = history.substring(1, historyEndInd);
@@ -326,7 +375,7 @@ public class ImageApp {
 
     //MODIFIES: this
     //EFFECTS: quits program and displays exit message
-    public void doProcessAndQuit() {
+    private void doProcessAndQuit() {
         myImage.processImage();
         String result = myImage.createVisArray(0);
         System.out.println("\n thank you... your image has been processed successfully!");
