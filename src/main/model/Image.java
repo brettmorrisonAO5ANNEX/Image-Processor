@@ -7,6 +7,7 @@ import persistence.Writable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 // represents an instance of an image with a list of applied filters
 public class Image implements Writable {
@@ -123,6 +124,9 @@ public class Image implements Writable {
         } else {
             for (int i = 0; i < size; i++) {
                 String item = this.listOfFilter.get(i).getFilterName();
+                if (item.equals("pixelate")) {
+                    item = item + "(deg: " + this.degreeOfPixelation + ")";
+                }
                 history[i] = (i + 1) + ": " + item;
             }
             return Arrays.toString(history);
@@ -166,6 +170,19 @@ public class Image implements Writable {
             row.append(Arrays.toString(this.pixelArray[i]));
         }
         return row.toString();
+    }
+
+    //SOURCE FOR RANDOM INT-IN-RANGE GENERATION:
+    //https://stackoverflow.com/questions/363681/how-do-i-generate-random-integers-within-a-specific-range-in-java
+    //MODIFIES: this
+    //EFFECTS: randomizes each pixel's RGB value in this.pixelArray to create image variety
+    public void randomizeColor() {
+        int totalNumElem = this.width * this.height;
+        for (int r = 0; r < totalNumElem; r++) {
+            for (int c = 0; c < 3; c++) {
+                this.pixelArray[r][c] = ThreadLocalRandom.current().nextInt(0, 256);
+            }
+        }
     }
 
     public List<Filter> getListOfFilter() {

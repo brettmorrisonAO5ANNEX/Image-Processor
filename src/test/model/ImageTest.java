@@ -219,9 +219,10 @@ public class ImageTest {
 
     @Test
     public void testViewEditHistoryNotEmpty() {
-        String result = "[1: mirror, 2: pixelate]";
+        String result = "[1: mirror, 2: pixelate(deg: 0)]";
         i.addFilter(mirror);
         i.addFilter(pixelate);
+        i.setDegreeOfPixelation(0);
         assertEquals(2, i.getListOfFilter().size());
         assertEquals(result, i.viewEditHistory());
     }
@@ -295,5 +296,28 @@ public class ImageTest {
         String row = "[255, 255, 255] [255, 255, 255] [255, 255, 255] [255, 255, 255]";
         Image i16 = new Image(4, 4);
         String createdRow = i16.createRow(0, i.getImageWidth());
+    }
+
+    @Test
+    public void testRandomizeColorOneElement() {
+        int totalNumElem = i.getImageWidth() * i.getImageHeight();
+        for (int r = 0; r < totalNumElem; r++) {
+            for (int c = 0; c < 3; c++) {
+                int rgbVal = i.pixelArray[r][c];
+                assertTrue(0 <= rgbVal && rgbVal <= 255);
+            }
+        }
+    }
+
+    @Test
+    public void testRandomizeColorFourElement() {
+        Image i4 = new Image(4, 4);
+        int totalNumElem = i.getImageWidth() * i.getImageHeight();
+        for (int r = 0; r < totalNumElem; r++) {
+            for (int c = 0; c < 3; c++) {
+                int rgbVal = i.pixelArray[r][c];
+                assertTrue(0 <= rgbVal && rgbVal <= 255);
+            }
+        }
     }
 }

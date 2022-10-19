@@ -129,7 +129,25 @@ public class ImageApp {
         System.out.println("\n please enter an (integer) height for your image: ");
         processHeight(input.nextInt());
         createImage(width, height);
+        System.out.println("\n would you like to randomize the color of your image?");
+        doRandomize();
         editing = true;
+    }
+
+    //MODIFIES: myImage and this
+    //EFFECTS: randomizes RGB values within image if randomize is true, otherwise does not change myImage.pixelArray
+    private void doRandomize() {
+        String randomizeCommand;
+        System.out.println("\n y -> yes");
+        System.out.println("\n n -> no");
+        randomizeCommand = input.next();
+
+        if (randomizeCommand.equals("y")) {
+            myImage.randomizeColor();
+            System.out.println("your image now has a randomized color!");
+        } else if (randomizeCommand.equals("n")) {
+            System.out.println("your image is a default blank canvas!");
+        }
     }
 
     //MODIFIES: this
@@ -186,6 +204,8 @@ public class ImageApp {
         System.out.println("\t ua -> undo all edits");
         System.out.println("\t ut -> undo all filters of a certain type");
         System.out.println("\t v -> view edit history");
+        System.out.println("\t sc -> save current progress");
+        System.out.println("\t rp -> reset progress to last saved");
         System.out.println("\t qs -> quit and save progress");
         System.out.println("\t p -> process final image");
     }
@@ -203,8 +223,12 @@ public class ImageApp {
             doUndoType();
         } else if (command.equals("v")) {
             doViewHistory();
+        } else if (command.equals("sc")) {
+            doSave(false);
+        } else if (command.equals("rp")) {
+            doLoadPrevious();
         } else if (command.equals("qs")) {
-            doSaveAndQuit();
+            doSave(true);
         } else if (command.equals("p")) {
             doProcessAndQuit();
         } else {
@@ -212,16 +236,21 @@ public class ImageApp {
         }
     }
 
-    //EFFECTS: saves current progress to .json file
-    private void doSaveAndQuit() {
+    //EFFECTS: saves current progress to .json file and quits application if quit is true
+    private void doSave(Boolean quit) {
         try {
             jsonWriter.open();
             jsonWriter.write(myImage);
             jsonWriter.close();
-            System.out.println("your image was successfully saved to " + JSON_STORE);
-            editing = false;
+
+            if (quit) {
+                System.out.println("\n your image was successfully saved to " + JSON_STORE);
+                editing = false;
+            } else {
+                System.out.println("\n current progress saved to " + JSON_STORE);
+            }
         } catch (FileNotFoundException e) {
-            System.out.println("sorry, we were unable to write your image to " + JSON_STORE);
+            System.out.println("\n sorry, we were unable to write your image to " + JSON_STORE);
         }
     }
 
@@ -381,7 +410,7 @@ public class ImageApp {
         String result = myImage.createVisArray(0);
         System.out.println("\n thank you... your image has been processed successfully!");
         System.out.println("\n your image is represented by the following pixel array: ");
-        System.out.println(result);
+        System.out.println("\n" + result);
         editing = false;
     }
 }

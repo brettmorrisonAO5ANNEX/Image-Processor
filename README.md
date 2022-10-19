@@ -33,11 +33,15 @@ software development in the context of an industry that I have
 a personal interest in! 
 
 ## *User Stories:*
+- As a user, I want to be able to randomize the color of my image
 - As a user, I want to be able to add a ***filter*** to my ***image***
 - As a user, I want to be able to remove (undo) a ***filter*** from my ***image***
 - As a user, I want to be able to remove all (undo all) ***filters*** from my ***image***
 - As a user, I want to be able to remove all of one type of ***filter*** from my ***image***
 - As a user, I want to be able to view a history of what ***filters*** have been applied to my ***image***
-- As a user, I want to be able to save my edits current progress to file ***before*** final processing 
+- As a user, I want to be able to quit the application and save my edits current progress 
+to file ***before*** final processing
+- As a user, I want to be able to save my edits progress ***while still editing*** so that I can revert to 
+that point in my progress If I decide to not want the progress I made after saving
 - As a user, I want to be able to ***revert to the last saved version*** of my edit either while still 
 editing or after I've previously closed the application and want to continue working

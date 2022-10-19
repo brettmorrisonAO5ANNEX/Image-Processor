@@ -1,7 +1,6 @@
 package ui;
 
-//represents starting point for ImageApp to be run from
-
+//TODO: add method to view pixelArray befor processing
 //TODO: create feature that allows users to choose the "myImage" part of "./data/myImage.json" destination file
 //TODO: create 'choose from gallery option'
 //TODO: add feature where user can revert back to previously saved version if they want to (while still editing)
@@ -12,6 +11,7 @@ package ui;
 //TODO: add cancel option to return back to menu
 //TODO: write test for JsonReader that includes image result (after implementing save after processing feature)
 
+//represents starting point for ImageApp to be run from
 public class Main {
     public static void main(String[] args) {
         new ImageApp();
