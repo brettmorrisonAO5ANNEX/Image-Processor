@@ -1,17 +1,27 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.Arrays;
 
 import static java.lang.Math.*;
 
 //represents a filter with name filterName that can be applied to an image
-public class Filter {
+public class Filter implements Writable {
     private String filterName;
 
     //REQUIRES: filterType can only be one of: "negative", "mirror", "pixelate"
     //EFFECTS: instantiates a filter object
     public Filter(String filterType) {
         this.filterName = filterType;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", filterName);
+        return json;
     }
 
     //MODIFIES: img

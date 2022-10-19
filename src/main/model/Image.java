@@ -1,11 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 // represents an instance of an image with a list of applied filters
-public class Image {
+public class Image implements Writable {
     private List<Filter> listOfFilter;
     private List<String> uniqueFiltersUsed;
     int[][] pixelArray;
@@ -14,11 +18,6 @@ public class Image {
     private int degreeOfPixelation;
     private String imageResult;
 
-    //TODO: update effects clauses to include info about what outputs are produced and how any input values are
-    //      changed
-    //TODO: check test coverage for all branches
-    //TODO: setup starting color constant (or parameter) for single point of control of what color each pixel is
-    //      instantiated to be
     //TODO: undo/undotype/undoall should only allow a user to input data IF there are filters in listOfFilter
     //TODO: add cancel option to return back to menu
 
@@ -38,6 +37,26 @@ public class Image {
         }
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("listOfFilter", listOfFilterToJson());
+        json.put("height", height);
+        json.put("width", width);
+        json.put("degreeOfPixelation", degreeOfPixelation);
+        json.put("imageResult", imageResult);
+        return json;
+    }
+
+    //EFFECTS: returns filters used in this image as a JSON array
+    private JSONArray listOfFilterToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Filter f: listOfFilter) {
+            jsonArray.put(f.toJson());
+        }
+        return jsonArray;
+    }
+
     //MODIFIES: this
     //EFFECTS: adds filter to an images listOfFilter field
     public void addFilter(Filter filter) {
@@ -54,7 +73,6 @@ public class Image {
         }
     }
 
-    //TODO: create isEmpty() method
     //REQUIRES: listOfFilter is not empty
     //MODIFIES: this
     //EFFECTS: removes the most recently added filter from listOfFilter and also removes the corresponding
@@ -80,7 +98,6 @@ public class Image {
         }
     }
 
-    //TODO: incorporate if statement to check whether the requires clause is met
     //REQUIRES: listOfFilter contains filter matching filterName at least once
     //MODIFIES: this
     //EFFECTS: clears all instances of a type of filter from an images listOfFilter and removes the corresponding
@@ -146,17 +163,11 @@ public class Image {
     //MODIFIES: this
     //EFFECTS: creates a string version of an individual pixel within an image's pixel array
     public String createRow(int start, int end) {
-        String row = "";
+        StringBuilder row = new StringBuilder();
         for (int i = start; i < end; i++) {
-            row = row + Arrays.toString(this.pixelArray[i]);
+            row.append(Arrays.toString(this.pixelArray[i]));
         }
-        return row;
-    }
-
-    //MODIFIES: this
-    //EFFECTS: sets this.degreeOfPixelation to the given value (d)
-    public void setDegreeOfPixelation(int d) {
-        this.degreeOfPixelation = d;
+        return row.toString();
     }
 
     public List<Filter> getListOfFilter() {
@@ -179,8 +190,16 @@ public class Image {
         return this.width;
     }
 
+    public void setDegreeOfPixelation(int d) {
+        this.degreeOfPixelation = d;
+    }
+
     public int getDegreeOfPixelation() {
         return this.degreeOfPixelation;
+    }
+
+    public void setImageResult(String imageResult) {
+        this.imageResult = imageResult;
     }
 
     public String getImageResult() {
