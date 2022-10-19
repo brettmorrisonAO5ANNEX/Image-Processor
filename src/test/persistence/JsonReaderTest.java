@@ -40,15 +40,17 @@ public class JsonReaderTest {
     @Test
     void testReaderPartiallyEditedImage() {
         try {
-            JsonReader reader = new JsonReader("./data/testReaderPartiallyEditedImage");
+            JsonReader reader = new JsonReader("./data/testReaderPartiallyEditedImage.json");
             Image img = reader.read();
-            assertEquals(2, img.getListOfFilter().size());
+            assertEquals(3, img.getListOfFilter().size());
             assertEquals("negative", img.getListOfFilter().get(0).getFilterName());
-            assertEquals("pixelate", img.getListOfFilter().get(1).getFilterName());
-            assertEquals(0, img.getDegreeOfPixelation());
-            assertEquals(2, img.getUniqueFiltersUsed().size());
+            assertEquals("mirror", img.getListOfFilter().get(1).getFilterName());
+            assertEquals("pixelate", img.getListOfFilter().get(2).getFilterName());
+            assertEquals(2, img.getDegreeOfPixelation());
+            assertEquals(3, img.getUniqueFiltersUsed().size());
             assertEquals("negative", img.getUniqueFiltersUsed().get(0));
-            assertEquals("pixelate", img.getUniqueFiltersUsed().get(1));
+            assertEquals("mirror", img.getUniqueFiltersUsed().get(1));
+            assertEquals("pixelate", img.getUniqueFiltersUsed().get(2));
             assertEquals(4, img.getImageWidth());
             assertEquals(4, img.getImageHeight());
             assertEquals(16, img.getPixelArray().length);

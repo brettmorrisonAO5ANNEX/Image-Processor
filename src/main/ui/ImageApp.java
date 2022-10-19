@@ -14,7 +14,7 @@ import static java.lang.Math.*;
 
 //represents image editing app that is interactive
 public class ImageApp {
-    private static final String JSON_STORE = "./data/myImape.json";
+    private static final String JSON_STORE = "./data/myImage.json";
     private Image myImage;
     private Filter negative;
     private Filter mirror;

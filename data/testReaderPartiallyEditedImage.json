@@ -1,0 +1,10 @@
+{
+    "listOfFilter": [
+        {"name": "negative"},
+        {"name": "mirror"},
+        {"name": "pixelate"}
+    ],
+    "width": 4,
+    "degreeOfPixelation": 2,
+    "height": 4
+}

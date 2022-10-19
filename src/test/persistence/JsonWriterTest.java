@@ -54,12 +54,12 @@ public class JsonWriterTest {
             img.setDegreeOfPixelation(0);
             img.addFilter(new Filter("mirror"));
             img.undoLast();
-            JsonWriter writer = new JsonWriter("./data/testWriterPartiallyEditedImage");
+            JsonWriter writer = new JsonWriter("./data/testWriterPartiallyEditedImage.json");
             writer.open();
             writer.write(img);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testWriterPartiallyEditedImage");
+            JsonReader reader = new JsonReader("./data/testWriterPartiallyEditedImage.json");
             img = reader.read();
             assertEquals(2, img.getListOfFilter().size());
             assertEquals("negative", img.getListOfFilter().get(0).getFilterName());
