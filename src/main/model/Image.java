@@ -18,11 +18,6 @@ public class Image implements Writable {
     private int degreeOfPixelation;
     private String imageResult;
 
-    //TODO: update save ability to also account for a processed image (if a user wants to reedit a previously
-    //      edited image)
-    //TODO: undo/undotype/undoall should only allow a user to input data IF there are filters in listOfFilter
-    //TODO: add cancel option to return back to menu
-
     //REQUIRES: width, height > 0
     //EFFECTS: instantiates Image object with pixelArrray of length width*height and default values of
     //         "" for image result and 0 for degreeOfPixelation
@@ -201,6 +196,9 @@ public class Image implements Writable {
         return this.degreeOfPixelation;
     }
 
+    //REQUIRES: imageResult is not empty
+    //MODIFIES: this
+    //EFFECTS: sets this image result to imageResult
     public void setImageResult(String imageResult) {
         this.imageResult = imageResult;
     }

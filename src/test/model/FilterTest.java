@@ -25,6 +25,12 @@ class FilterTest {
     }
 
     @Test
+    public void testSetImageResultEmptyString() {
+        imgTestOneElement.setImageResult("");
+        assertEquals("", imgTestOneElement.getImageResult());
+    }
+
+    @Test
     public void testConstructorForName() {
         assertEquals("pixelate", pixelate.getFilterName());
     }

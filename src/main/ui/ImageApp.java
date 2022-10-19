@@ -29,9 +29,6 @@ public class ImageApp {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
-    //TODO: create feature that allows users to choose the "myImage" part of "./data/myImage.json" destination file
-    //TODO: create 'choose from gallery option'
-    //TODO: add feature where user can revert back to previously saved version if they want to (while still editing)
     //EFFECTS: runs ImageApp
     public ImageApp() {
         jsonWriter = new JsonWriter(JSON_STORE);
