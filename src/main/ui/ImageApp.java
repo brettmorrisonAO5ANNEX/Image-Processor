@@ -12,7 +12,6 @@ import persistence.JsonWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Math.*;
@@ -255,6 +254,7 @@ public class ImageApp {
         System.out.println("\t rp -> reset progress to last saved");
         System.out.println("\t qs -> quit and save progress");
         System.out.println("\t p -> process final image");
+        System.out.println("\t ab -> abandon project");
     }
 
     //MODIFIES: this
@@ -278,6 +278,8 @@ public class ImageApp {
             doSave(true);
         } else if (command.equals("p")) {
             doProcessAndQuit();
+        } else if (command.equals("ab")) {
+            doQuit();
         } else {
             System.out.println("\n invalid command given...");
         }
