@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JsonWriterTest {
 
     @Test
-    void testWriterInvalidFile() {
+    public void testWriterInvalidFile() {
         try {
             Image img = new Image(1, 1);
             JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
@@ -25,7 +25,7 @@ public class JsonWriterTest {
     }
 
     @Test
-    void testWriterNewImage() {
+    public void testWriterNewImage() {
         try {
             Image img = new Image(1, 2);
             JsonWriter writer = new JsonWriter("./data/testWriterNewImage.json");
@@ -46,7 +46,7 @@ public class JsonWriterTest {
     }
 
     @Test
-    void testWriterPartiallyEditedImage() {
+    public void testWriterPartiallyEditedImage() {
         try {
             Image img = new Image(4,4);
             img.addFilter(new Filter("negative"));

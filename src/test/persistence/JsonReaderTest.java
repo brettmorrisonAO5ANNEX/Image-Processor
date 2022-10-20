@@ -25,7 +25,7 @@ public class JsonReaderTest {
     }
 
     @Test
-    void testReaderNewImage() {
+    public void testReaderNewImage() {
         JsonReader reader = new JsonReader("./data/testReaderNewImage.json");
         try {
             Image img = reader.read();
@@ -41,7 +41,7 @@ public class JsonReaderTest {
     }
 
     @Test
-    void testReaderPartiallyEditedImage() {
+    public void testReaderPartiallyEditedImage() {
         try {
             JsonReader reader = new JsonReader("./data/testReaderPartiallyEditedImage.json");
             Image img = reader.read();
