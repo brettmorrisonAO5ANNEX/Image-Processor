@@ -1,10 +1,13 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 //represents a gallery for all images a user commits to final processing
-public class Gallery {
+public class Gallery  {
     private List<String> gallery;
 
     //EFFECTS: constructs a gallery with an empty list of jsonFile destinations
@@ -22,4 +25,5 @@ public class Gallery {
     public List<String> getGallery() {
         return this.gallery;
     }
+
 }

@@ -72,7 +72,6 @@ public class ImageApp {
         }
     }
 
-
     //MODIFIES: this
     //EFFECTS: initializes user input
     private void init() {
