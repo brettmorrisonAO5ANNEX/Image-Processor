@@ -1,7 +1,9 @@
 package ui;
 
-//TODO: add method to view pixelArray befor processing
+//TODO: test gallery and currentprojects methods
+//TODO: add method to view pixelArray before processing
 //TODO: create feature that allows users to choose the "myImage" part of "./data/myImage.json" destination file
+//TODO: create feature that allows user to retrieve their specific image file
 //TODO: create 'choose from gallery option'
 //TODO: add feature where user can revert back to previously saved version if they want to (while still editing)
 //TODO: create save after processing feature
