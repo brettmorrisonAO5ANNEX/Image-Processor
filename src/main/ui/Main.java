@@ -1,7 +1,7 @@
 package ui;
 
-//TODO: be able to load saved gallery upon initializing ImageApp
-//TODO: organize code to read easier
+//TODO: debug doLoadChoice() so that when command is called in terminal, all options to open are
+//      displayed and the user can input the one they want
 //TODO: organize terminal interface
 
 import java.io.IOException;

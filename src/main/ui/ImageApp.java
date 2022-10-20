@@ -13,6 +13,7 @@ import persistence.JsonWriterCurrentProjects;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Math.*;
@@ -95,7 +96,7 @@ public class ImageApp {
                 deciding = false;
                 editing = true;
             } else if (decisionCommand.equals("l")) {
-//                doLoadChoice();
+                doLoadChoice();
                 editing = true;
                 deciding = false;
                 nonRedundantRunApp();
@@ -215,28 +216,33 @@ public class ImageApp {
         }
     }
 
-    //    //MODIFIES: this
-//    //EFFECTS: loads chosen file to current session
-//    private void doLoadChoice() {
-//        String fileName;
-//        doDisplayAllProjectNames();
-//        fileName = input.next();
-//
-//        try {
-//            myImage = jsonReader.read();
-//            System.out.println(fileName + " has been loaded successfully!");
-//        } catch (IOException e) {
-//            System.out.println("sorry, we were unable to load " + fileName);
-//        }
-//    }
+    //TODO: add feature that asks user to reenter name if the entered one doesn't exist in currentProjects
+    //TODO: debug choose file feature (currently does not work when user types in file name and enters)
+    //MODIFIES: this
+    //EFFECTS: loads chosen file to current session
+    private void doLoadChoice() {
+        String fileName;
+        doDisplayAllProjectNames();
+        fileName = input.next();
 
-//    //EFFECTS: displays all project names from this.currentProjects
-//    private void doDisplayAllProjectNames() {
-//        System.out.println("type the name of the file you would like to open");
-//        for (String fileName : currentProjects.getCurrentProjects()) {
-//            System.out.println("\t " + fileName);
-//        }
-//    }
+        imageDestination = FILE_BEGIN + fileName + FILE_END;
+        System.out.println(imageDestination);
+
+        try {
+            myImage = jsonReader.read();
+            System.out.println(fileName + " has been loaded successfully!");
+        } catch (IOException e) {
+            System.out.println("sorry, we were unable to load " + fileName);
+        }
+    }
+
+    //EFFECTS: displays all project names from this.currentProjects
+    private void doDisplayAllProjectNames() {
+        System.out.println("type the name of the file you would like to open");
+        for (String fileName : currentProjects.getCurrentProjects()) {
+            System.out.println("\t " + fileName);
+        }
+    }
 
     //MODIFIES: this
     //EFFECTS: accepts user input and processes it accordingly - extracts portion of program that does
@@ -276,13 +282,11 @@ public class ImageApp {
     private void processCommand(String command) {
         if (command.equals("a")) {
             doAddFilter();
-        } else if (command.equals("ul")) {
-            doUndoLast();
-        } else if (command.equals("ua")) {
-            doUndoAll();
-        } else if (command.equals("ut")) {
-            doUndoType();
-        } else if (command.equals("v")) {
+        }
+
+        doUndo(command);
+
+        if (command.equals("v")) {
             doViewHistory();
         } else if (command.equals("sc")) {
             doSave(false);
@@ -300,6 +304,17 @@ public class ImageApp {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: handles all instances in which a user want to undo (of either last, type, or all)
+    public void doUndo(String command) {
+        if (command.equals("ul")) {
+            doUndoLast();
+        } else if (command.equals("ua")) {
+            doUndoAll();
+        } else if (command.equals("ut")) {
+            doUndoType();
+        }
+    }
 
     //MODIFIES: this
     //EFFECTS: adds selected filter to image
