@@ -2,6 +2,7 @@ package ui;
 
 //TODO: be able to load saved gallery upon initializing ImageApp
 //TODO: organize code to read easier
+//TODO: organize terminal interface
 
 import java.io.IOException;
 
