@@ -21,25 +21,27 @@ import static java.lang.Math.*;
 //                              https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
 //represents image editing app that is interactive
 public class ImageApp {
-    private static final String currentProjectsDest = "./data/currentProjects.json";
-    private static final String FILE_BEGIN = "./data/";
-    private static final String FILE_END = ".json";
-    private String projectName;
-    private String imageDestination;
-    private Image myImage;
-    private Filter negative;
-    private Filter mirror;
-    private Filter pixelate;
-    private CurrentProjects currentProjects;
     private Scanner input;
     private boolean editing;
+    private Image myImage;
     private int width;
     private int height;
     private int editHistory;
+    private Filter negative;
+    private Filter mirror;
+    private Filter pixelate;
+    private String projectName;
+    private String imageDestination;
+    private CurrentProjects currentProjects;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private JsonWriterCurrentProjects jsonWriterCP;
     private JsonReaderCurrentProjects jsonReaderCP;
+    private static final String FILE_BEGIN = "./data/";
+    private static final String FILE_END = ".json";
+    private static final String currentProjectsDest = "./data/currentProjects.json";
+
+
 
     //EFFECTS: runs ImageApp
     public ImageApp() throws IOException {
@@ -106,24 +108,6 @@ public class ImageApp {
         }
     }
 
-    //MODIFIES: this
-    //EFFECTS: accepts user input and processes it accordingly - extracts portion of program that does
-    //         not include redundant loading in info so that when user loads previous project they can
-    //         jump straight into working rather than viewing redundant info
-    private void nonRedundantRunApp() {
-        String command;
-
-        while (editing) {
-            editHistory = myImage.getListOfFilter().size();
-            displayToolMenu();
-
-            command = input.next();
-            command = command.toLowerCase();
-
-            processCommand(command);
-        }
-    }
-
     //EFFECTS: displays opening menu to user
     private void displayOpeningMenu() {
         System.out.println("\n welcome to Image.(in)!");
@@ -187,53 +171,6 @@ public class ImageApp {
         }
     }
 
-//    //MODIFIES: this
-//    //EFFECTS: loads chosen file to current session
-//    private void doLoadChoice() {
-//        String fileName;
-//        doDisplayAllProjectNames();
-//        fileName = input.next();
-//
-//        try {
-//            myImage = jsonReader.read();
-//            System.out.println(fileName + " has been loaded successfully!");
-//        } catch (IOException e) {
-//            System.out.println("sorry, we were unable to load " + fileName);
-//        }
-//    }
-
-//    //EFFECTS: displays all project names from this.currentProjects
-//    private void doDisplayAllProjectNames() {
-//        System.out.println("type the name of the file you would like to open");
-//        for (String fileName : currentProjects.getCurrentProjects()) {
-//            System.out.println("\t " + fileName);
-//        }
-//    }
-
-    //MODIFIES: myImage and this
-    //EFFECTS: randomizes RGB values within image if randomize is true, otherwise does not change myImage.pixelArray
-    private void doRandomize() {
-        String randomizeCommand;
-        System.out.println("\n y -> yes");
-        System.out.println("\n n -> no");
-        randomizeCommand = input.next();
-
-        if (randomizeCommand.equals("y")) {
-            myImage.randomizeColor();
-            System.out.println("your image now has a randomized color!");
-        } else if (randomizeCommand.equals("n")) {
-            System.out.println("your image is a default blank canvas!");
-        }
-    }
-
-    //MODIFIES: this
-    //EFFECTS: quits program
-    private void doQuit() {
-        System.out.println("\n sorry to see you go... come back anytime to edit a new image!");
-        editing = false;
-
-    }
-
     //MODIFIES: width
     //EFFECTS: asks for new width if previous one was < 0 otherwise assigns width
     private void processWidth(int w) {
@@ -260,6 +197,63 @@ public class ImageApp {
     //EFFECTS: instantiates an image with width w and height h
     private void createImage(int w, int h) {
         myImage = new Image(w, h);
+    }
+
+    //MODIFIES: myImage and this
+    //EFFECTS: randomizes RGB values within image if randomize is true, otherwise does not change myImage.pixelArray
+    private void doRandomize() {
+        String randomizeCommand;
+        System.out.println("\n y -> yes");
+        System.out.println("\n n -> no");
+        randomizeCommand = input.next();
+
+        if (randomizeCommand.equals("y")) {
+            myImage.randomizeColor();
+            System.out.println("your image now has a randomized color!");
+        } else if (randomizeCommand.equals("n")) {
+            System.out.println("your image is a default blank canvas!");
+        }
+    }
+
+    //    //MODIFIES: this
+//    //EFFECTS: loads chosen file to current session
+//    private void doLoadChoice() {
+//        String fileName;
+//        doDisplayAllProjectNames();
+//        fileName = input.next();
+//
+//        try {
+//            myImage = jsonReader.read();
+//            System.out.println(fileName + " has been loaded successfully!");
+//        } catch (IOException e) {
+//            System.out.println("sorry, we were unable to load " + fileName);
+//        }
+//    }
+
+//    //EFFECTS: displays all project names from this.currentProjects
+//    private void doDisplayAllProjectNames() {
+//        System.out.println("type the name of the file you would like to open");
+//        for (String fileName : currentProjects.getCurrentProjects()) {
+//            System.out.println("\t " + fileName);
+//        }
+//    }
+
+    //MODIFIES: this
+    //EFFECTS: accepts user input and processes it accordingly - extracts portion of program that does
+    //         not include redundant loading in info so that when user loads previous project they can
+    //         jump straight into working rather than viewing redundant info
+    private void nonRedundantRunApp() {
+        String command;
+
+        while (editing) {
+            editHistory = myImage.getListOfFilter().size();
+            displayToolMenu();
+
+            command = input.next();
+            command = command.toLowerCase();
+
+            processCommand(command);
+        }
     }
 
     //EFFECTS: displays tool menu to user
@@ -306,6 +300,7 @@ public class ImageApp {
         }
     }
 
+
     //MODIFIES: this
     //EFFECTS: adds selected filter to image
     private void doAddFilter() {
@@ -322,65 +317,6 @@ public class ImageApp {
             System.out.println("\n invalid filter chosen");
             doAddFilter();
         }
-    }
-
-    //MODIFIES: this
-    //EFFECTS: loads a previosly saved image of the users choice
-    private void doLoadPrevious() {
-        try {
-            myImage = jsonReader.read();
-            System.out.println("your previous image has been loaded from " + imageDestination);
-        } catch (IOException e) {
-            System.out.println("sorry, we were unable to load your work from " + imageDestination);
-        }
-    }
-
-    //MODIFIES: this
-    //EFFECTS: saves current progress to .json file, stores project name in this.CurrentProjects
-    //         and quits application if quit is true
-    private void doSave(Boolean quit) {
-        try {
-            jsonWriter.open();
-            jsonWriter.write(myImage);
-            jsonWriter.close();
-
-            if (quit) {
-                System.out.println("\n your image was successfully saved to " + imageDestination);
-                editing = false;
-            } else {
-                System.out.println("\n current progress saved to " + imageDestination);
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("\n sorry, we were unable to write your image to " + imageDestination);
-        }
-    }
-
-    //MODIFIES: this
-    //EFFECTS: saves updated currentProjects to standard destination to be retrieved at next session
-    private void doSaveCurrentProjects() {
-        try {
-            jsonWriterCP.open();
-            jsonWriterCP.write(currentProjects);
-            jsonWriterCP.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("there was an error while saving the currentProjects to " + currentProjectsDest);
-        }
-    }
-
-    //MODIFIES: this
-    //EFFECTS: returns user options for which degree of pixelation they'd like
-    private void doDisplayPixOptions() {
-        int minDim = min(myImage.getImageWidth(), myImage.getImageHeight());
-        int maxDegPix = (int) (log(minDim) / log(2));
-        int[] degOptions = new int[maxDegPix + 1];
-        System.out.println("\n choose one of the following numbers as your degree of pixelation:");
-        System.out.println("\t NOTE: 0 cause the lowest amount of pixelation");
-        for (int o = 0; o < maxDegPix + 1; o++) {
-            degOptions[o] = o;
-        }
-        System.out.println(Arrays.toString(degOptions));
-        myImage.setDegreeOfPixelation(input.nextInt());
     }
 
     //EFFECTS: displays available filters
@@ -414,6 +350,21 @@ public class ImageApp {
         } else {
             return "(width and height) are";
         }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: returns user options for which degree of pixelation they'd like
+    private void doDisplayPixOptions() {
+        int minDim = min(myImage.getImageWidth(), myImage.getImageHeight());
+        int maxDegPix = (int) (log(minDim) / log(2));
+        int[] degOptions = new int[maxDegPix + 1];
+        System.out.println("\n choose one of the following numbers as your degree of pixelation:");
+        System.out.println("\t NOTE: 0 cause the lowest amount of pixelation");
+        for (int o = 0; o < maxDegPix + 1; o++) {
+            degOptions[o] = o;
+        }
+        System.out.println(Arrays.toString(degOptions));
+        myImage.setDegreeOfPixelation(input.nextInt());
     }
 
     //MODIFIES: this
@@ -471,7 +422,6 @@ public class ImageApp {
         if (command.equals("nv")) {
             myImage.removeAllOfType("negative");
             System.out.println("\t all applications of (negative) have been removed");
-//            myImage.getUniqueFiltersUsed().
         } else if (command.equals("mr")) {
             myImage.removeAllOfType("mirror");
             System.out.println("\t all applications of (mirror) have been removed");
@@ -500,6 +450,50 @@ public class ImageApp {
     }
 
     //MODIFIES: this
+    //EFFECTS: saves current progress to .json file, stores project name in this.CurrentProjects
+    //         and quits application if quit is true
+    private void doSave(Boolean quit) {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(myImage);
+            jsonWriter.close();
+
+            if (quit) {
+                System.out.println("\n your image was successfully saved to " + imageDestination);
+                editing = false;
+            } else {
+                System.out.println("\n current progress saved to " + imageDestination);
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("\n sorry, we were unable to write your image to " + imageDestination);
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: loads a previously saved image of the users choice
+    private void doLoadPrevious() {
+        try {
+            myImage = jsonReader.read();
+            System.out.println("your previous image has been loaded from " + imageDestination);
+        } catch (IOException e) {
+            System.out.println("sorry, we were unable to load your work from " + imageDestination);
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: saves updated currentProjects to standard destination to be retrieved at next session
+    private void doSaveCurrentProjects() {
+        try {
+            jsonWriterCP.open();
+            jsonWriterCP.write(currentProjects);
+            jsonWriterCP.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("there was an error while saving the currentProjects to " + currentProjectsDest);
+        }
+    }
+
+    //MODIFIES: this
     //EFFECTS: quits program and displays exit message
     private void doProcessAndQuit() {
         myImage.processImage();
@@ -508,5 +502,13 @@ public class ImageApp {
         System.out.println("\n your image is represented by the following pixel array: ");
         System.out.println("\n" + result);
         editing = false;
+    }
+
+    //MODIFIES: this
+    //EFFECTS: quits program
+    private void doQuit() {
+        System.out.println("\n sorry to see you go... come back anytime to edit a new image!");
+        editing = false;
+
     }
 }
