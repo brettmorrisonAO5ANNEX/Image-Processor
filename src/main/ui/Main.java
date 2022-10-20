@@ -1,6 +1,7 @@
 package ui;
 
-//TODO: test gallery and currentprojects methods
+//TODO: add abandon functionality
+//TODO: figure out how to save a list of all names used
 //TODO: add method to view pixelArray before processing
 //TODO: create feature that allows users to choose the "myImage" part of "./data/myImage.json" destination file
 //TODO: create feature that allows user to retrieve their specific image file

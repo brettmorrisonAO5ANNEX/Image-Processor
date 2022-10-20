@@ -1,13 +1,18 @@
 package ui;
 
+import model.CurrentProjects;
 import model.Filter;
+import model.Gallery;
 import model.Image;
+import model.exceptions.DuplicateName;
+import model.exceptions.InvalidName;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Math.*;
@@ -16,11 +21,15 @@ import static java.lang.Math.*;
 //                              https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo.git
 //represents image editing app that is interactive
 public class ImageApp {
-    private static final String JSON_STORE = "./data/myImage.json";
+    private static final String FILE_BEGIN = "./data/";
+    private static final String FILE_END = ".json";
     private Image myImage;
     private Filter negative;
     private Filter mirror;
     private Filter pixelate;
+    private Gallery gallery;
+    private CurrentProjects currentProjects;
+    private String currentFileDestination;
     private Scanner input;
     private boolean editing;
     private int width;
@@ -31,8 +40,6 @@ public class ImageApp {
 
     //EFFECTS: runs ImageApp
     public ImageApp() {
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
         runImageApp();
     }
 
@@ -41,6 +48,8 @@ public class ImageApp {
     private void runImageApp() {
         init();
         createOrLeave();
+        jsonWriter = new JsonWriter(currentFileDestination);
+        jsonReader = new JsonReader(currentFileDestination);
         nonRedundantRunApp();
     }
 
@@ -69,6 +78,8 @@ public class ImageApp {
         negative = new Filter("negative");
         mirror = new Filter("mirror");
         pixelate = new Filter("pixelate");
+        gallery = new Gallery();
+        currentProjects = new CurrentProjects();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
         System.out.println(displayLogo());
@@ -123,6 +134,7 @@ public class ImageApp {
     //MODIFIES: this
     //EFFECTS: creates image to users size specifications and initialized editing process
     private void doCreateNew() {
+        displayNamingRules(true);
         System.out.println("\n IMPORTANT: to use pixelate filter, your image width and height must be even...");
         System.out.println("\n please enter an (integer) width for your image: ");
         processWidth(input.nextInt());
@@ -133,6 +145,41 @@ public class ImageApp {
         doRandomize();
         editing = true;
     }
+
+   //EFFECTS: displays file naming rules for user to follow
+    private void displayNamingRules(Boolean needsDisplay) {
+        if (needsDisplay) {
+            System.out.println("\n please create a name for your project according to the following rules:");
+            System.out.println("\t 1. name must begin with the literal string \"image\"");
+            System.out.println("\t 2. \"image\" must be followed by a single integer and a single uppercase letter");
+        }
+        try {
+            doCreateName();
+        } catch (InvalidName e) {
+            System.out.println("oops, the name you chose is invalid, please try a new one!");
+            displayNamingRules(false);
+        } catch (DuplicateName e) {
+            System.out.println("oops, the name you chose already exists, please choose a new one!");
+            displayNamingRules(false);
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates file name for current project that can be saved to either currentProjects or
+    //         gallery depending on user actions later on
+    private void doCreateName() {
+        String projectName = input.next();
+        if (!projectName.matches("(image)\\d{1,2}[A-Z]{1}")) {
+            throw new InvalidName();
+//        } else if (myImage.getAllNamesUsed().contains(projectName)) {
+//            throw new DuplicateName();
+        } else {
+            this.currentFileDestination = FILE_BEGIN + projectName + FILE_END;
+            System.out.println("\n your image has successfully been named: " + projectName);
+            System.out.println("\n now choose your image's dimensions...");
+        }
+    }
+
 
     //MODIFIES: myImage and this
     //EFFECTS: randomizes RGB values within image if randomize is true, otherwise does not change myImage.pixelArray
@@ -154,9 +201,9 @@ public class ImageApp {
     private void doLoadPrevious() {
         try {
             myImage = jsonReader.read();
-            System.out.println("your previous image has been loaded from " + JSON_STORE);
+            System.out.println("your previous image has been loaded from " + currentFileDestination);
         } catch (IOException e) {
-            System.out.println("sorry, we were unable to load your work from " + JSON_STORE);
+            System.out.println("sorry, we were unable to load your work from " + currentFileDestination);
         }
     }
 
@@ -244,13 +291,13 @@ public class ImageApp {
             jsonWriter.close();
 
             if (quit) {
-                System.out.println("\n your image was successfully saved to " + JSON_STORE);
+                System.out.println("\n your image was successfully saved to " + currentFileDestination);
                 editing = false;
             } else {
-                System.out.println("\n current progress saved to " + JSON_STORE);
+                System.out.println("\n current progress saved to " + currentFileDestination);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("\n sorry, we were unable to write your image to " + JSON_STORE);
+            System.out.println("\n sorry, we were unable to write your image to " + currentFileDestination);
         }
     }
 
