@@ -12,7 +12,6 @@ public class CurrentProjects {
         this.currentProjects = new ArrayList<>();
     }
 
-    //REQUIRES: string is a destination to a valid json file
     //MODIFIES: this
     //EFFECTS: adds the destination of a current project to the current project list
     public void addToCurrentProjects(String fileDestination) {

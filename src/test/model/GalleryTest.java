@@ -22,15 +22,15 @@ public class GalleryTest {
 
     @Test
     public void testAddCurrentProjectToEmpty() {
-        String destination = "./data/testReaderNewImage.json";
+        String destination = "image1A";
         g.addImageToGallery(destination);
         assertEquals(destination, g.getGallery().get(0));
     }
 
     @Test
     public void testAddCurrentProjectToNonEmpty() {
-        String destination1 = "./data/testReaderNewImage.json";
-        String destination2 = "./data/testReaderPartiallyEditedImage.json";
+        String destination1 = "image2A";
+        String destination2 = "image2B";
         g.addImageToGallery(destination1);
         g.addImageToGallery(destination2);
         assertEquals(2, g.getGallery().size());

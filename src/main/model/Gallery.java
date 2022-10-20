@@ -12,11 +12,11 @@ public class Gallery {
         this.gallery = new ArrayList<>();
     }
 
-    //REQUIRES: string is a destination to a valid json file
+    //REQUIRES: string is a valid project name
     //MODIFIES: this
     //EFFECTS: adds the given json file into gallery
-    public void addImageToGallery(String fileDestination) {
-        this.gallery.add(fileDestination);
+    public void addImageToGallery(String projectName) {
+        this.gallery.add(projectName);
     }
 
     public List<String> getGallery() {

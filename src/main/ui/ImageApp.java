@@ -29,6 +29,8 @@ public class ImageApp {
     private Gallery gallery;
     private CurrentProjects currentProjects;
     private String currentFileDestination;
+    private String toLoad;
+    private String projectName;
     private Scanner input;
     private boolean editing;
     private int width;
@@ -47,8 +49,8 @@ public class ImageApp {
     private void runImageApp() {
         init();
         createOrLeave();
-        jsonWriter = new JsonWriter(currentFileDestination);
-        jsonReader = new JsonReader(currentFileDestination);
+        jsonWriter = new JsonWriter(toLoad);
+        jsonReader = new JsonReader(toLoad);
         nonRedundantRunApp();
     }
 
@@ -109,7 +111,7 @@ public class ImageApp {
                 deciding = false;
                 editing = true;
             } else if (decisionCommand.equals("l")) {
-                doLoadPrevious();
+                doLoadChoice();
                 editing = true;
                 deciding = false;
                 nonRedundantRunApp();
@@ -126,7 +128,9 @@ public class ImageApp {
     private void displayOpeningMenu() {
         System.out.println("\n welcome to Image.(in)!");
         System.out.println("\t n -> create and edit a new image");
-        System.out.println("\t l -> load a previous project");
+        if (!currentProjects.getCurrentProjects().isEmpty()) {
+            System.out.println("\t l -> load a previous project");
+        }
         System.out.println("\t q -> quit application");
     }
 
@@ -145,7 +149,7 @@ public class ImageApp {
         editing = true;
     }
 
-   //EFFECTS: displays file naming rules for user to follow
+    //EFFECTS: displays file naming rules for user to follow
     private void displayNamingRules(Boolean needsDisplay) {
         if (needsDisplay) {
             System.out.println("\n please create a name for your project according to the following rules:");
@@ -167,18 +171,41 @@ public class ImageApp {
     //EFFECTS: creates file name for current project that can be saved to either currentProjects or
     //         gallery depending on user actions later on
     private void doCreateName() {
-        String projectName = input.next();
+        projectName = input.next();
         if (!projectName.matches("(image)\\d{1,2}[A-Z]{1}")) {
             throw new InvalidName();
 //        } else if (myImage.getAllNamesUsed().contains(projectName)) {
 //            throw new DuplicateName();
         } else {
             this.currentFileDestination = FILE_BEGIN + projectName + FILE_END;
-            System.out.println("\n your image has successfully been named: " + projectName);
-            System.out.println("\n now choose your image's dimensions...");
+            System.out.println("your image has successfully been named: " + projectName);
+            System.out.println("now choose your image's dimensions...");
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: loads chosen file to current session
+    private void doLoadChoice() {
+        String fileName;
+        doDisplayAllProjectNames();
+        fileName = input.next();
+        toLoad = FILE_BEGIN + fileName + FILE_END;
+
+        try {
+            myImage = jsonReader.read();
+            System.out.println(fileName + " has been loaded successfully!");
+        } catch (IOException e) {
+            System.out.println("sorry, we were unable to load " + fileName);
+        }
+    }
+
+    //EFFECTS: displays all project names from this.currentProjects
+    private void doDisplayAllProjectNames() {
+        System.out.println("type the name of the file you would like to open");
+        for (String fileName : currentProjects.getCurrentProjects()) {
+            System.out.println("\t " + fileName);
+        }
+    }
 
     //MODIFIES: myImage and this
     //EFFECTS: randomizes RGB values within image if randomize is true, otherwise does not change myImage.pixelArray
@@ -198,11 +225,12 @@ public class ImageApp {
 
     //MODIFIES: this
     private void doLoadPrevious() {
+        toLoad = currentFileDestination;
         try {
             myImage = jsonReader.read();
-            System.out.println("your previous image has been loaded from " + currentFileDestination);
+            System.out.println("your previous image has been loaded from " + toLoad);
         } catch (IOException e) {
-            System.out.println("sorry, we were unable to load your work from " + currentFileDestination);
+            System.out.println("sorry, we were unable to load your work from " + toLoad);
         }
     }
 
@@ -285,7 +313,9 @@ public class ImageApp {
         }
     }
 
-    //EFFECTS: saves current progress to .json file and quits application if quit is true
+    //MODIFIES: this
+    //EFFECTS: saves current progress to .json file, stores project name in this.CurrentProjects
+    //         and quits application if quit is true
     private void doSave(Boolean quit) {
         try {
             jsonWriter.open();
@@ -298,6 +328,9 @@ public class ImageApp {
             } else {
                 System.out.println("\n current progress saved to " + currentFileDestination);
             }
+
+            this.currentProjects.addToCurrentProjects(projectName);
+
         } catch (FileNotFoundException e) {
             System.out.println("\n sorry, we were unable to write your image to " + currentFileDestination);
         }
