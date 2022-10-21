@@ -13,7 +13,6 @@ import persistence.JsonWriterCurrentProjects;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Math.*;
@@ -41,8 +40,6 @@ public class ImageApp {
     private static final String FILE_BEGIN = "./data/";
     private static final String FILE_END = ".json";
     private static final String currentProjectsDest = "./data/currentProjects.json";
-
-
 
     //EFFECTS: runs ImageApp
     public ImageApp() throws IOException {
@@ -216,17 +213,19 @@ public class ImageApp {
         }
     }
 
-    //TODO: add feature that asks user to reenter name if the entered one doesn't exist in currentProjects
     //TODO: debug choose file feature (currently does not work when user types in file name and enters)
     //MODIFIES: this
     //EFFECTS: loads chosen file to current session
     private void doLoadChoice() {
         String fileName;
         doDisplayAllProjectNames();
-        fileName = input.next();
 
-        imageDestination = FILE_BEGIN + fileName + FILE_END;
-        System.out.println(imageDestination);
+        do {
+            fileName = input.next();
+            imageDestination = FILE_BEGIN + fileName + FILE_END;
+            System.out.println("oops! the file name you entered doesn't match any current project");
+            System.out.println("please re-enter a file name from the list above:");
+        } while (!currentProjects.getCurrentProjects().contains(fileName));
 
         try {
             myImage = jsonReader.read();
@@ -239,6 +238,7 @@ public class ImageApp {
     //EFFECTS: displays all project names from this.currentProjects
     private void doDisplayAllProjectNames() {
         System.out.println("type the name of the file you would like to open");
+        System.out.println("all current projects:");
         for (String fileName : currentProjects.getCurrentProjects()) {
             System.out.println("\t " + fileName);
         }

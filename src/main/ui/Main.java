@@ -1,7 +1,6 @@
 package ui;
 
-//TODO: debug doLoadChoice() so that when command is called in terminal, all options to open are
-//      displayed and the user can input the one they want
+//TODO: debug doLoadChoice() so that when user inputs name, the chosen file is properly imported
 //TODO: organize terminal interface
 
 import java.io.IOException;
