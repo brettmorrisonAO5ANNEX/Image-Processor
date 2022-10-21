@@ -13,6 +13,7 @@ import persistence.JsonWriterCurrentProjects;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Math.*;
@@ -41,6 +42,7 @@ public class ImageApp {
     private static final String FILE_END = ".json";
     private static final String currentProjectsDest = "./data/currentProjects.json";
 
+    //TODO: update recursive uses to do while loops
     //EFFECTS: runs ImageApp
     public ImageApp() throws IOException {
         runImageApp();
@@ -93,7 +95,7 @@ public class ImageApp {
                 deciding = false;
                 editing = true;
             } else if (decisionCommand.equals("l")) {
-                doLoadChoice();
+                doLoadChoice(true);
                 editing = true;
                 deciding = false;
                 nonRedundantRunApp();
@@ -216,22 +218,33 @@ public class ImageApp {
     //TODO: debug choose file feature (currently does not work when user types in file name and enters)
     //MODIFIES: this
     //EFFECTS: loads chosen file to current session
-    private void doLoadChoice() {
+    private void doLoadChoice(boolean needsDisplay) {
         String fileName;
-        doDisplayAllProjectNames();
 
-        do {
-            fileName = input.next();
-            imageDestination = FILE_BEGIN + fileName + FILE_END;
-            System.out.println("oops! the file name you entered doesn't match any current project");
-            System.out.println("please re-enter a file name from the list above:");
-        } while (!currentProjects.getCurrentProjects().contains(fileName));
+        if (needsDisplay) {
+            doDisplayAllProjectNames();
+        }
+
+        fileName = input.next();
+        checkNameValidity(fileName);
 
         try {
             myImage = jsonReader.read();
             System.out.println(fileName + " has been loaded successfully!");
         } catch (IOException e) {
             System.out.println("sorry, we were unable to load " + fileName);
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: if user input matches an existing file name, do nothing, else restart doLoadChoice without
+    //         showing display and provide error message and instructions for user
+    private void checkNameValidity(String fileName) {
+        List<String> currentProjectNames = this.currentProjects.getCurrentProjects();
+        if (!currentProjectNames.contains(fileName)) {
+            System.out.println("oops, the file name you entered does not match any of the existing projects...");
+            System.out.println("please re-enter an option from the above list of current projects:");
+            doLoadChoice(false);
         }
     }
 
