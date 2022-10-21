@@ -1,7 +1,7 @@
 package ui;
 
 //TODO: debug doLoadChoice() so that when user inputs name, the chosen file is properly imported
-//TODO: organize terminal interface
+//TODO: organize terminal interface by removing \n and \t
 
 import java.io.IOException;
 

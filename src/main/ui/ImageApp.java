@@ -42,7 +42,6 @@ public class ImageApp {
     private static final String FILE_END = ".json";
     private static final String currentProjectsDest = "./data/currentProjects.json";
 
-    //TODO: update recursive uses to do while loops
     //EFFECTS: runs ImageApp
     public ImageApp() throws IOException {
         runImageApp();
@@ -103,32 +102,32 @@ public class ImageApp {
                 doQuit();
                 deciding = false;
             } else {
-                System.out.println("\n invalid command given...");
+                System.out.println("invalid command given...");
             }
         }
     }
 
     //EFFECTS: displays opening menu to user
     private void displayOpeningMenu() {
-        System.out.println("\n welcome to Image.(in)!");
-        System.out.println("\t n -> create and edit a new image");
+        System.out.println("\nwelcome to Image.(in)!");
+        System.out.println("> n -> create and edit a new image");
         if (!currentProjects.getCurrentProjects().isEmpty()) {
-            System.out.println("\t l -> load a previous project");
+            System.out.println("> l -> load a previous project");
         }
-        System.out.println("\t q -> quit application");
+        System.out.println("> q -> quit application");
     }
 
     //MODIFIES: this
     //EFFECTS: creates image to users size specifications and initialized editing process
     private void doCreateNew() {
         displayNamingRules(true);
-        System.out.println("\n IMPORTANT: to use pixelate filter, your image width and height must be even...");
-        System.out.println("\n please enter an (integer) width for your image: ");
+        System.out.println("\tIMPORTANT: to use pixelate filter, your image width and height must be even...");
+        System.out.println("> please enter an (integer) width for your image: ");
         processWidth(input.nextInt());
-        System.out.println("\n please enter an (integer) height for your image: ");
+        System.out.println("> please enter an (integer) height for your image: ");
         processHeight(input.nextInt());
         createImage(width, height);
-        System.out.println("\n would you like to randomize the color of your image?");
+        System.out.println("would you like to randomize the color of your image?");
         doRandomize();
         editing = true;
     }
@@ -136,9 +135,10 @@ public class ImageApp {
     //EFFECTS: displays file naming rules for user to follow
     private void displayNamingRules(Boolean needsDisplay) {
         if (needsDisplay) {
-            System.out.println("\n please create a name for your project according to the following rules:");
-            System.out.println("\t 1. name must begin with the literal string \"image\"");
-            System.out.println("\t 2. \"image\" must be followed by a single integer and a single uppercase letter");
+            System.out.println("please create a name for your project according to the following rules:");
+            System.out.println("> name must begin with the literal string \"image\"");
+            System.out.println("> \"image\" must be followed by a single integer and a single uppercase letter");
+            System.out.println("> EXAMPLE: image4U");
         }
         try {
             doCreateName();
@@ -167,7 +167,7 @@ public class ImageApp {
         } else {
             currentProjects.addToCurrentProjects(projectName);
             System.out.println("your image has successfully been named: " + projectName);
-            System.out.println("now choose your image's dimensions...");
+            System.out.println("> now choose your image's dimensions...");
         }
     }
 
@@ -175,7 +175,7 @@ public class ImageApp {
     //EFFECTS: asks for new width if previous one was < 0 otherwise assigns width
     private void processWidth(int w) {
         if (w < 1) {
-            System.out.println("\n oops... please enter a width that is greater than zero!");
+            System.out.println("oops... please enter a width that is greater than zero!");
             processWidth(input.nextInt());
         } else {
             width = w;
@@ -186,7 +186,7 @@ public class ImageApp {
     //EFFECTS: asks for new height if previous one was < 0 otherwise assigns height
     private void processHeight(int h) {
         if (h < 1) {
-            System.out.println("\n oops... please enter a height that is greater than zero!");
+            System.out.println("oops... please enter a height that is greater than zero!");
             processHeight(input.nextInt());
         } else {
             height = h;
@@ -203,8 +203,8 @@ public class ImageApp {
     //EFFECTS: randomizes RGB values within image if randomize is true, otherwise does not change myImage.pixelArray
     private void doRandomize() {
         String randomizeCommand;
-        System.out.println("\n y -> yes");
-        System.out.println("\n n -> no");
+        System.out.println("> y -> yes");
+        System.out.println("> n -> no");
         randomizeCommand = input.next();
 
         if (randomizeCommand.equals("y")) {
@@ -228,6 +228,8 @@ public class ImageApp {
         fileName = input.next();
         checkNameValidity(fileName);
 
+        jsonReader = new JsonReader(FILE_BEGIN + fileName + FILE_END);
+
         try {
             myImage = jsonReader.read();
             System.out.println(fileName + " has been loaded successfully!");
@@ -243,8 +245,10 @@ public class ImageApp {
         List<String> currentProjectNames = this.currentProjects.getCurrentProjects();
         if (!currentProjectNames.contains(fileName)) {
             System.out.println("oops, the file name you entered does not match any of the existing projects...");
-            System.out.println("please re-enter an option from the above list of current projects:");
+            System.out.println("> please re-enter an option from the above list of current projects:");
             doLoadChoice(false);
+        } else {
+            projectName = fileName;
         }
     }
 
@@ -253,7 +257,7 @@ public class ImageApp {
         System.out.println("type the name of the file you would like to open");
         System.out.println("all current projects:");
         for (String fileName : currentProjects.getCurrentProjects()) {
-            System.out.println("\t " + fileName);
+            System.out.println("> " + fileName);
         }
     }
 
@@ -277,17 +281,19 @@ public class ImageApp {
 
     //EFFECTS: displays tool menu to user
     private void displayToolMenu() {
-        System.out.println("\n Tool Menu:");
-        System.out.println("\t a -> add filter");
-        System.out.println("\t ul -> undo last edit");
-        System.out.println("\t ua -> undo all edits");
-        System.out.println("\t ut -> undo all filters of a certain type");
-        System.out.println("\t v -> view edit history");
-        System.out.println("\t sc -> save current progress");
-        System.out.println("\t rp -> reset progress to last saved");
-        System.out.println("\t qs -> quit and save progress");
-        System.out.println("\t p -> process final image");
-        System.out.println("\t ab -> abandon project");
+        System.out.println("*******************************************");
+        System.out.println("Tool Menu:");
+        System.out.println("> a -> add filter");
+        System.out.println("> ul -> undo last edit");
+        System.out.println("> ua -> undo all edits");
+        System.out.println("> ut -> undo all filters of a certain type");
+        System.out.println("> v -> view edit history");
+        System.out.println("> sc -> save current progress");
+        System.out.println("> rp -> reset progress to last saved");
+        System.out.println("> qs -> quit and save progress");
+        System.out.println("> p -> process final image");
+        System.out.println("> ab -> abandon project");
+        System.out.println("*******************************************");
     }
 
     //MODIFIES: this
@@ -311,7 +317,9 @@ public class ImageApp {
         } else if (command.equals("p")) {
             doProcessAndQuit();
         } else if (command.equals("ab")) {
+            doRemoveName();
             doQuit();
+            doSaveCurrentProjects();
         } else {
             System.out.println("\n invalid command given...");
         }
@@ -349,14 +357,14 @@ public class ImageApp {
 
     //EFFECTS: displays available filters
     private void displayFilterOptions() {
-        System.out.println("\n choose a filter to apply: ");
-        System.out.println("\t nv -> negative");
-        System.out.println("\t mr -> mirror");
+        System.out.println("choose a filter to apply: ");
+        System.out.println("> nv -> negative");
+        System.out.println("> mr -> mirror");
         if (bothEven()) {
-            System.out.println("\t px -> pixelate");
+            System.out.println("> px -> pixelate");
         } else {
-            System.out.println("\n NOTE: pixelate filter not available because your chosen "
-                    + whichOdd() + " odd...");
+            System.out.println("NOTE: pixelate filter not available because your chosen "
+                               + whichOdd() + " odd...");
         }
     }
 
@@ -386,23 +394,26 @@ public class ImageApp {
         int minDim = min(myImage.getImageWidth(), myImage.getImageHeight());
         int maxDegPix = (int) (log(minDim) / log(2));
         int[] degOptions = new int[maxDegPix + 1];
-        System.out.println("\n choose one of the following numbers as your degree of pixelation:");
-        System.out.println("\t NOTE: 0 cause the lowest amount of pixelation");
+        System.out.println("choose one of the following numbers as your degree of pixelation:");
+        System.out.println("NOTE: lower degrees of pixelation correlate to less image augmentation");
         for (int o = 0; o < maxDegPix + 1; o++) {
             degOptions[o] = o;
         }
         System.out.println(Arrays.toString(degOptions));
-        myImage.setDegreeOfPixelation(input.nextInt());
+
+        int degreeChosen = input.nextInt();
+        myImage.setDegreeOfPixelation(degreeChosen);
+        System.out.println("pixelate filter applied with degree: " + degreeChosen);
     }
 
     //MODIFIES: this
     //EFFECTS: undoes last edit
     private void doUndoLast() {
         if (editHistory == 0) {
-            System.out.println("\n no filters to remove...");
+            System.out.println("no filters to remove...");
         } else {
             myImage.undoLast();
-            System.out.println("\n the most recent filter has been removed...");
+            System.out.println("the most recent filter has been removed...");
         }
     }
 
@@ -410,10 +421,10 @@ public class ImageApp {
     //EFFECTS: removes all added filters
     private void doUndoAll() {
         if (editHistory == 0) {
-            System.out.println("\n no filters to remove...");
+            System.out.println("no filters to remove...");
         } else {
             myImage.undoAll();
-            System.out.println("\n all filters have been removed...");
+            System.out.println("all filters have been removed...");
         }
     }
 
@@ -424,24 +435,24 @@ public class ImageApp {
             displayAvailableFilters();
             doRemoveChosen(input.next());
         } else {
-            System.out.println("\n no filters to remove...");
+            System.out.println("no filters to remove...");
         }
     }
 
     //MODIFIES: this
     //EFFECTS: presents user with all unique filters used, so they know which types they can remove
     private void displayAvailableFilters() {
-        System.out.println("\n you have used each of the following filters at least once: ");
+        System.out.println("you have used each of the following filters at least once: ");
         for (String filterName : myImage.getUniqueFiltersUsed()) {
             if (filterName.equals("negative")) {
-                System.out.println("\t nv -> negative");
+                System.out.println("> nv -> negative");
             } else if (filterName.equals("mirror")) {
-                System.out.println("\t mr -> mirror");
+                System.out.println("> mr -> mirror");
             } else if (filterName.equals("pixelate")) {
-                System.out.println("\t px -> pixelate");
+                System.out.println("> px -> pixelate");
             }
         }
-        System.out.println("\n choose a type to remove from your image: ");
+        System.out.println("choose a type to remove from your image: ");
     }
 
     //MODIFIES: myImage
@@ -449,15 +460,15 @@ public class ImageApp {
     private void doRemoveChosen(String command) {
         if (command.equals("nv")) {
             myImage.removeAllOfType("negative");
-            System.out.println("\t all applications of (negative) have been removed");
+            System.out.println("all applications of (negative) have been removed");
         } else if (command.equals("mr")) {
             myImage.removeAllOfType("mirror");
-            System.out.println("\t all applications of (mirror) have been removed");
+            System.out.println("all applications of (mirror) have been removed");
         } else if (command.equals("px")) {
             myImage.removeAllOfType("pixelate");
-            System.out.println("\t all applications of (pixelate) have been removed");
+            System.out.println("all applications of (pixelate) have been removed");
         } else {
-            System.out.println("\n invalid option...");
+            System.out.println("invalid option...");
             doUndoType();
         }
     }
@@ -470,10 +481,11 @@ public class ImageApp {
         String refinedHistory = history.substring(1, historyEndInd);
 
         if (history.equals("no filters applied")) {
-            System.out.printf("\t %s", refinedHistory);
+            System.out.printf("> %s", refinedHistory);
         } else {
-            System.out.println("\n your edit history is: ");
-            System.out.printf("\t %s", refinedHistory);
+            System.out.println("your edit history is: ");
+            System.out.printf("> %s", refinedHistory);
+            System.out.println("\n");
         }
     }
 
@@ -487,14 +499,14 @@ public class ImageApp {
             jsonWriter.close();
 
             if (quit) {
-                System.out.println("\n your image was successfully saved to " + imageDestination);
+                System.out.println("your image was successfully saved to " + imageDestination);
                 editing = false;
             } else {
-                System.out.println("\n current progress saved to " + imageDestination);
+                System.out.println("current progress saved to " + imageDestination);
             }
 
         } catch (FileNotFoundException e) {
-            System.out.println("\n sorry, we were unable to write your image to " + imageDestination);
+            System.out.println("sorry, we were unable to write your image to " + imageDestination);
         }
     }
 
@@ -526,17 +538,24 @@ public class ImageApp {
     private void doProcessAndQuit() {
         myImage.processImage();
         String result = myImage.createVisArray(0);
-        System.out.println("\n thank you... your image has been processed successfully!");
-        System.out.println("\n your image is represented by the following pixel array: ");
-        System.out.println("\n" + result);
+        System.out.println("thank you... your image has been processed successfully!");
+        System.out.println("your image is represented by the following pixel array: ");
+        System.out.println(result);
         editing = false;
+    }
+
+    //MODIFIES: this
+    //EFFECTS: removes the abandoned project name from currentProjects
+    private void doRemoveName() {
+        List<String> allNames = this.currentProjects.getCurrentProjects();
+        allNames.remove(projectName);
+        System.out.println(allNames);
     }
 
     //MODIFIES: this
     //EFFECTS: quits program
     private void doQuit() {
-        System.out.println("\n sorry to see you go... come back anytime to edit a new image!");
+        System.out.println("sorry to see you go... come back anytime to edit a new image!");
         editing = false;
-
     }
 }
