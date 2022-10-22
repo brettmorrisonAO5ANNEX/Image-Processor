@@ -42,7 +42,6 @@ public class ImageApp {
     private static final String FILE_END = ".json";
     private static final String currentProjectsDest = "./data/currentProjects.json";
 
-    //TODO: debg "invalid command given..." being shown after each instance of adding a filter
     //EFFECTS: runs ImageApp
     public ImageApp() throws IOException {
         runImageApp();
@@ -347,8 +346,10 @@ public class ImageApp {
     private void processFilterChoice(String filterChoice) {
         if (filterChoice.equals("nv")) {
             myImage.addFilter(negative);
+            System.out.println("negative filter has been applied to " + projectName);
         } else if (filterChoice.equals("mr")) {
             myImage.addFilter(mirror);
+            System.out.println("mirror filter has been applied to " + projectName);
         } else if (filterChoice.equals("px")) {
             doDisplayPixOptions();
             myImage.addFilter(pixelate);
@@ -406,7 +407,8 @@ public class ImageApp {
 
         int degreeChosen = input.nextInt();
         myImage.setDegreeOfPixelation(degreeChosen);
-        System.out.println("pixelate filter applied with degree: " + degreeChosen);
+        System.out.println("pixelate filter applied with degree "
+                + "(" + degreeChosen + ")" + " to " + projectName);
     }
 
     //MODIFIES: this
