@@ -42,6 +42,7 @@ public class ImageApp {
     private static final String FILE_END = ".json";
     private static final String currentProjectsDest = "./data/currentProjects.json";
 
+    //TODO: debug qs after loading previous
     //EFFECTS: runs ImageApp
     public ImageApp() throws IOException {
         runImageApp();
@@ -151,14 +152,15 @@ public class ImageApp {
         }
     }
 
+    //TODO: point 1
+    //TODO: the issue is that I have to initialize jsonWriter and jsonReader after I've either created a name
+    //      or chosen an existing project name
     //MODIFIES: this
     //EFFECTS: creates file name for current project that can be saved to either currentProjects or
     //         gallery depending on user actions later on
     private void doCreateName() {
         projectName = input.next();
         imageDestination = FILE_BEGIN + projectName + FILE_END;
-        jsonWriter = new JsonWriter(imageDestination);
-        jsonReader = new JsonReader(imageDestination);
 
         if (!projectName.matches("(image)\\d{1,2}[A-Z]{1}")) {
             throw new InvalidName();
@@ -215,6 +217,7 @@ public class ImageApp {
         }
     }
 
+    //TODO: point 2
     //TODO: debug choose file feature (currently does not work when user types in file name and enters)
     //MODIFIES: this
     //EFFECTS: loads chosen file to current session
@@ -228,13 +231,20 @@ public class ImageApp {
         fileName = input.next();
         checkNameValidity(fileName);
 
-        jsonReader = new JsonReader(FILE_BEGIN + fileName + FILE_END);
-
         try {
             myImage = jsonReader.read();
             System.out.println(fileName + " has been loaded successfully!");
         } catch (IOException e) {
             System.out.println("sorry, we were unable to load " + fileName);
+        }
+    }
+
+    //EFFECTS: displays all project names from this.currentProjects
+    private void doDisplayAllProjectNames() {
+        System.out.println("type the name of the file you would like to open");
+        System.out.println("all current projects:");
+        for (String fileName : currentProjects.getCurrentProjects()) {
+            System.out.println("> " + fileName);
         }
     }
 
@@ -249,15 +259,8 @@ public class ImageApp {
             doLoadChoice(false);
         } else {
             projectName = fileName;
-        }
-    }
-
-    //EFFECTS: displays all project names from this.currentProjects
-    private void doDisplayAllProjectNames() {
-        System.out.println("type the name of the file you would like to open");
-        System.out.println("all current projects:");
-        for (String fileName : currentProjects.getCurrentProjects()) {
-            System.out.println("> " + fileName);
+            imageDestination = FILE_BEGIN + projectName + FILE_END;
+            jsonReader = new JsonReader(imageDestination);
         }
     }
 
@@ -267,6 +270,7 @@ public class ImageApp {
     //         jump straight into working rather than viewing redundant info
     private void nonRedundantRunApp() {
         String command;
+        jsonWriter = new JsonWriter(imageDestination);
 
         while (editing) {
             editHistory = myImage.getListOfFilter().size();

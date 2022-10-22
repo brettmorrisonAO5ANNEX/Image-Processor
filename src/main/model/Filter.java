@@ -100,8 +100,7 @@ public class Filter implements Writable {
         }
         img.pixelArray = upsizedPixelatedArray;
     }
-
-
+    
     //EFFECTS: returns the apparent degree of pixelation relative to users input - makes user choices for
     //         degree of pixelation more intuitive as degree 0 would intuitively correspond to the lowest amount
     //         of pixelation but this is the reverse in the algorithm, so I chose to invert them
