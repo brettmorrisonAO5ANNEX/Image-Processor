@@ -42,7 +42,7 @@ public class ImageApp {
     private static final String FILE_END = ".json";
     private static final String currentProjectsDest = "./data/currentProjects.json";
 
-    //TODO: debug qs after loading previous
+    //TODO: debg "invalid command given..." being shown after each instance of adding a filter
     //EFFECTS: runs ImageApp
     public ImageApp() throws IOException {
         runImageApp();
@@ -152,9 +152,6 @@ public class ImageApp {
         }
     }
 
-    //TODO: point 1
-    //TODO: the issue is that I have to initialize jsonWriter and jsonReader after I've either created a name
-    //      or chosen an existing project name
     //MODIFIES: this
     //EFFECTS: creates file name for current project that can be saved to either currentProjects or
     //         gallery depending on user actions later on
@@ -217,8 +214,6 @@ public class ImageApp {
         }
     }
 
-    //TODO: point 2
-    //TODO: debug choose file feature (currently does not work when user types in file name and enters)
     //MODIFIES: this
     //EFFECTS: loads chosen file to current session
     private void doLoadChoice(boolean needsDisplay) {
@@ -305,11 +300,7 @@ public class ImageApp {
     private void processCommand(String command) {
         if (command.equals("a")) {
             doAddFilter();
-        }
-
-        doUndo(command);
-
-        if (command.equals("v")) {
+        } else  if (command.equals("v")) {
             doViewHistory();
         } else if (command.equals("sc")) {
             doSave(false);
@@ -324,6 +315,8 @@ public class ImageApp {
             doRemoveName();
             doQuit();
             doSaveCurrentProjects();
+        } else if (command.equals("ul") || command.equals("ua") || command.equals("ut")) {
+            doUndo(command);
         } else {
             System.out.println("\n invalid command given...");
         }
@@ -346,6 +339,12 @@ public class ImageApp {
     private void doAddFilter() {
         displayFilterOptions();
         String filterChoice = input.next();
+        processFilterChoice(filterChoice);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: processes filter choice command
+    private void processFilterChoice(String filterChoice) {
         if (filterChoice.equals("nv")) {
             myImage.addFilter(negative);
         } else if (filterChoice.equals("mr")) {
@@ -552,8 +551,8 @@ public class ImageApp {
     //EFFECTS: removes the abandoned project name from currentProjects
     private void doRemoveName() {
         List<String> allNames = this.currentProjects.getCurrentProjects();
+        System.out.println(projectName + " has been successfully abandoned:");
         allNames.remove(projectName);
-        System.out.println(allNames);
     }
 
     //MODIFIES: this
