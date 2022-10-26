@@ -40,6 +40,8 @@ public class ImageApp {
     private JsonReaderCurrentProjects jsonReaderCP;
     private static final String FILE_BEGIN = "./data/";
     private static final String FILE_END = ".json";
+    //TODO
+    //create static final string for Gallery destination so that gallery is always updated if image is processed
     private static final String currentProjectsDest = "./data/currentProjects.json";
 
     //EFFECTS: runs ImageApp
@@ -114,6 +116,8 @@ public class ImageApp {
         if (!currentProjects.getCurrentProjects().isEmpty()) {
             System.out.println("> l -> load a previous project");
         }
+        //TODO
+        //option to load copy from gallery
         System.out.println("> q -> quit application");
     }
 
@@ -227,7 +231,6 @@ public class ImageApp {
 
         try {
             myImage = jsonReader.read();
-            System.out.println(fileName + " has been loaded successfully!");
         } catch (IOException e) {
             System.out.println("sorry, we were unable to load " + fileName);
         }
@@ -253,6 +256,7 @@ public class ImageApp {
             doLoadChoice(false);
         } else {
             projectName = fileName;
+            System.out.println(projectName + " has been loaded successfully!");
             imageDestination = FILE_BEGIN + projectName + FILE_END;
             jsonReader = new JsonReader(imageDestination);
         }
@@ -318,18 +322,6 @@ public class ImageApp {
             doUndo(command);
         } else {
             System.out.println("\n invalid command given...");
-        }
-    }
-
-    //MODIFIES: this
-    //EFFECTS: handles all instances in which a user want to undo (of either last, type, or all)
-    public void doUndo(String command) {
-        if (command.equals("ul")) {
-            doUndoLast();
-        } else if (command.equals("ua")) {
-            doUndoAll();
-        } else if (command.equals("ut")) {
-            doUndoType();
         }
     }
 
@@ -409,6 +401,18 @@ public class ImageApp {
         myImage.setDegreeOfPixelation(degreeChosen);
         System.out.println("pixelate filter applied with degree "
                 + "(" + degreeChosen + ")" + " to " + projectName);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: handles all instances in which a user want to undo (of either last, type, or all)
+    public void doUndo(String command) {
+        if (command.equals("ul")) {
+            doUndoLast();
+        } else if (command.equals("ua")) {
+            doUndoAll();
+        } else if (command.equals("ut")) {
+            doUndoType();
+        }
     }
 
     //MODIFIES: this
@@ -538,10 +542,12 @@ public class ImageApp {
         }
     }
 
+    //TODO
     //MODIFIES: this
     //EFFECTS: quits program and displays exit message
     private void doProcessAndQuit() {
         myImage.processImage();
+        // make copy of image here (after processing) so that pixelArray is updated
         String result = myImage.createVisArray(0);
         System.out.println("thank you... your image has been processed successfully!");
         System.out.println("your image is represented by the following pixel array: ");

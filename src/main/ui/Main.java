@@ -1,7 +1,7 @@
 package ui;
 
-//TODO: update user stories
-//TODO: debug pixelate so that proper degPix options are created
+//TODO: add test for randomize
+//TODO: debug pixelate
 //TODO: gallery functionality
 import java.io.IOException;
 
