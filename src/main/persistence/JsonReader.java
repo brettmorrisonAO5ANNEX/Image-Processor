@@ -45,6 +45,7 @@ public class JsonReader {
         int height = jsonObject.getInt("height");
         Image img = new Image(width, height);
         addListOfFilter(img, jsonObject);
+        img.setImageResult(jsonObject.getString("imageResult"));
         addDegreeOfPixelation(img, jsonObject);
         return img;
     }
@@ -53,7 +54,7 @@ public class JsonReader {
     //EFFECTS: parses listOfFilter from JSON object and adds them to image
     private void addListOfFilter(Image img, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("listOfFilter");
-        for (Object json: jsonArray) {
+        for (Object json : jsonArray) {
             JSONObject nextFilter = (JSONObject) json;
             addFilter(img, nextFilter);
         }

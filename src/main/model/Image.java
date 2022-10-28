@@ -44,16 +44,17 @@ public class Image implements Writable {
         json.put("width", width);
         json.put("height", height);
         json.put("degreeOfPixelation", degreeOfPixelation);
+        json.put("imageResult", imageResult);
         return json;
     }
 
     //EFFECTS: returns filters used in this image as a JSON array
     private JSONArray listOfFilterToJson() {
-        JSONArray jsonArray = new JSONArray();
+        JSONArray jsonArrayLOF = new JSONArray();
         for (Filter f: listOfFilter) {
-            jsonArray.put(f.toJson());
+            jsonArrayLOF.put(f.toJson());
         }
-        return jsonArray;
+        return jsonArrayLOF;
     }
 
     //MODIFIES: this

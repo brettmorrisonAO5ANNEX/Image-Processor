@@ -18,14 +18,14 @@ public class CurrentProjects implements Writable {
         return json;
     }
 
-    //EFFECTS: returns project names used as a JSON array
-    private JSONArray currentProjectsToJson() {
-        JSONArray jsonArray = new JSONArray();
-        for (String projectName: currentProjects) {
-            jsonArray.put(projectName);
-        }
-        return jsonArray;
-    }
+//    //EFFECTS: returns project names used as a JSON array
+//    private JSONArray currentProjectsToJson() {
+//        JSONArray jsonArray = new JSONArray();
+//        for (String projectName: currentProjects) {
+//            jsonArray.put(projectName);
+//        }
+//        return jsonArray;
+//    }
 
     //EFFECTS: constructs a new CurrentProjects with an empty list of current projects
     public CurrentProjects() {

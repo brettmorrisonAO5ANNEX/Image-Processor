@@ -137,8 +137,6 @@ public class ImageApp {
         System.out.println("> please enter an (integer) height for your image: ");
         processHeight(input.nextInt());
         createImage(width, height);
-        System.out.println("would you like to randomize the color of your image?");
-        doRandomize();
         editing = true;
     }
 
@@ -205,22 +203,6 @@ public class ImageApp {
     //EFFECTS: instantiates an image with width w and height h
     private void createImage(int w, int h) {
         myImage = new Image(w, h);
-    }
-
-    //MODIFIES: myImage and this
-    //EFFECTS: randomizes RGB values within image if randomize is true, otherwise does not change myImage.pixelArray
-    private void doRandomize() {
-        String randomizeCommand;
-        System.out.println("> y -> yes");
-        System.out.println("> n -> no");
-        randomizeCommand = input.next();
-
-        if (randomizeCommand.equals("y")) {
-            myImage.randomizeColor();
-            System.out.println("your image now has a randomized color!");
-        } else if (randomizeCommand.equals("n")) {
-            System.out.println("your image is a default blank canvas!");
-        }
     }
 
     //MODIFIES: this
@@ -552,24 +534,43 @@ public class ImageApp {
     //MODIFIES: this
     //EFFECTS: quits program and displays exit message
     private void doProcessAndQuit() {
+        doRandomize();
         myImage.processImage();
-        doMakeCopy(myImage);
         String result = myImage.createVisArray(0);
+        doMakeCopy(myImage, result);
         System.out.println("thank you... your image has been processed successfully!");
         System.out.println("your image is represented by the following pixel array: ");
         System.out.println(result);
         editing = false;
     }
 
+    //MODIFIES: myImage and this
+    //EFFECTS: randomizes RGB values within image if randomize is true, otherwise does not change myImage.pixelArray
+    private void doRandomize() {
+        String randomizeCommand;
+        System.out.println("would you like to randomize the color of your image before applying all edits?");
+        System.out.println("> y -> yes");
+        System.out.println("> n -> no");
+        randomizeCommand = input.next();
+
+        if (randomizeCommand.equals("y")) {
+            myImage.randomizeColor();
+            System.out.println("your image now has a randomized color!");
+        } else if (randomizeCommand.equals("n")) {
+            System.out.println("your image is a default blank canvas!");
+        }
+    }
+
     //MODIFIES: this, currentProjects, gallery
     //EFFECTS: creates a new image with same dimensions as myImage and sets pixelArray to the
     //         processed pixelArray from myImage then saves new image as jsonfile
-    private void doMakeCopy(Image myImage) {
+    private void doMakeCopy(Image myImage, String finalImage) {
         String copyName = projectName + "C";
 
         doAddCopyToGallery(copyName);
         Image myImageCopy = new Image(width, height);
         myImageCopy.setPixelArray(myImage.getPixelArray());
+        myImageCopy.setImageResult(finalImage);
         doSaveCopy(copyName, myImageCopy);
     }
 
