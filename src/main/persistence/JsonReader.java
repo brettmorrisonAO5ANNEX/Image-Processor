@@ -74,12 +74,5 @@ public class JsonReader {
         int degreeOfPixelation = jsonObject.getInt("degreeOfPixelation");
         img.setDegreeOfPixelation(degreeOfPixelation);
     }
-
-    //MODIFIES: img
-    //EFFECTS: parses imageResult from JSON object and adds it to image
-    private void addImageResult(Image img, JSONObject jsonObject) {
-        String imageResult = jsonObject.getString("imageResult");
-        img.setImageResult(imageResult);
-    }
 }
 

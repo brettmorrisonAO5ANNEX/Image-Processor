@@ -301,6 +301,7 @@ public class ImageTest {
     @Test
     public void testRandomizeColorOneElement() {
         int totalNumElem = i.getImageWidth() * i.getImageHeight();
+        i.randomizeColor();
         for (int r = 0; r < totalNumElem; r++) {
             for (int c = 0; c < 3; c++) {
                 int rgbVal = i.pixelArray[r][c];
@@ -312,6 +313,7 @@ public class ImageTest {
     @Test
     public void testRandomizeColorFourElement() {
         Image i4 = new Image(4, 4);
+        i4.randomizeColor();
         int totalNumElem = i.getImageWidth() * i.getImageHeight();
         for (int r = 0; r < totalNumElem; r++) {
             for (int c = 0; c < 3; c++) {

@@ -2,7 +2,7 @@ package ui;
 
 //TODO: add test for randomize
 //TODO: debug pixelate
-//TODO: gallery functionality
+//TODO: figure out how to save int[][] in json!!!!
 import java.io.IOException;
 
 //represents starting point for ImageApp to be run from

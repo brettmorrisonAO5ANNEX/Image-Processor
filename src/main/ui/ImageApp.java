@@ -549,13 +549,11 @@ public class ImageApp {
         }
     }
 
-    //TODO
     //MODIFIES: this
     //EFFECTS: quits program and displays exit message
     private void doProcessAndQuit() {
         myImage.processImage();
         doMakeCopy(myImage);
-        //method to remove project name from current projects
         String result = myImage.createVisArray(0);
         System.out.println("thank you... your image has been processed successfully!");
         System.out.println("your image is represented by the following pixel array: ");
