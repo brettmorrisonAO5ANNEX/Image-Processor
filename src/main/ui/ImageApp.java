@@ -2,13 +2,11 @@ package ui;
 
 import model.CurrentProjects;
 import model.Filter;
+import model.Gallery;
 import model.Image;
 import model.exceptions.DuplicateName;
 import model.exceptions.InvalidName;
-import persistence.JsonReader;
-import persistence.JsonReaderCurrentProjects;
-import persistence.JsonWriter;
-import persistence.JsonWriterCurrentProjects;
+import persistence.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,17 +30,22 @@ public class ImageApp {
     private Filter mirror;
     private Filter pixelate;
     private String projectName;
-    private String imageDestination;
+    private String currentProjectDestination;
+    private String copyDestination;
+
     private CurrentProjects currentProjects;
+    private Gallery gallery;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
+    private JsonWriter jsonWriterCopy;
     private JsonWriterCurrentProjects jsonWriterCP;
     private JsonReaderCurrentProjects jsonReaderCP;
+    private JsonWriterGallery jsonWriterG;
+    private JsonReaderGallery jsonReaderG;
     private static final String FILE_BEGIN = "./data/";
     private static final String FILE_END = ".json";
-    //TODO
-    //create static final string for Gallery destination so that gallery is always updated if image is processed
     private static final String currentProjectsDest = "./data/currentProjects.json";
+    private static final String galleryDest = "./data/gallery.json";
 
     //EFFECTS: runs ImageApp
     public ImageApp() throws IOException {
@@ -62,10 +65,13 @@ public class ImageApp {
     private void init() throws IOException {
         jsonReaderCP = new JsonReaderCurrentProjects(currentProjectsDest);
         jsonWriterCP = new JsonWriterCurrentProjects(currentProjectsDest);
+        jsonReaderG = new JsonReaderGallery(galleryDest);
+        jsonWriterG = new JsonWriterGallery(galleryDest);
         negative = new Filter("negative");
         mirror = new Filter("mirror");
         pixelate = new Filter("pixelate");
         currentProjects = jsonReaderCP.read();
+        gallery = jsonReaderG.read();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
         System.out.println(displayLogo());
@@ -160,7 +166,7 @@ public class ImageApp {
     //         gallery depending on user actions later on
     private void doCreateName() {
         projectName = input.next();
-        imageDestination = FILE_BEGIN + projectName + FILE_END;
+        currentProjectDestination = FILE_BEGIN + projectName + FILE_END;
 
         if (!projectName.matches("(image)\\d{1,2}[A-Z]{1}")) {
             throw new InvalidName();
@@ -257,8 +263,8 @@ public class ImageApp {
         } else {
             projectName = fileName;
             System.out.println(projectName + " has been loaded successfully!");
-            imageDestination = FILE_BEGIN + projectName + FILE_END;
-            jsonReader = new JsonReader(imageDestination);
+            currentProjectDestination = FILE_BEGIN + projectName + FILE_END;
+            jsonReader = new JsonReader(currentProjectDestination);
         }
     }
 
@@ -268,7 +274,7 @@ public class ImageApp {
     //         jump straight into working rather than viewing redundant info
     private void nonRedundantRunApp() {
         String command;
-        jsonWriter = new JsonWriter(imageDestination);
+        jsonWriter = new JsonWriter(currentProjectDestination);
 
         while (editing) {
             editHistory = myImage.getListOfFilter().size();
@@ -279,6 +285,9 @@ public class ImageApp {
 
             processCommand(command);
         }
+
+        doSaveGallery();
+        doSaveCurrentProjects();
     }
 
     //EFFECTS: displays tool menu to user
@@ -311,13 +320,11 @@ public class ImageApp {
             doLoadPrevious();
         } else if (command.equals("qs")) {
             doSave(true);
-            doSaveCurrentProjects();
         } else if (command.equals("p")) {
             doProcessAndQuit();
         } else if (command.equals("ab")) {
             doRemoveName();
             doQuit();
-            doSaveCurrentProjects();
         } else if (command.equals("ul") || command.equals("ua") || command.equals("ut")) {
             doUndo(command);
         } else {
@@ -508,14 +515,14 @@ public class ImageApp {
             jsonWriter.close();
 
             if (quit) {
-                System.out.println("your image was successfully saved to " + imageDestination);
+                System.out.println("your image was successfully saved to " + currentProjectDestination);
                 editing = false;
             } else {
-                System.out.println("current progress saved to " + imageDestination);
+                System.out.println("current progress saved to " + currentProjectDestination);
             }
 
         } catch (FileNotFoundException e) {
-            System.out.println("sorry, we were unable to write your image to " + imageDestination);
+            System.out.println("sorry, we were unable to write your image to " + currentProjectDestination);
         }
     }
 
@@ -524,9 +531,9 @@ public class ImageApp {
     private void doLoadPrevious() {
         try {
             myImage = jsonReader.read();
-            System.out.println("your previous image has been loaded from " + imageDestination);
+            System.out.println("your previous image has been loaded from " + currentProjectDestination);
         } catch (IOException e) {
-            System.out.println("sorry, we were unable to load your work from " + imageDestination);
+            System.out.println("sorry, we were unable to load your work from " + currentProjectDestination);
         }
     }
 
@@ -547,7 +554,8 @@ public class ImageApp {
     //EFFECTS: quits program and displays exit message
     private void doProcessAndQuit() {
         myImage.processImage();
-        // make copy of image here (after processing) so that pixelArray is updated
+        doMakeCopy(myImage);
+        //method to remove project name from current projects
         String result = myImage.createVisArray(0);
         System.out.println("thank you... your image has been processed successfully!");
         System.out.println("your image is represented by the following pixel array: ");
@@ -555,11 +563,57 @@ public class ImageApp {
         editing = false;
     }
 
+    //MODIFIES: this, currentProjects, gallery
+    //EFFECTS: creates a new image with same dimensions as myImage and sets pixelArray to the
+    //         processed pixelArray from myImage then saves new image as jsonfile
+    private void doMakeCopy(Image myImage) {
+        String copyName = projectName + "C";
+
+        doAddCopyToGallery(copyName);
+        Image myImageCopy = new Image(width, height);
+        myImageCopy.setPixelArray(myImage.getPixelArray());
+        doSaveCopy(copyName, myImageCopy);
+    }
+
+    //MODIFIES: this, currentProjects, gallery
+    //EFFECTS: adds projectName + "C" to gallery and removes original project name from current projects
+    private void doAddCopyToGallery(String copyName) {
+        gallery.addCopyToGallery(copyName);
+        doRemoveName();
+    }
+
+    //EFFECTS: writes copy image to json file
+    private void doSaveCopy(String copyName, Image copy) {
+        copyDestination = FILE_BEGIN + copyName + FILE_END;
+        jsonWriterCopy = new JsonWriter(copyDestination);
+
+        try {
+            jsonWriterCopy.open();
+            jsonWriterCopy.write(copy);
+            jsonWriterCopy.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("sorry, we were unable to write your image to " + copyDestination);
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: writes gallery to json to keep updated version for next loaded session
+    private void doSaveGallery() {
+        try {
+            jsonWriterG.open();
+            jsonWriterG.write(gallery);
+            jsonWriterG.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("there was an error while saving the gallery to " + galleryDest);
+        }
+    }
+
     //MODIFIES: this
     //EFFECTS: removes the abandoned project name from currentProjects
     private void doRemoveName() {
         List<String> allNames = this.currentProjects.getCurrentProjects();
-        System.out.println(projectName + " has been successfully abandoned:");
         allNames.remove(projectName);
     }
 
