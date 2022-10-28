@@ -1,8 +1,6 @@
 package persistence;
 
 import model.CurrentProjects;
-import model.Filter;
-import model.Image;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,8 +18,8 @@ public class JsonReaderCurrentProjects {
         this.source = source;
     }
 
-    //EFFECTS: reads image from file and returns it. Throws IOException if an error occurs while reading
-    //         the image data from file
+    //EFFECTS: reads currentProjects from file and returns it. Throws IOException if an error occurs while reading
+    //         the currentProjects data from file
     public CurrentProjects read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);

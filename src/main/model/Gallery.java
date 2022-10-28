@@ -7,11 +7,12 @@ import persistence.Writable;
 import java.util.ArrayList;
 import java.util.List;
 
-//represents a gallery for all images a user commits to final processing
+//represents a gallery for all images a user commits to final processing (saves a copy of each processed image
+//with default fields so a user can choose to edit again from the copy)
 public class Gallery implements Writable {
     private List<String> gallery;
 
-    //EFFECTS: constructs a gallery with an empty list of jsonFile destinations
+    //EFFECTS: constructs a gallery with an empty list of project name copies
     public Gallery() {
         this.gallery = new ArrayList<>();
     }
@@ -35,7 +36,7 @@ public class Gallery implements Writable {
     //REQUIRES: string is a valid project name
     //MODIFIES: this
     //EFFECTS: adds the given json file into gallery
-    public void addImageToGallery(String projectName) {
+    public void addCopyToGallery(String projectName) {
         this.gallery.add(projectName);
     }
 

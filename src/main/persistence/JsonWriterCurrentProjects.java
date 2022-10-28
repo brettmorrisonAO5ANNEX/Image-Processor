@@ -1,7 +1,6 @@
 package persistence;
 
 import model.CurrentProjects;
-import model.Image;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;

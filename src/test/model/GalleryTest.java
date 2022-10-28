@@ -23,7 +23,7 @@ public class GalleryTest {
     @Test
     public void testAddCurrentProjectToEmpty() {
         String destination = "image1A";
-        g.addImageToGallery(destination);
+        g.addCopyToGallery(destination);
         assertEquals(destination, g.getGallery().get(0));
     }
 
@@ -31,8 +31,8 @@ public class GalleryTest {
     public void testAddCurrentProjectToNonEmpty() {
         String destination1 = "image2A";
         String destination2 = "image2B";
-        g.addImageToGallery(destination1);
-        g.addImageToGallery(destination2);
+        g.addCopyToGallery(destination1);
+        g.addCopyToGallery(destination2);
         assertEquals(2, g.getGallery().size());
         assertEquals(destination1, g.getGallery().get(0));
         assertEquals(destination2, g.getGallery().get(1));
