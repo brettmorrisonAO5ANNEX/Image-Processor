@@ -24,14 +24,14 @@ public class Gallery implements Writable {
         return json;
     }
 
-    //EFFECTS: returns project copies as a JSON array
-    private JSONArray galleryToJson() {
-        JSONArray jsonArray = new JSONArray();
-        for (String projectCopy: gallery) {
-            jsonArray.put(projectCopy);
-        }
-        return jsonArray;
-    }
+//    //EFFECTS: returns project copies as a JSON array
+//    private JSONArray galleryToJson() {
+//        JSONArray jsonArray = new JSONArray();
+//        for (String projectCopy: gallery) {
+//            jsonArray.put(projectCopy);
+//        }
+//        return jsonArray;
+//    }
 
     //REQUIRES: string is a valid project name
     //MODIFIES: this

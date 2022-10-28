@@ -221,12 +221,12 @@ public class Image implements Writable {
         this.imageResult = imageResult;
     }
 
-    //REQUIRES: dimensions of newPixArray must match dimensions of this
-    //MODIFIES: this
-    //EFFECTS: sets this.pixelArray to newPixArray
-    public void setPixelArray(int[][] newPixArray) {
-        this.pixelArray = newPixArray;
-    }
+//    //REQUIRES: dimensions of newPixArray must match dimensions of this
+//    //MODIFIES: this
+//    //EFFECTS: sets this.pixelArray to newPixArray
+//    public void setPixelArray(int[][] newPixArray) {
+//        this.pixelArray = newPixArray;
+//    }
 
     public String getImageResult() {
         return this.imageResult;

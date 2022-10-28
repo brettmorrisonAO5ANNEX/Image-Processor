@@ -8,8 +8,11 @@ import model.exceptions.DuplicateName;
 import model.exceptions.InvalidName;
 import persistence.*;
 
+import javax.sound.midi.Soundbank;
+import java.beans.PropertyEditorSupport;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -23,6 +26,7 @@ public class ImageApp {
     private Scanner input;
     private boolean editing;
     private Image myImage;
+    private Image currentCopy;
     private int width;
     private int height;
     private int editHistory;
@@ -37,6 +41,7 @@ public class ImageApp {
     private Gallery gallery;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
+    private JsonReader jsonReaderCopy;
     private JsonWriter jsonWriterCopy;
     private JsonWriterCurrentProjects jsonWriterCP;
     private JsonReaderCurrentProjects jsonReaderCP;
@@ -99,19 +104,20 @@ public class ImageApp {
 
             if (decisionCommand.equals("n")) {
                 doCreateNew();
-                deciding = false;
                 editing = true;
+            } else if (decisionCommand.equals("vg")) {
+                doViewGallery();
             } else if (decisionCommand.equals("l")) {
                 doLoadChoice(true);
                 editing = true;
-                deciding = false;
                 nonRedundantRunApp();
             } else if (decisionCommand.equals("q")) {
                 doQuit();
-                deciding = false;
             } else {
                 System.out.println("invalid command given...");
             }
+
+            deciding = false;
         }
     }
 
@@ -122,8 +128,9 @@ public class ImageApp {
         if (!currentProjects.getCurrentProjects().isEmpty()) {
             System.out.println("> l -> load a previous project");
         }
-        //TODO
-        //option to load copy from gallery
+        if (!gallery.getGallery().isEmpty()) {
+            System.out.println("> vg -> view gallery");
+        }
         System.out.println("> q -> quit application");
     }
 
@@ -203,6 +210,23 @@ public class ImageApp {
     //EFFECTS: instantiates an image with width w and height h
     private void createImage(int w, int h) {
         myImage = new Image(w, h);
+    }
+
+    //EFFECTS: displays pixel arrays associated with all final projects
+    private void doViewGallery() {
+        for (String project: gallery.getGallery()) {
+            currentProjectDestination = FILE_BEGIN + project + FILE_END;
+            jsonReaderCopy = new JsonReader(currentProjectDestination);
+
+            try {
+                currentCopy = jsonReaderCopy.read();
+            } catch (IOException e) {
+                System.out.println("unable to load project");
+            }
+
+            System.out.println(project + " result:");
+            System.out.println(currentCopy.getImageResult());
+        }
     }
 
     //MODIFIES: this
@@ -569,7 +593,7 @@ public class ImageApp {
 
         doAddCopyToGallery(copyName);
         Image myImageCopy = new Image(width, height);
-        myImageCopy.setPixelArray(myImage.getPixelArray());
+//        myImageCopy.setPixelArray(myImage.getPixelArray());
         myImageCopy.setImageResult(finalImage);
         doSaveCopy(copyName, myImageCopy);
     }
