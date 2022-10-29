@@ -51,6 +51,8 @@ a personal interest in!
   that point in my progress if I decide to not want the progress I made after saving
 - As a user, I want to be able to ***revert to the last saved version*** of my edit while still
   editing
+- As a user, I want to be given the option to ***load a previous work-in-progress project***
+  upon opening the application
 - As a user, I want to be able to ***abandon a project*** to remove it from being accessed again
 - As a user, I want to be able to ***save my project to a gallery*** after processing the final product
-  as well as be able to ***view it in the gallery***
+- As a user, I want to be able to ***view my finished projects in a gallery***
