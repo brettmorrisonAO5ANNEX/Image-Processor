@@ -532,6 +532,7 @@ public class ImageApp {
         }
     }
 
+    //TODO: fix reset progress feature
     //MODIFIES: this
     //EFFECTS: loads a previously saved image of the users choice
     private void doLoadPrevious() {
