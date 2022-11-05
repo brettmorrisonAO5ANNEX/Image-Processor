@@ -6,6 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class OpenPanel extends ImageIcon {
+    private boolean show = true;
+
+    private CreateImagePanel createImagePanel;
+
     private JPanel mainPanel;
     private JPanel logoPanel;
     private JPanel optionPanel;
@@ -90,8 +94,8 @@ public class OpenPanel extends ImageIcon {
         ActionListener newImageAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //testing functionality
-                logo.setText("creating new");
+                createImagePanel = new CreateImagePanel(true);
+                show = false;
             }
         };
 
@@ -153,7 +157,7 @@ public class OpenPanel extends ImageIcon {
         mainFrame.setTitle("image.(in)");
         mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
         mainFrame.add(mainPanel);
-        mainFrame.setVisible(true);
+        mainFrame.setVisible(show);
         mainFrame.pack();
         mainFrame.setBounds(200, 200, 500, 300);
     }
