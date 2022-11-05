@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//represents the opening panel that is shown to user when image.(in) is initially run
 public class OpenPanel extends ImageIcon {
     private boolean show = true;
 
@@ -91,12 +92,9 @@ public class OpenPanel extends ImageIcon {
         c.gridx = 0;
         c.gridy = 0;
 
-        ActionListener newImageAction = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                createImagePanel = new CreateImagePanel(true);
-                show = false;
-            }
+        ActionListener newImageAction = e -> {
+            createImagePanel = new CreateImagePanel(true);
+            show = false;
         };
 
         newImage.addActionListener(newImageAction);
@@ -114,12 +112,9 @@ public class OpenPanel extends ImageIcon {
         c.gridx = 0;
         c.gridy = 1;
 
-        ActionListener loadPrevAction = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //testing functionality
-                logo.setText("loading previous");
-            }
+        ActionListener loadPrevAction = e -> {
+            //testing functionality
+            logo.setText("loading previous");
         };
 
         loadPrev.addActionListener(loadPrevAction);
@@ -137,12 +132,9 @@ public class OpenPanel extends ImageIcon {
         c.gridx = 1;
         c.gridy = 1;
 
-        ActionListener viewGallAction = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //testing functionality
-                logo.setText("viewing gallery");
-            }
+        ActionListener viewGallAction = e -> {
+            //testing functionality
+            logo.setText("viewing gallery");
         };
 
         viewGall.addActionListener(viewGallAction);

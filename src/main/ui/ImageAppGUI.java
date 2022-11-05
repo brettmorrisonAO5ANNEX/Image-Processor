@@ -1,15 +1,10 @@
 package ui;
 
-import javax.swing.*;
-import javax.swing.border.SoftBevelBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
+//represents the main GUI of image.(in)
 public class ImageAppGUI {
-    private OpenPanel op;
 
+    //EFFECTS: constructs new openPanel object
     public ImageAppGUI() {
-        op = new OpenPanel();
+        new OpenPanel();
     }
 }

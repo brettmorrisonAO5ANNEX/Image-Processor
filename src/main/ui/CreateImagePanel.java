@@ -5,21 +5,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+//TODO: debug so that multiple windows aren't opened when a user clickes to new panel
+//TODO: add code credit to oracle
+//represents panel that is shown when user is creating a new project
 public class CreateImagePanel {
-    private Boolean show;
-
     private JPanel mainPanel;
-
-    private JTextField chooseName;
-    private JTextField chooseWidth;
-    private JTextField chooseHeight;
-
-    private JComboBox chooseRandomize;
-
-    private JButton confirm;
-
-    private JFrame mainFrame;
-
     private String randomize;
 
     //MODIFIES: this
@@ -45,7 +35,7 @@ public class CreateImagePanel {
     //EFFECTS: creates text field element so user can set project name according to regex specifications
     private void createChooseNameField() {
         GridBagConstraints c = new GridBagConstraints();
-        chooseName = new JTextField(10);
+        JTextField chooseName = new JTextField(10);
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 2;
@@ -66,7 +56,7 @@ public class CreateImagePanel {
     //EFFECTS: creates width text field and adds it to main layout
     private void createWidthField() {
         GridBagConstraints c = new GridBagConstraints();
-        chooseWidth = new JTextField(10);
+        JTextField chooseWidth = new JTextField(10);
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
@@ -80,7 +70,7 @@ public class CreateImagePanel {
     //EFFECTS: creates width text field and adds it to layout
     private void createHeightField() {
         GridBagConstraints c = new GridBagConstraints();
-        chooseHeight = new JTextField(10);
+        JTextField chooseHeight = new JTextField(10);
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
@@ -95,17 +85,14 @@ public class CreateImagePanel {
     public void createRandomizeChooser() {
         GridBagConstraints c = new GridBagConstraints();
 
-        String[] chooseRandomizeOptions = {"yes", "no"};
+        String[] chooseRandomizeOptions = {"Choose An Option", "yes", "no"};
 
-        ActionListener comboBoxListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JComboBox cb = (JComboBox)e.getSource();
-                randomize = (String)cb.getSelectedItem();
-            }
+        ActionListener comboBoxListener = e -> {
+            JComboBox cb = (JComboBox)e.getSource();
+            randomize = (String)cb.getSelectedItem();
         };
 
-        chooseRandomize = new JComboBox(chooseRandomizeOptions);
+        JComboBox chooseRandomize = new JComboBox(chooseRandomizeOptions);
         chooseRandomize.addActionListener(comboBoxListener);
 
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -120,13 +107,10 @@ public class CreateImagePanel {
     //EFFECTS: creates confirm button to create project with specified properties
     private void createConfirm() {
         GridBagConstraints c = new GridBagConstraints();
-        confirm = new JButton("create project");
+        JButton confirm = new JButton("Create Project");
 
-        ActionListener confirmListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //stub
-            }
+        ActionListener confirmListener = e -> {
+            //stub
         };
 
         confirm.addActionListener(confirmListener);
@@ -142,19 +126,11 @@ public class CreateImagePanel {
     //MODIFIES: this
     //EFFECTS: creates mainFrame and adds mainPanel
     private void createMainFrame(boolean s) {
-        mainFrame = new JFrame("create project");
+        JFrame mainFrame = new JFrame("create project");
         mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
         mainFrame.add(mainPanel);
         mainFrame.setVisible(s);
         mainFrame.pack();
         mainFrame.setBounds(200, 200, 500, 300);
-    }
-
-    public void setShow(boolean s) {
-        this.show = s;
-    }
-
-    public String getRandomizeChoice() {
-        return this.randomize;
     }
 }
