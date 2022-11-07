@@ -4,7 +4,6 @@ import model.Image;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 //TODO: add code credit to oracle
@@ -113,9 +112,9 @@ public class CreateImagePanel extends JPanel {
 
         ActionListener confirmListener = e -> {
             this.setVisible(false);
+            iaGUI.setMyImage(createImage());
             toolMenuPanel = new ToolMenuPanel(iaGUI);
             iaGUI.add(toolMenuPanel);
-            toolMenuPanel.setMyImage(createImage());
         };
 
         confirm.addActionListener(confirmListener);

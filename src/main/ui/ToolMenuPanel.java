@@ -5,20 +5,27 @@ import model.Image;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 //represents the tool menu panel that is shown while a user is editing
 public class ToolMenuPanel extends JPanel {
     private final ImageAppGUI iaGUI;
-    private Image myImage;
+    private JPanel menuPanel;
+    private AddFilterPanel addFilterPanel;
 
     public ToolMenuPanel(ImageAppGUI iaGUI) {
         super();
+        this.iaGUI = iaGUI;
+
         setBorder(BorderFactory.createEmptyBorder());
         setLayout(new GridBagLayout());
         createMenuPanel();
 //        createHistoryPanel();
 
-        this.iaGUI = iaGUI;
+        int width = iaGUI.getMyImage().getImageWidth();
+        int height = iaGUI.getMyImage().getImageHeight();
+        this.addFilterPanel = new AddFilterPanel(this, width, height);
     }
 
     //MODIFIES: this
@@ -26,11 +33,11 @@ public class ToolMenuPanel extends JPanel {
     private void createMenuPanel() {
         GridBagConstraints c = new GridBagConstraints();
 
-        JPanel menuPanel = new JPanel();
+        menuPanel = new JPanel();
         menuPanel.setBorder(BorderFactory.createEmptyBorder());
         menuPanel.setLayout(new GridLayout(0,1));
 
-        createButtons(menuPanel);
+        createButtons();
 
         c.gridwidth = 1;
         c.gridx = 0;
@@ -41,9 +48,9 @@ public class ToolMenuPanel extends JPanel {
 
     //MODIFIES: this
     //EFFECTS: adds menu buttons to menuPanel
-    private void createButtons(JPanel menuPanel) {
-        JButton addFilter = new JButton("Add Filter");
-        menuPanel.add(addFilter);
+    private void createButtons() {
+        createAddFilterButton();
+
         JButton undo = new JButton("Undo");
         menuPanel.add(undo);
 //        JComboBox undoType = new JComboBox(createOptions());
@@ -54,6 +61,21 @@ public class ToolMenuPanel extends JPanel {
         menuPanel.add(processProject);
         JButton quitAndSave = new JButton("Quit And Save");
         menuPanel.add(quitAndSave);
+    }
+
+    private void createAddFilterButton() {
+        JButton addFilter = new JButton("Add Filter");
+        ActionListener addFilterListener = e -> {
+            setVisible(false);
+            iaGUI.add(addFilterPanel);
+        };
+
+        addFilter.addActionListener(addFilterListener);
+        menuPanel.add(addFilter);
+    }
+
+    public Component getAddFilterPanel() {
+        return this.addFilterPanel;
     }
 
 //    //MODIFIES: this
@@ -93,8 +115,4 @@ public class ToolMenuPanel extends JPanel {
 //            historyPanel.add(edit);
 //        }
 //    }
-
-    public void setMyImage(Image myImage) {
-        this.myImage = myImage;
-    }
 }
