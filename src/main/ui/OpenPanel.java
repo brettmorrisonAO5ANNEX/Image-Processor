@@ -6,12 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 //represents the opening panel that is shown to user when image.(in) is initially run
-public class OpenPanel extends ImageIcon {
-    private boolean show = true;
-
-    private CreateImagePanel createImagePanel;
-
-    private JPanel mainPanel;
+public class OpenPanel extends JPanel {
     private JPanel logoPanel;
     private JPanel optionPanel;
 
@@ -19,31 +14,27 @@ public class OpenPanel extends ImageIcon {
     private JButton loadPrev;
     private JButton viewGall;
 
-    private JFrame mainFrame;
-
     private JLabel logo;
+
+    private ImageAppGUI iaGUI;
+    private CreateImagePanel createImagePanel;
 
     //EFFECTS: creates an opening panel with logo and options for user ot create new, laod previous, or view gallery
     //         (for the last two options, buttons should be un-clickable if no current projects or no gallery projects)
-    public OpenPanel() {
-        createMainPanel();
-        createButtons();
-        createMainFrame();
-    }
-
-    //MODIFIES: this
-    //EFFECTS: creates main panel to that houses subpanels: logoPanel and optionPanel
-    public void createMainPanel() {
-        mainPanel = new JPanel();
-        mainPanel.setBorder(BorderFactory.createEmptyBorder());
-        mainPanel.setLayout(new GridLayout(0,1));
-
+    public OpenPanel(CreateImagePanel cp, ImageAppGUI iaGUI) {
+        super();
+        setBorder(BorderFactory.createEmptyBorder());
+        setLayout(new GridLayout(0,1));
         createAddLogoPanel();
         createAddOptionPanel();
+        createButtons();
+
+        this.createImagePanel = cp;
+        this.iaGUI = iaGUI;
     }
 
     //MODIFIES: this
-    //EFFECTS: creates logo panel and adds it to mainPanel
+    //EFFECTS: creates logo panel and adds it to this
     public void createAddLogoPanel() {
         createLogo();
 
@@ -52,7 +43,7 @@ public class OpenPanel extends ImageIcon {
         logoPanel.setLayout(new GridLayout(0, 1));
         logoPanel.add(logo);
 
-        mainPanel.add(logoPanel);
+        add(logoPanel);
     }
 
     //TODO: constrain logo
@@ -70,7 +61,7 @@ public class OpenPanel extends ImageIcon {
         optionPanel = new JPanel();
         optionPanel.setBorder(BorderFactory.createEmptyBorder());
         optionPanel.setLayout(new GridBagLayout());
-        mainPanel.add(optionPanel);
+        add(optionPanel);
     }
 
     //MODIFIES: this
@@ -93,8 +84,8 @@ public class OpenPanel extends ImageIcon {
         c.gridy = 0;
 
         ActionListener newImageAction = e -> {
-            createImagePanel = new CreateImagePanel(true);
-            show = false;
+            this.setVisible(false);
+            iaGUI.add(createImagePanel);
         };
 
         newImage.addActionListener(newImageAction);
@@ -141,16 +132,16 @@ public class OpenPanel extends ImageIcon {
         optionPanel.add(viewGall, c);
     }
 
-    //MODIFIES: this
-    //EFFECTS: creates main frame for opening page
-    public void createMainFrame() {
-        mainFrame = new JFrame();
-
-        mainFrame.setTitle("image.(in)");
-        mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
-        mainFrame.add(mainPanel);
-        mainFrame.setVisible(show);
-        mainFrame.pack();
-        mainFrame.setBounds(200, 200, 500, 300);
-    }
+//    //MODIFIES: this
+//    //EFFECTS: creates main frame for opening page
+//    public void createMainFrame() {
+//        mainFrame = new JFrame();
+//
+//        mainFrame.setTitle("image.(in)");
+//        mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
+//        mainFrame.add(mainPanel);
+//        mainFrame.setVisible(show);
+//        mainFrame.pack();
+//        mainFrame.setBounds(200, 200, 500, 300);
+//    }
 }
