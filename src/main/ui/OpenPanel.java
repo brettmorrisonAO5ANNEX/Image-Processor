@@ -7,21 +7,16 @@ import java.awt.event.ActionListener;
 
 //represents the opening panel that is shown to user when image.(in) is initially run
 public class OpenPanel extends JPanel {
-    private JPanel logoPanel;
     private JPanel optionPanel;
-
-    private JButton newImage;
-    private JButton loadPrev;
-    private JButton viewGall;
 
     private JLabel logo;
 
-    private ImageAppGUI iaGUI;
+    private final ImageAppGUI iaGUI;
     private CreateImagePanel createImagePanel;
 
     //EFFECTS: creates an opening panel with logo and options for user ot create new, laod previous, or view gallery
     //         (for the last two options, buttons should be un-clickable if no current projects or no gallery projects)
-    public OpenPanel(CreateImagePanel cp, ImageAppGUI iaGUI) {
+    public OpenPanel(ImageAppGUI iaGUI) {
         super();
         setBorder(BorderFactory.createEmptyBorder());
         setLayout(new GridLayout(0,1));
@@ -29,7 +24,6 @@ public class OpenPanel extends JPanel {
         createAddOptionPanel();
         createButtons();
 
-        this.createImagePanel = cp;
         this.iaGUI = iaGUI;
     }
 
@@ -38,7 +32,7 @@ public class OpenPanel extends JPanel {
     public void createAddLogoPanel() {
         createLogo();
 
-        logoPanel = new JPanel();
+        JPanel logoPanel = new JPanel();
         logoPanel.setBorder(BorderFactory.createEmptyBorder());
         logoPanel.setLayout(new GridLayout(0, 1));
         logoPanel.add(logo);
@@ -77,7 +71,7 @@ public class OpenPanel extends JPanel {
     public void createNewImageButton() {
         GridBagConstraints c = new GridBagConstraints();
 
-        newImage = new JButton("New Project");
+        JButton newImage = new JButton("New Project");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 2;
         c.gridx = 0;
@@ -85,6 +79,8 @@ public class OpenPanel extends JPanel {
 
         ActionListener newImageAction = e -> {
             this.setVisible(false);
+
+            createImagePanel = new CreateImagePanel(iaGUI);
             iaGUI.add(createImagePanel);
         };
 
@@ -97,7 +93,7 @@ public class OpenPanel extends JPanel {
     public void createLoadPrevButton() {
         GridBagConstraints c = new GridBagConstraints();
 
-        loadPrev = new JButton("Load Project");
+        JButton loadPrev = new JButton("Load Project");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 0;
@@ -117,7 +113,7 @@ public class OpenPanel extends JPanel {
     public void createViewGallButton() {
         GridBagConstraints c = new GridBagConstraints();
 
-        viewGall = new JButton("View Gallery");
+        JButton viewGall = new JButton("View Gallery");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 1;

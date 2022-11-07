@@ -1,14 +1,22 @@
 package ui;
 
+import model.Image;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 //TODO: add code credit to oracle
 //represents panel that is shown when user is creating a new project
 public class CreateImagePanel extends JPanel {
+    private JTextField chooseWidth;
+    private JTextField chooseHeight;
     private String randomize;
-    private ImageAppGUI iaGUI;
+    private final ImageAppGUI iaGUI;
+    private ToolMenuPanel toolMenuPanel;
+    private int height;
+    private int width;
 
     //MODIFIES: this
     //EFFECTS: creates createImagePanel which is shown to user if create new is chosen from opening menu
@@ -49,7 +57,8 @@ public class CreateImagePanel extends JPanel {
     //EFFECTS: creates width text field and adds it to main layout
     private void createWidthField() {
         GridBagConstraints c = new GridBagConstraints();
-        JTextField chooseWidth = new JTextField(10);
+
+        chooseWidth = new JTextField(10);
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
@@ -63,7 +72,7 @@ public class CreateImagePanel extends JPanel {
     //EFFECTS: creates width text field and adds it to layout
     private void createHeightField() {
         GridBagConstraints c = new GridBagConstraints();
-        JTextField chooseHeight = new JTextField(10);
+        chooseHeight = new JTextField(10);
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
@@ -81,8 +90,8 @@ public class CreateImagePanel extends JPanel {
         String[] chooseRandomizeOptions = {"Choose An Option", "yes", "no"};
 
         ActionListener comboBoxListener = e -> {
-            JComboBox cb = (JComboBox)e.getSource();
-            randomize = (String)cb.getSelectedItem();
+            JComboBox cb = (JComboBox) e.getSource();
+            randomize = (String) cb.getSelectedItem();
         };
 
         JComboBox chooseRandomize = new JComboBox(chooseRandomizeOptions);
@@ -103,7 +112,10 @@ public class CreateImagePanel extends JPanel {
         JButton confirm = new JButton("Create Project");
 
         ActionListener confirmListener = e -> {
-            iaGUI.remove(this);
+            this.setVisible(false);
+            toolMenuPanel = new ToolMenuPanel(iaGUI);
+            iaGUI.add(toolMenuPanel);
+            toolMenuPanel.setMyImage(createImage());
         };
 
         confirm.addActionListener(confirmListener);
@@ -114,5 +126,18 @@ public class CreateImagePanel extends JPanel {
         c.gridy = 3;
 
         add(confirm, c);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates an image with user specifications and sends it to toolMenuPanel
+    private Image createImage() {
+        width = Integer.parseInt(chooseWidth.getText());
+        height = Integer.parseInt(chooseHeight.getText());
+        Image myImage = new Image(width, height);
+
+        if (randomize.equals("yes")) {
+            myImage.randomizeColor();
+        }
+        return myImage;
     }
 }
