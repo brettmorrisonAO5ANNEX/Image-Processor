@@ -31,6 +31,7 @@ public class AddFilterPanel extends JPanel {
         createMirrorButton();
         createNegativeButton();
         createPixelateDropDown();
+        createApplyButton();
     }
 
     //MODIFIES: this
@@ -38,6 +39,7 @@ public class AddFilterPanel extends JPanel {
     private void createMirrorButton() {
         GridBagConstraints c = new GridBagConstraints();
         JButton mirror = new JButton("Mirror");
+        mirror.setPreferredSize(new Dimension(140, 25));
 
         c.gridwidth = 1;
         c.gridx = 0;
@@ -51,6 +53,7 @@ public class AddFilterPanel extends JPanel {
     private void createNegativeButton() {
         GridBagConstraints c = new GridBagConstraints();
         JButton negative = new JButton("Negative");
+        negative.setPreferredSize(new Dimension(140, 25));
 
         c.gridwidth = 1;
         c.gridx = 0;
@@ -66,16 +69,29 @@ public class AddFilterPanel extends JPanel {
         int minDim = min(width, height);
         int maxDegPix = (int) (log(minDim) / log(2));
         String[] degPixOptions = new String[maxDegPix + 1];
-        degPixOptions[0] = "Pixelate";
+        degPixOptions[0] = "";
 
         for (int i = 1; i < maxDegPix + 1; i++) {
             degPixOptions[i] = Integer.toString(i);
         }
 
         JComboBox pixelate = new JComboBox(degPixOptions);
+        pixelate.setPreferredSize(new Dimension(138, 25));
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 2;
         add(pixelate, c);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates apply button that applies chosen filter and returns to tool menu
+    public void createApplyButton() {
+        GridBagConstraints c = new GridBagConstraints();
+        JButton apply = new JButton("Apply");
+        apply.setPreferredSize(new Dimension(140, 25));
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 3;
+        add(apply, c);
     }
 }
