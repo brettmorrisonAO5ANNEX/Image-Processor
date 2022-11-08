@@ -5,6 +5,7 @@ import model.Image;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 //represents the tool menu panel that is shown while a user is editing
@@ -14,6 +15,7 @@ public class ToolMenuPanel extends JPanel {
     private JPanel menuPanel;
     private JPanel historyPanel;
     private AddFilterPanel addFilterPanel;
+    private ViewResultPanel viewResultPanel;
 
     public ToolMenuPanel(ImageAppGUI iaGUI) {
         super();
@@ -59,8 +61,7 @@ public class ToolMenuPanel extends JPanel {
 //        menuPanel.add(undoType);
         JButton undoAll = new JButton("Undo All");
         menuPanel.add(undoAll);
-        JButton processProject = new JButton("Process Project");
-        menuPanel.add(processProject);
+        createProcessButton();
         JButton quitAndSave = new JButton("Quit And Save");
         menuPanel.add(quitAndSave);
     }
@@ -78,6 +79,40 @@ public class ToolMenuPanel extends JPanel {
 
         addFilter.addActionListener(addFilterListener);
         menuPanel.add(addFilter);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates process button with action listener to switch to viewResultPanel if pressed
+    private void createProcessButton() {
+        ActionListener processListener = e -> {
+            createFinalResult();
+            iaGUI.add(viewResultPanel);
+        };
+
+        JButton processProject = new JButton("Process Project");
+        processProject.addActionListener(processListener);
+
+        menuPanel.add(processProject);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates new ViewResultsPanel, adds resulting pixel array, and displays the ViewResultPanel
+    private void createFinalResult() {
+        myImage.processImage();
+        String result = myImage.createVisArray(0);
+        JLabel visArray = new JLabel();
+
+        viewResultPanel = new ViewResultPanel();
+        setVisible(false);
+        visArray.setText(convertToMultiline(result));
+        viewResultPanel.add(visArray);
+    }
+
+    //SOURCE: https://stackoverflow.com/questions/2152742/java-swing-multiline-labels
+    //MODIFIES: result
+    //EFFECTS: converts single line string to multi-line string by updating \n to <br> (html notation)
+    private String convertToMultiline(String result) {
+        return "<html>" + result.replaceAll("\n", "<br>");
     }
 
     public void createHistoryPanel() {
