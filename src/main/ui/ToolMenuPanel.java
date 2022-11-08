@@ -71,6 +71,7 @@ public class ToolMenuPanel extends JPanel {
         JButton addFilter = new JButton("Add Filter");
 
         ActionListener addFilterListener = e -> {
+            historyPanel.removeAll();
             setVisible(false);
             iaGUI.add(addFilterPanel);
         };
@@ -79,39 +80,23 @@ public class ToolMenuPanel extends JPanel {
         menuPanel.add(addFilter);
     }
 
-    public Component getAddFilterPanel() {
-        return this.addFilterPanel;
-    }
-
-    public ImageAppGUI getImageAppGUI() {
-        return this.iaGUI;
-    }
-
-//    //MODIFIES: this
-//    //EFFECTS: creates String[] from unique filters used for undo type functionality
-//    private Object[] createOptions() {
-//        int len = myImage.getUniqueFiltersUsed().size();
-//        String[] filterOptions = new String[len];
-//        for (int i = 0; i < len; i++) {
-//            filterOptions[i] = myImage.getUniqueFiltersUsed().get(i);
-//        }
-//        return filterOptions;
-//    }
-
-    //MODIFIES: this
-    //EFFECTS: creates history panel to show what edits have been made to far
-    private void createHistoryPanel() {
+    public void createHistoryPanel() {
         historyPanel = new JPanel();
         historyPanel.setLayout(new GridLayout(0,1));
         historyPanel.setBorder(BorderFactory.createEmptyBorder());
         historyPanel.setBackground(new Color(220,220,220));
-        createAndAddJLabels(historyPanel);
 
         add(historyPanel);
     }
 
     //MODIFIES: this
-    //EFFECTS: creates JLabel
+    //EFFECTS: creates history panel to show what edits have been made to far
+    public void updateHistoryPanel() {
+        createAndAddJLabels(historyPanel);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates JLabel for each applied filter and adds it to historyPanel
     private void createAndAddJLabels(JPanel historyPanel) {
         int index = 1;
         for (Filter filter: myImage.getListOfFilter()) {
@@ -121,4 +106,19 @@ public class ToolMenuPanel extends JPanel {
             index++;
         }
     }
+
+    public ImageAppGUI getImageAppGUI() {
+        return this.iaGUI;
+    }
+
+    //    //MODIFIES: this
+//    //EFFECTS: creates String[] from unique filters used for undo type functionality
+//    private Object[] createOptions() {
+//        int len = myImage.getUniqueFiltersUsed().size();
+//        String[] filterOptions = new String[len];
+//        for (int i = 0; i < len; i++) {
+//            filterOptions[i] = myImage.getUniqueFiltersUsed().get(i);
+//        }
+//        return filterOptions;
+//    }
 }

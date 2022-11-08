@@ -146,6 +146,7 @@ public class AddFilterPanel extends JPanel {
     //MODIFIES: this
     //EFFECTS: returns to toolMenuPanel
     private void returnToToolMenu() {
+        toolMenuPanel.updateHistoryPanel();
         iaGUI.remove(this);
         toolMenuPanel.setVisible(true);
     }
