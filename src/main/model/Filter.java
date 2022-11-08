@@ -87,7 +87,20 @@ public class Filter implements Writable {
     //MODIFIES: img
     //EFFECTS: creates standard pixelated image from img
     public void pixelate(Image img) {
-        //stub
+        int numDivisions = getNumDivisions(img);
+    }
+
+    //EFFECTS: determines standard number of (even) divisions for given image (2 less than the max for an image with
+    //         even width and height)
+    public int getNumDivisions(Image img) {
+        int minDimension = min(img.getImageWidth(), img.getImageHeight());
+        int maxDivisions = (int) (log(minDimension) / log(2));
+
+        if (maxDivisions > 2) {
+            return maxDivisions - 2;
+        } else {
+            return 1;
+        }
     }
 
     public String getFilterName() {

@@ -196,4 +196,34 @@ class FilterTest {
         assertEquals(14, imgTestSixteenElement.getPixelArray()[14][0]);
         assertEquals(14, imgTestSixteenElement.getPixelArray()[15][0]);
     }
+
+    @Test
+    public void testGetNumberDivisionsOneNotBorderCase() {
+        //maxDiv = 1 which is =< 2
+        int numDivisions = pixelate.getNumDivisions(imgTestEightElement);
+        assertEquals(1, numDivisions);
+    }
+
+    @Test
+    public void testGetNumberDivisionsBorderCase() {
+        //maxDiv = 2 which is at border to =< 2
+        int numDivisions = pixelate.getNumDivisions(imgTestSixteenElement);
+        assertEquals(1, numDivisions);
+    }
+
+    @Test
+    public void testGetNumberDivisionsTallArray() {
+        //maxDiv = 3 which reaches beyond border case, so we subtract 2 to get numDivisions
+        Image imgTestOneTwentyEightElement = new Image(8, 16);
+        int numDivisions = pixelate.getNumDivisions(imgTestOneTwentyEightElement);
+        assertEquals(1, numDivisions);
+    }
+
+    @Test
+    public void testGetNumberDivisionsAboveBorderCase() {
+        //maxDiv = 4 which reaches beyond border case, so we subtract 2 to get numDivisions
+        Image imgTestTwoFiftySixElement = new Image(16, 16);
+        int numDivisions = pixelate.getNumDivisions(imgTestTwoFiftySixElement);
+        assertEquals(2, numDivisions);
+    }
 }
