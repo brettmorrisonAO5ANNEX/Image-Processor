@@ -146,4 +146,54 @@ class FilterTest {
         assertEquals(255, testTwoByTwo.getPixelArray()[4][2]);
         assertEquals(255, testTwoByTwo.getPixelArray()[5][2]);
     }
+
+    @Test
+    public void testPixelateTwoByFour() {
+        //update rgb values in test array for more comprehensive testing of average gathering
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 3; j++) {
+                imgTestEightElement.getPixelArray()[i][j] = i + 1;
+            }
+        }
+
+        //rest of test
+        pixelate.pixelate((imgTestEightElement));
+        assertEquals(2, imgTestEightElement.getPixelArray()[0][0]);
+        assertEquals(2, imgTestEightElement.getPixelArray()[1][0]);
+        assertEquals(4, imgTestEightElement.getPixelArray()[2][0]);
+        assertEquals(4, imgTestEightElement.getPixelArray()[3][0]);
+        assertEquals(6, imgTestEightElement.getPixelArray()[4][0]);
+        assertEquals(6, imgTestEightElement.getPixelArray()[5][0]);
+        assertEquals(8, imgTestEightElement.getPixelArray()[6][0]);
+        assertEquals(8, imgTestEightElement.getPixelArray()[7][0]);
+    }
+
+    @Test
+    public void testPixelateFourByFour() {
+        //update rgb values in test array for more comprehensive testing of average gathering
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 3; j++) {
+                imgTestSixteenElement.getPixelArray()[i][j] = i + 1;
+            }
+        }
+
+        //rest of test
+        pixelate.pixelate(imgTestSixteenElement);
+        assertEquals(4, imgTestSixteenElement.getPixelArray()[0][0]);
+        assertEquals(4, imgTestSixteenElement.getPixelArray()[1][0]);
+        assertEquals(6, imgTestSixteenElement.getPixelArray()[2][0]);
+        assertEquals(6, imgTestSixteenElement.getPixelArray()[3][0]);
+        assertEquals(4, imgTestSixteenElement.getPixelArray()[4][0]);
+        assertEquals(4, imgTestSixteenElement.getPixelArray()[5][0]);
+        assertEquals(6, imgTestSixteenElement.getPixelArray()[6][0]);
+        assertEquals(6, imgTestSixteenElement.getPixelArray()[7][0]);
+        assertEquals(12, imgTestSixteenElement.getPixelArray()[8][0]);
+        assertEquals(12, imgTestSixteenElement.getPixelArray()[9][0]);
+        assertEquals(14, imgTestSixteenElement.getPixelArray()[10][0]);
+        assertEquals(14, imgTestSixteenElement.getPixelArray()[11][0]);
+        assertEquals(12, imgTestSixteenElement.getPixelArray()[12][0]);
+        assertEquals(12, imgTestSixteenElement.getPixelArray()[13][0]);
+        assertEquals(14, imgTestSixteenElement.getPixelArray()[14][0]);
+        assertEquals(14, imgTestSixteenElement.getPixelArray()[15][0]);
+    }
 }

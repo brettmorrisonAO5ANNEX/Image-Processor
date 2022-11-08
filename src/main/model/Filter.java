@@ -90,11 +90,6 @@ public class Filter implements Writable {
         //stub
     }
 
-    
-
-
-
-
     public String getFilterName() {
         return this.filterName;
     }
