@@ -87,7 +87,25 @@ public class Filter implements Writable {
     //MODIFIES: img
     //EFFECTS: creates standard pixelated image from img
     public void pixelate(Image img) {
+        //represents: standard number of even divisions (by 2) to be performed on given image
         int numDivisions = getNumDivisions(img);
+
+        //represents: dimensions of each subSection within image pixelArray after being "divided" numDivisions times
+        int subSectionWidth = (int) (img.getImageWidth() / pow(2, numDivisions));
+        int subSectionHeight = (int) (img.getImageHeight() / pow(2, numDivisions));
+
+        //represents: the number of pseudo rows and pseudo columns in a theoretical array where each subsection is
+        //            treated as a singular unit
+        int pseudoColumns = img.getImageWidth() / subSectionWidth;
+        int pseudoRows = img.getImageHeight() / subSectionHeight;
+
+        //represents: pseudo column-major traversal through theoretical array where each subsection is treated
+        //            as a singular unit
+        for (int pseuCol = 0; pseuCol < pseudoColumns; pseuCol++) {
+            for (int pseuRow = 0; pseuRow < pseudoRows; pseuRow++) {
+                //gather and write average rgb
+            }
+        }
     }
 
     //EFFECTS: determines standard number of (even) divisions for given image (2 less than the max for an image with
