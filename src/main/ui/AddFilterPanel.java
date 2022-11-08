@@ -147,37 +147,7 @@ public class AddFilterPanel extends JPanel {
     //MODIFIES: this
     //EFFECTS: creates pixelate button and corresponding degree of pixelate dropdown menu
     private void createPixelateOption() {
-        createPixelateDropDown();
         createPixelateButton();
-    }
-
-    //MODIFIES: this, myImage
-    //EFFECTS: creates pixelate dropdown with degree of pixelation option for user
-    private void createPixelateDropDown() {
-        GridBagConstraints c = new GridBagConstraints();
-        int minDim = min(width, height);
-        int maxDegPix = (int) (log(minDim) / log(2));
-        String[] degPixOptions = new String[maxDegPix + 1];
-        degPixOptions[0] = "";
-
-        for (int i = 1; i < maxDegPix + 1; i++) {
-            degPixOptions[i] = Integer.toString(i);
-        }
-
-        ActionListener degPixListener = e -> {
-            JComboBox cb = (JComboBox) e.getSource();
-            int degPix = Integer.parseInt((String) cb.getSelectedItem());
-            myImage.setDegreeOfPixelation(degPix);
-        };
-
-        JComboBox pixelate = new JComboBox(degPixOptions);
-        pixelate.addActionListener(degPixListener);
-
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 1;
-        c.gridx = 0;
-        c.gridy = 3;
-        add(pixelate, c);
     }
 
     //MODIFIES: this, myImage
@@ -195,7 +165,7 @@ public class AddFilterPanel extends JPanel {
         pixelate.addActionListener(pixelateListener);
 
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 1;
+        c.gridwidth = 2;
         c.gridx = 1;
         c.gridy = 3;
         add(pixelate, c);

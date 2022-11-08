@@ -103,7 +103,7 @@ public class Filter implements Writable {
         //            as a singular unit
         for (int pseuCol = 0; pseuCol < pseudoColumns; pseuCol++) {
             for (int pseuRow = 0; pseuRow < pseudoRows; pseuRow++) {
-                //gather and write average rgb
+                gatherAndWriteAverageRGB(img, subSectionWidth, subSectionHeight, pseuCol, pseuRow);
             }
         }
     }
@@ -118,6 +118,68 @@ public class Filter implements Writable {
             return maxDivisions - 2;
         } else {
             return 1;
+        }
+    }
+
+    //MODIFIES: img
+    //EFFECTS: gathers average rgb values for each subsection and then writes those values to all pixels in current
+    //         subsection
+    private void gatherAndWriteAverageRGB(Image img, int ssWidth, int ssHeight, int psueCol, int pseuRow) {
+        int redCompAverage = 0;
+        int greenCompAverage = 0;
+        int blueCompAverage = 0;
+
+        //number of pixels in each subsection (used for calculating average RGB values)
+        int numPixels = ssWidth * ssHeight;
+
+        //row-major traversal to reach each pixel in the current subsection
+        for (int r = 0; r < ssHeight; r++) {
+            for (int c = 0; c < ssWidth; c++) {
+
+                //get the row and column in non-pseudo array of current element
+                int scaledCol = c + (psueCol * ssWidth);
+                int scaledRow = r + (pseuRow * ssHeight);
+
+                //determine index of current element in non-pseudo array (img pixelArray)
+                int currIndex = scaledCol + (scaledRow * img.getImageWidth());
+
+                //sum all RGB values in corresponding variable
+                redCompAverage += img.getPixelArray()[currIndex][0];
+                greenCompAverage += img.getPixelArray()[currIndex][1];
+                blueCompAverage += img.getPixelArray()[currIndex][2];
+            }
+        }
+
+        //calculate averages and send them to be re-written to image
+        redCompAverage = (int) ceil(redCompAverage / numPixels);
+        greenCompAverage = (int) ceil(greenCompAverage / numPixels);
+        blueCompAverage = (int) ceil(blueCompAverage / numPixels);
+
+        writeAverageRGB(img, ssWidth, ssHeight, psueCol, pseuRow, redCompAverage, greenCompAverage, blueCompAverage);
+    }
+
+    //MODIFIES: img
+    //EFFECTS: writes each average RGB value to its corresponding index in each pixel within the current subsection
+    private void writeAverageRGB(Image img, int ssWidth, int ssHeight,
+                                 int psueCol, int pseuRow,
+                                 int redCompAverage, int greenCompAverage, int blueCompAverage) {
+
+        //row-major traversal to reach each pixel in the current subsection
+        for (int r = 0; r < ssHeight; r++) {
+            for (int c = 0; c < ssWidth; c++) {
+
+                //get the row and column in non-pseudo array of current element
+                int scaledCol = c + (psueCol * ssWidth);
+                int scaledRow = r + (pseuRow * ssHeight);
+
+                //determine index of current element in non-pseudo array (img pixelArray)
+                int currIndex = scaledCol + (scaledRow * img.getImageWidth());
+
+                //write each average RGB value to corresponding index in current pixel
+                img.getPixelArray()[currIndex][0] = redCompAverage;
+                img.getPixelArray()[currIndex][1] = greenCompAverage;
+                img.getPixelArray()[currIndex][2] = blueCompAverage;
+            }
         }
     }
 
