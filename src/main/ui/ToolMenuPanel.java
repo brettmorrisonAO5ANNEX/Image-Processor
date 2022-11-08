@@ -1,5 +1,8 @@
 package ui;
 
+import model.Filter;
+import model.Image;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -7,17 +10,19 @@ import java.awt.event.ActionListener;
 //represents the tool menu panel that is shown while a user is editing
 public class ToolMenuPanel extends JPanel {
     private final ImageAppGUI iaGUI;
+    private Image myImage;
     private JPanel menuPanel;
+    private JPanel historyPanel;
     private AddFilterPanel addFilterPanel;
 
     public ToolMenuPanel(ImageAppGUI iaGUI) {
         super();
         this.iaGUI = iaGUI;
+        myImage = iaGUI.getMyImage();
 
         setBorder(BorderFactory.createEmptyBorder());
-        setLayout(new GridBagLayout());
-        createMenuPanel();
-//        createHistoryPanel();
+        setLayout(new GridLayout(0,2));
+        createAndAddSubPanels();
 
         int width = iaGUI.getMyImage().getImageWidth();
         int height = iaGUI.getMyImage().getImageHeight();
@@ -25,22 +30,22 @@ public class ToolMenuPanel extends JPanel {
     }
 
     //MODIFIES: this
+    //EFFECTS: creates subPanels for tool menu view history to be added to this
+    private void createAndAddSubPanels() {
+        createMenuPanel();
+        createHistoryPanel();
+    }
+
+    //MODIFIES: this
     //EFFECTS: creates menu panel to be added to tool menu panel
     private void createMenuPanel() {
-        GridBagConstraints c = new GridBagConstraints();
-
         menuPanel = new JPanel();
         menuPanel.setBorder(BorderFactory.createEmptyBorder());
         menuPanel.setLayout(new GridLayout(0,1));
 
         createButtons();
 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 1;
-        c.gridx = 0;
-        c.gridy = 0;
-
-        add(menuPanel, c);
+        add(menuPanel);
     }
 
     //MODIFIES: this
@@ -93,30 +98,27 @@ public class ToolMenuPanel extends JPanel {
 //        return filterOptions;
 //    }
 
-//    //MODIFIES: this
-//    //EFFECTS: creates history panel to show what edits have been made to far
-//    private void createHistoryPanel() {
-//        GridBagConstraints c = new GridBagConstraints();
-//
-//        JPanel historyPanel = new JPanel();
-//        historyPanel.setBackground(new Color(220,220,220));
-////        createAndAddJLabels(historyPanel);
-//
-//        c.gridwidth = 1;
-//        c.gridx = 1;
-//        c.gridy = 0;
-//
-//        add(historyPanel, c);
-//    }
+    //MODIFIES: this
+    //EFFECTS: creates history panel to show what edits have been made to far
+    private void createHistoryPanel() {
+        historyPanel = new JPanel();
+        historyPanel.setLayout(new GridLayout(0,1));
+        historyPanel.setBorder(BorderFactory.createEmptyBorder());
+        historyPanel.setBackground(new Color(220,220,220));
+        createAndAddJLabels(historyPanel);
 
-//    //MODIFIES: this
-//    //EFFECTS: creates JLabel
-//    private void createAndAddJLabels(JPanel historyPanel) {
-//        int index = 1;
-//        for (Filter filter: myImage.getListOfFilter()) {
-//            String name = filter.getFilterName();
-//            JLabel edit = new JLabel(index + "name");
-//            historyPanel.add(edit);
-//        }
-//    }
+        add(historyPanel);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates JLabel
+    private void createAndAddJLabels(JPanel historyPanel) {
+        int index = 1;
+        for (Filter filter: myImage.getListOfFilter()) {
+            String name = filter.getFilterName();
+            JLabel edit = new JLabel(index + ": " + name);
+            historyPanel.add(edit);
+            index++;
+        }
+    }
 }

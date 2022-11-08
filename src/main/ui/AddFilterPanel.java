@@ -108,7 +108,7 @@ public class AddFilterPanel extends JPanel {
 
         ActionListener degPixListener = e -> {
             JComboBox cb = (JComboBox) e.getSource();
-            int degPix = (int) cb.getSelectedItem();
+            int degPix = Integer.parseInt((String) cb.getSelectedItem());
             myImage.setDegreeOfPixelation(degPix);
         };
 
