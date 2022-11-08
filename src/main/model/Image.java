@@ -65,7 +65,7 @@ public class Image implements Writable {
     }
 
     //MODIFIES: this
-    //EFFECTS: adds filterName to uniqueFiltersUsed
+    //EFFECTS: adds filterName to uniqueFiltersUsed if it is not already in the list
     public void addIfUnique(Filter filter) {
         String filterType = filter.getFilterName();
         if (!this.uniqueFiltersUsed.contains(filterType)) {

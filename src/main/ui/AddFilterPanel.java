@@ -1,14 +1,23 @@
 package ui;
 
+import model.Filter;
+import model.Image;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 import static java.lang.Math.log;
 import static java.lang.Math.min;
 
 //represents add filter panel that is shown to user when they choose the add filter option from tool menu
 public class AddFilterPanel extends JPanel {
+    private final Filter mirrorFilter;
+    private final Filter negativeFilter;
+    private final Filter pixelateFilter;
     private ToolMenuPanel toolMenuPanel;
+    private ImageAppGUI iaGUI;
+    private Image myImage;
     private int width;
     private int height;
 
@@ -16,7 +25,12 @@ public class AddFilterPanel extends JPanel {
     //EFFECTS: creates add filter panel for given session/project
     public AddFilterPanel(ToolMenuPanel toolMenuPanel, int w, int h) {
         super();
+        mirrorFilter = new Filter("mirror");
+        negativeFilter = new Filter("negative");
+        pixelateFilter = new Filter("pixelate");
         this.toolMenuPanel = toolMenuPanel;
+        this.iaGUI = toolMenuPanel.getImageAppGUI();
+        this.myImage = iaGUI.getMyImage();
         this.width = w;
         this.height = h;
 
@@ -31,38 +45,55 @@ public class AddFilterPanel extends JPanel {
         createMirrorButton();
         createNegativeButton();
         createPixelateDropDown();
-        createApplyButton();
+        createPixelateButton();
     }
 
-    //MODIFIES: this
+    //MODIFIES: this, myImage
     //EFFECTS: creates button for mirror filter option
     private void createMirrorButton() {
         GridBagConstraints c = new GridBagConstraints();
-        JButton mirror = new JButton("Mirror");
-        mirror.setPreferredSize(new Dimension(140, 25));
 
-        c.gridwidth = 1;
+        ActionListener mirrorListener = e -> {
+            myImage.addFilter(mirrorFilter);
+            myImage.addIfUnique(mirrorFilter);
+            returnToToolMenu();
+        };
+
+        JButton mirror = new JButton("Mirror");
+        mirror.addActionListener(mirrorListener);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 0;
 
         add(mirror, c);
     }
 
-    //MODIFIES: this
+    //MODIFIES: this, myImage
     //EFFECTS: creates button for negative filter option
     private void createNegativeButton() {
         GridBagConstraints c = new GridBagConstraints();
-        JButton negative = new JButton("Negative");
-        negative.setPreferredSize(new Dimension(140, 25));
 
-        c.gridwidth = 1;
+        ActionListener negativeListener = e -> {
+            myImage.addFilter(negativeFilter);
+            myImage.addIfUnique(negativeFilter);
+            returnToToolMenu();
+        };
+
+        JButton negative = new JButton("Negative");
+        negative.addActionListener(negativeListener);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 1;
 
         add(negative, c);
     }
 
-    //MODIFIES: this
+    //TODO: add listener to apply deg pix to image
+    //MODIFIES: this, myImage
     //EFFECTS: creates pixelate dropdown with degree of pixelation option for user
     private void createPixelateDropDown() {
         GridBagConstraints c = new GridBagConstraints();
@@ -75,23 +106,47 @@ public class AddFilterPanel extends JPanel {
             degPixOptions[i] = Integer.toString(i);
         }
 
+        ActionListener degPixListener = e -> {
+            JComboBox cb = (JComboBox) e.getSource();
+            int degPix = (int) cb.getSelectedItem();
+            myImage.setDegreeOfPixelation(degPix);
+        };
+
         JComboBox pixelate = new JComboBox(degPixOptions);
-        pixelate.setPreferredSize(new Dimension(138, 25));
+        pixelate.addActionListener(degPixListener);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 2;
         add(pixelate, c);
     }
 
-    //MODIFIES: this
+    //MODIFIES: this, myImage
     //EFFECTS: creates apply button that applies chosen filter and returns to tool menu
-    public void createApplyButton() {
+    public void createPixelateButton() {
         GridBagConstraints c = new GridBagConstraints();
-        JButton apply = new JButton("Apply");
-        apply.setPreferredSize(new Dimension(140, 25));
+
+        ActionListener pixelateListener = e -> {
+            myImage.addFilter(pixelateFilter);
+            myImage.addIfUnique(pixelateFilter);
+            returnToToolMenu();
+        };
+
+        JButton pixelate = new JButton("Pixelate");
+        pixelate.addActionListener(pixelateListener);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
-        c.gridx = 0;
-        c.gridy = 3;
-        add(apply, c);
+        c.gridx = 1;
+        c.gridy = 2;
+        add(pixelate, c);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: returns to toolMenuPanel
+    private void returnToToolMenu() {
+        iaGUI.remove(this);
+        toolMenuPanel.setVisible(true);
     }
 }

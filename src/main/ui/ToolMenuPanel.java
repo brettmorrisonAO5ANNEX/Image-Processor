@@ -1,11 +1,7 @@
 package ui;
 
-import model.Filter;
-import model.Image;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 //represents the tool menu panel that is shown while a user is editing
@@ -39,6 +35,7 @@ public class ToolMenuPanel extends JPanel {
 
         createButtons();
 
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 0;
@@ -63,8 +60,11 @@ public class ToolMenuPanel extends JPanel {
         menuPanel.add(quitAndSave);
     }
 
+    //MODIFIES: this
+    //EFFECTS: creates add filter button such that when pressed, panel changes to add filter panel
     private void createAddFilterButton() {
         JButton addFilter = new JButton("Add Filter");
+
         ActionListener addFilterListener = e -> {
             setVisible(false);
             iaGUI.add(addFilterPanel);
@@ -76,6 +76,10 @@ public class ToolMenuPanel extends JPanel {
 
     public Component getAddFilterPanel() {
         return this.addFilterPanel;
+    }
+
+    public ImageAppGUI getImageAppGUI() {
+        return this.iaGUI;
     }
 
 //    //MODIFIES: this
