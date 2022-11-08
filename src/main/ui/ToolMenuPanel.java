@@ -5,7 +5,6 @@ import model.Image;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 //represents the tool menu panel that is shown while a user is editing
@@ -15,7 +14,7 @@ public class ToolMenuPanel extends JPanel {
     private JPanel menuPanel;
     private JPanel historyPanel;
     private AddFilterPanel addFilterPanel;
-    private ViewResultPanel viewResultPanel;
+    private ResultIcon resultIcon;
 
     public ToolMenuPanel(ImageAppGUI iaGUI) {
         super();
@@ -85,8 +84,7 @@ public class ToolMenuPanel extends JPanel {
     //EFFECTS: creates process button with action listener to switch to viewResultPanel if pressed
     private void createProcessButton() {
         ActionListener processListener = e -> {
-            createFinalResult();
-            iaGUI.add(viewResultPanel);
+            createAndAddFinalResult();
         };
 
         JButton processProject = new JButton("Process Project");
@@ -97,23 +95,25 @@ public class ToolMenuPanel extends JPanel {
 
     //MODIFIES: this
     //EFFECTS: creates new ViewResultsPanel, adds resulting pixel array, and displays the ViewResultPanel
-    private void createFinalResult() {
-        myImage.processImage();
-        String result = myImage.createVisArray(0);
-        JLabel visArray = new JLabel();
-
-        viewResultPanel = new ViewResultPanel();
+    private void createAndAddFinalResult() {
+        resultIcon = new ResultIcon(myImage, iaGUI);
         setVisible(false);
-        visArray.setText(convertToMultiline(result));
-        viewResultPanel.add(visArray);
+//        myImage.processImage();
+//        String result = myImage.createVisArray(0);
+//        JLabel visArray = new JLabel();
+//
+//        viewResultPanel = new ViewResultPanel();
+//        setVisible(false);
+//        visArray.setText(convertToMultiline(result));
+//        viewResultPanel.add(visArray);
     }
 
-    //SOURCE: https://stackoverflow.com/questions/2152742/java-swing-multiline-labels
-    //MODIFIES: result
-    //EFFECTS: converts single line string to multi-line string by updating \n to <br> (html notation)
-    private String convertToMultiline(String result) {
-        return "<html>" + result.replaceAll("\n", "<br>");
-    }
+//    //SOURCE: https://stackoverflow.com/questions/2152742/java-swing-multiline-labels
+//    //MODIFIES: result
+//    //EFFECTS: converts single line string to multi-line string by updating \n to <br> (html notation)
+//    private String convertToMultiline(String result) {
+//        return "<html>" + result.replaceAll("\n", "<br>");
+//    }
 
     public void createHistoryPanel() {
         historyPanel = new JPanel();
