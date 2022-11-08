@@ -28,6 +28,7 @@ public class JsonWriterTest {
     public void testWriterNewImage() {
         try {
             Image img = new Image(1, 2);
+            img.setCompChoice("blue");
             JsonWriter writer = new JsonWriter("./data/testWriterNewImage.json");
             writer.open();
             writer.write(img);
@@ -40,6 +41,7 @@ public class JsonWriterTest {
             assertEquals(2, img.getPixelArray().length);
             assertEquals(1, img.getImageWidth());
             assertEquals(2, img.getImageHeight());
+            assertEquals("blue", img.getCompChoice());
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
@@ -52,6 +54,8 @@ public class JsonWriterTest {
             img.addFilter(new Filter("negative"));
             img.addFilter(new Filter("pixelate"));
             img.setDegreeOfPixelation(0);
+            img.addFilter(new Filter("colorGradient"));
+            img.setCompChoice("blue");
             img.addFilter(new Filter("mirror"));
             img.undoLast();
             JsonWriter writer = new JsonWriter("./data/testWriterPartiallyEditedImage.json");
@@ -61,15 +65,18 @@ public class JsonWriterTest {
 
             JsonReader reader = new JsonReader("./data/testWriterPartiallyEditedImage.json");
             img = reader.read();
-            assertEquals(2, img.getListOfFilter().size());
+            assertEquals(3, img.getListOfFilter().size());
             assertEquals("negative", img.getListOfFilter().get(0).getFilterName());
             assertEquals("pixelate", img.getListOfFilter().get(1).getFilterName());
+            assertEquals("colorGradient", img.getListOfFilter().get(2).getFilterName());
             assertEquals(0, img.getDegreeOfPixelation());
-            assertEquals(2, img.getUniqueFiltersUsed().size());
+            assertEquals(3, img.getUniqueFiltersUsed().size());
             assertEquals("negative", img.getUniqueFiltersUsed().get(0));
             assertEquals("pixelate", img.getUniqueFiltersUsed().get(1));
+            assertEquals("colorGradient", img.getUniqueFiltersUsed().get(2));
             assertEquals(4, img.getImageWidth());
             assertEquals(4, img.getImageHeight());
+            assertEquals("blue", img.getCompChoice());
             assertEquals(16, img.getPixelArray().length);
 
         } catch (IOException e) {

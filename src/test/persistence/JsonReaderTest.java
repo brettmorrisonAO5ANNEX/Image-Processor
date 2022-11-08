@@ -34,6 +34,7 @@ public class JsonReaderTest {
             assertEquals(2, img.getPixelArray().length);
             assertEquals(1, img.getImageWidth());
             assertEquals(2, img.getImageHeight());
+            assertEquals("green", img.getCompChoice());
 
         } catch (IOException e) {
             fail("Couldn't read from file");
@@ -56,6 +57,7 @@ public class JsonReaderTest {
             assertEquals("pixelate", img.getUniqueFiltersUsed().get(2));
             assertEquals(4, img.getImageWidth());
             assertEquals(4, img.getImageHeight());
+            assertEquals("red", img.getCompChoice());
             assertEquals(16, img.getPixelArray().length);
 
         } catch (IOException e) {

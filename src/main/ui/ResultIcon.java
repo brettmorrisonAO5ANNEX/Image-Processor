@@ -11,9 +11,10 @@ public class ResultIcon extends ImageIcon {
     private int[][] pixArray;
     private ViewResultPanel viewResultPanel;
 
-    public ResultIcon(Image myImage, ImageAppGUI iaGUI) {
+    public ResultIcon(Image myImage, ViewResultPanel viewResultPanel, ImageAppGUI iaGUI) {
+        GridBagConstraints c = new GridBagConstraints();
         //setup viewResultPanel to place result
-        viewResultPanel = new ViewResultPanel();
+        this.viewResultPanel = viewResultPanel;
 
         //get updated pixel array for final product
         myImage.processImage();
@@ -27,7 +28,12 @@ public class ResultIcon extends ImageIcon {
         //update RGB and creates/adds label out of new icon created from repainted result BufferedImage
         ImageIcon resultIcon = new ImageIcon(paintResult(result));
         JLabel resultLabel = new JLabel(resultIcon);
-        viewResultPanel.add(resultLabel);
+        resultLabel.setBorder(BorderFactory.createEmptyBorder());
+
+        c.gridwidth = 1;
+        c.gridx = 2;
+
+        viewResultPanel.add(resultLabel, c);
         iaGUI.add(viewResultPanel);
     }
 

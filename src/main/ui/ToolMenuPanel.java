@@ -14,7 +14,7 @@ public class ToolMenuPanel extends JPanel {
     private JPanel menuPanel;
     private JPanel historyPanel;
     private AddFilterPanel addFilterPanel;
-    private ResultIcon resultIcon;
+    private OriginalIcon originalIcon;
 
     public ToolMenuPanel(ImageAppGUI iaGUI) {
         super();
@@ -96,7 +96,7 @@ public class ToolMenuPanel extends JPanel {
     //MODIFIES: this
     //EFFECTS: creates new ViewResultsPanel, adds resulting pixel array, and displays the ViewResultPanel
     private void createAndAddFinalResult() {
-        resultIcon = new ResultIcon(myImage, iaGUI);
+        originalIcon = new OriginalIcon(myImage, iaGUI);
         setVisible(false);
 //        myImage.processImage();
 //        String result = myImage.createVisArray(0);

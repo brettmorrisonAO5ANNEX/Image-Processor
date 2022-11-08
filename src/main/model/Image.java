@@ -17,6 +17,7 @@ public class Image implements Writable {
     private int width;
     private int height;
     private int degreeOfPixelation;
+    private String compChoice;
     private String imageResult;
 
     //REQUIRES: width, height > 0
@@ -44,6 +45,7 @@ public class Image implements Writable {
         json.put("width", width);
         json.put("height", height);
         json.put("degreeOfPixelation", degreeOfPixelation);
+        json.put("compChoice", compChoice);
         json.put("imageResult", imageResult);
         return json;
     }
@@ -142,6 +144,8 @@ public class Image implements Writable {
                 filter.negative(this);
             } else if (filter.getFilterName().equals("mirror")) {
                 filter.mirror(this);
+            } else if (filter.getFilterName().equals("colorGradient")) {
+                filter.colorGradient(compChoice, this);
             } else {
                 filter.pixelate(this);
             }
@@ -214,22 +218,20 @@ public class Image implements Writable {
         return this.degreeOfPixelation;
     }
 
-    //REQUIRES: imageResult is not empty
-    //MODIFIES: this
-    //EFFECTS: sets this image result to imageResult
     public void setImageResult(String imageResult) {
         this.imageResult = imageResult;
     }
 
-//    //REQUIRES: dimensions of newPixArray must match dimensions of this
-//    //MODIFIES: this
-//    //EFFECTS: sets this.pixelArray to newPixArray
-//    public void setPixelArray(int[][] newPixArray) {
-//        this.pixelArray = newPixArray;
-//    }
-
     public String getImageResult() {
         return this.imageResult;
+    }
+
+    public String getCompChoice() {
+        return this.compChoice;
+    }
+
+    public void setCompChoice(String chosenComp) {
+        this.compChoice = chosenComp;
     }
 }
 

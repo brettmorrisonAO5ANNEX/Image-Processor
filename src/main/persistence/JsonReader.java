@@ -44,6 +44,7 @@ public class JsonReader {
         int width = jsonObject.getInt("width");
         int height = jsonObject.getInt("height");
         Image img = new Image(width, height);
+        img.setCompChoice(jsonObject.getString("compChoice"));
         addListOfFilter(img, jsonObject);
         img.setImageResult(jsonObject.getString("imageResult"));
         addDegreeOfPixelation(img, jsonObject);

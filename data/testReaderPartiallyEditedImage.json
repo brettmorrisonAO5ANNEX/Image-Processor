@@ -7,5 +7,6 @@
     "width": 4,
     "degreeOfPixelation": 2,
     "height": 4,
+    "compChoice": "red",
     "imageResult": ""
 }

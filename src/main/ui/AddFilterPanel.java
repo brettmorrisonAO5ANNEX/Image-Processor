@@ -14,6 +14,7 @@ import static java.lang.Math.min;
 public class AddFilterPanel extends JPanel {
     private final Filter mirrorFilter;
     private final Filter negativeFilter;
+    private final Filter colorGradient;
     private final Filter pixelateFilter;
     private ToolMenuPanel toolMenuPanel;
     private ImageAppGUI iaGUI;
@@ -27,6 +28,7 @@ public class AddFilterPanel extends JPanel {
         super();
         mirrorFilter = new Filter("mirror");
         negativeFilter = new Filter("negative");
+        colorGradient = new Filter("colorGradient");
         pixelateFilter = new Filter("pixelate");
         this.toolMenuPanel = toolMenuPanel;
         this.iaGUI = toolMenuPanel.getImageAppGUI();
@@ -44,8 +46,8 @@ public class AddFilterPanel extends JPanel {
     private void createAndAddButtons() {
         createMirrorButton();
         createNegativeButton();
-        createPixelateDropDown();
-        createPixelateButton();
+        createColorGradientOption();
+        createPixelateOption();
     }
 
     //MODIFIES: this, myImage
@@ -92,7 +94,63 @@ public class AddFilterPanel extends JPanel {
         add(negative, c);
     }
 
-    //TODO: add listener to apply deg pix to image
+    //MODIFIES: this
+    //EFFECTS: creates colorGradient button and corresponding rgbComponent dropdown menu
+    private void createColorGradientOption() {
+        createColorGradientDropDown();
+        createColorGradientButton();
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates dropdown with options for user to pick which rgb component to apply gradient to
+    private void createColorGradientDropDown() {
+        GridBagConstraints c = new GridBagConstraints();
+        String[] rgbCompOptions = {"", "red", "green", "blue"};
+
+        ActionListener compListener = e -> {
+            JComboBox cb = (JComboBox) e.getSource();
+            String chosenComp = (String) cb.getSelectedItem();
+            myImage.setCompChoice(chosenComp);
+        };
+
+        JComboBox colorGradient = new JComboBox(rgbCompOptions);
+        colorGradient.addActionListener(compListener);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 2;
+        add(colorGradient, c);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates colorGradient button that applies colorGradient filter then returns to tool menu
+    private void createColorGradientButton() {
+        GridBagConstraints c = new GridBagConstraints();
+
+        ActionListener gradientListener = e -> {
+            myImage.addFilter(colorGradient);
+            myImage.addIfUnique(colorGradient);
+            returnToToolMenu();
+        };
+
+        JButton gradientButton = new JButton("Gradient");
+        gradientButton.addActionListener(gradientListener);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 1;
+        c.gridx = 1;
+        c.gridy = 2;
+        add(gradientButton, c);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates pixelate button and corresponding degree of pixelate dropdown menu
+    private void createPixelateOption() {
+        createPixelateDropDown();
+        createPixelateButton();
+    }
+
     //MODIFIES: this, myImage
     //EFFECTS: creates pixelate dropdown with degree of pixelation option for user
     private void createPixelateDropDown() {
@@ -118,12 +176,12 @@ public class AddFilterPanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 3;
         add(pixelate, c);
     }
 
     //MODIFIES: this, myImage
-    //EFFECTS: creates apply button that applies chosen filter and returns to tool menu
+    //EFFECTS: creates apply button that applies pixelate filter and returns to tool menu
     public void createPixelateButton() {
         GridBagConstraints c = new GridBagConstraints();
 
@@ -139,7 +197,7 @@ public class AddFilterPanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 1;
-        c.gridy = 2;
+        c.gridy = 3;
         add(pixelate, c);
     }
 
