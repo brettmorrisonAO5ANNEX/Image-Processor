@@ -47,7 +47,7 @@ public class AddFilterPanel extends JPanel {
         createMirrorButton();
         createNegativeButton();
         createColorGradientOption();
-        createPixelateOption();
+        createPixelateButton();
     }
 
     //MODIFIES: this, myImage
@@ -144,12 +144,6 @@ public class AddFilterPanel extends JPanel {
         add(gradientButton, c);
     }
 
-    //MODIFIES: this
-    //EFFECTS: creates pixelate button and corresponding degree of pixelate dropdown menu
-    private void createPixelateOption() {
-        createPixelateButton();
-    }
-
     //MODIFIES: this, myImage
     //EFFECTS: creates apply button that applies pixelate filter and returns to tool menu
     public void createPixelateButton() {
@@ -166,7 +160,7 @@ public class AddFilterPanel extends JPanel {
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 2;
-        c.gridx = 1;
+        c.gridx = 0;
         c.gridy = 3;
         add(pixelate, c);
     }

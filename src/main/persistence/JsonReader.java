@@ -47,7 +47,6 @@ public class JsonReader {
         img.setCompChoice(jsonObject.getString("compChoice"));
         addListOfFilter(img, jsonObject);
         img.setImageResult(jsonObject.getString("imageResult"));
-        addDegreeOfPixelation(img, jsonObject);
         return img;
     }
 
@@ -68,13 +67,6 @@ public class JsonReader {
         Filter filter = new Filter(name);
         img.addFilter(filter);
         img.addIfUnique(filter);
-    }
-
-    //MODIFIES: img
-    //EFFECTS: parses degreeOfPixelation from JSON object and adds it to image
-    private void addDegreeOfPixelation(Image img, JSONObject jsonObject) {
-        int degreeOfPixelation = jsonObject.getInt("degreeOfPixelation");
-        img.setDegreeOfPixelation(degreeOfPixelation);
     }
 }
 

@@ -53,7 +53,6 @@ public class JsonWriterTest {
             Image img = new Image(4,4);
             img.addFilter(new Filter("negative"));
             img.addFilter(new Filter("pixelate"));
-            img.setDegreeOfPixelation(0);
             img.addFilter(new Filter("colorGradient"));
             img.setCompChoice("blue");
             img.addFilter(new Filter("mirror"));
@@ -69,7 +68,6 @@ public class JsonWriterTest {
             assertEquals("negative", img.getListOfFilter().get(0).getFilterName());
             assertEquals("pixelate", img.getListOfFilter().get(1).getFilterName());
             assertEquals("colorGradient", img.getListOfFilter().get(2).getFilterName());
-            assertEquals(0, img.getDegreeOfPixelation());
             assertEquals(3, img.getUniqueFiltersUsed().size());
             assertEquals("negative", img.getUniqueFiltersUsed().get(0));
             assertEquals("pixelate", img.getUniqueFiltersUsed().get(1));

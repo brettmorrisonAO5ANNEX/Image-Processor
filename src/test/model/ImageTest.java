@@ -38,7 +38,6 @@ public class ImageTest {
 
     @Test
     public void testConstructorBoundary() {
-        assertEquals(0, i.getDegreeOfPixelation());
         assertEquals(1, i.getImageWidth());
         assertEquals(1, i.getImageHeight());
         assertEquals(0, i.getListOfFilter().size());
@@ -52,7 +51,6 @@ public class ImageTest {
     @Test
     public void testsConstructorNotBoundary() {
         Image i2 = new Image(2, 2);
-        assertEquals(0, i2.getDegreeOfPixelation());
         assertEquals(2, i2.getImageWidth());
         assertEquals(2, i2.getImageHeight());
         assertEquals(0, i2.getListOfFilter().size());
@@ -219,10 +217,9 @@ public class ImageTest {
 
     @Test
     public void testViewEditHistoryNotEmpty() {
-        String result = "[1: mirror, 2: pixelate(deg: 0)]";
+        String result = "[1: mirror, 2: pixelate]";
         i.addFilter(mirror);
         i.addFilter(pixelate);
-        i.setDegreeOfPixelation(0);
         assertEquals(2, i.getListOfFilter().size());
         assertEquals(result, i.viewEditHistory());
     }
@@ -238,13 +235,13 @@ public class ImageTest {
 
     @Test
     public void testProcessImageOneInListOfFilterPixelate() {
-        i.setDegreeOfPixelation(0);
-        i.addFilter(pixelate);
-        assertEquals(255, i.getPixelArray()[0][0]);
-        assertEquals(255, i.getPixelArray()[0][2]);
-        i.processImage();
-        assertEquals(255, i.getPixelArray()[0][0]);
-        assertEquals(255, i.getPixelArray()[0][2]);
+        Image imgTestFourElements = new Image(2, 2);
+        imgTestFourElements.addFilter(pixelate);
+        assertEquals(255, imgTestFourElements.getPixelArray()[0][0]);
+        assertEquals(255, imgTestFourElements.getPixelArray()[0][2]);
+        imgTestFourElements.processImage();
+        assertEquals(255, imgTestFourElements.getPixelArray()[0][0]);
+        assertEquals(255, imgTestFourElements.getPixelArray()[0][2]);
     }
 
     @Test

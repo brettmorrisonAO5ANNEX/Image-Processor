@@ -49,25 +49,26 @@ public class Filter implements Writable {
         img.pixelArray = mirroredArray;
     }
 
-    //TODO: update to account for direction of increment change
     //REQUIRES: input rgbComponent must be one of "red" "green" or "blue"
     //MODIFIES: img
     //EFFECTS: creates image with chosen rgb component decreasing in intensity with each row in pix array
     public void colorGradient(String rgbComponent, Image img) {
         int rgbIndex = getRGBindex(rgbComponent);
-        int incrementAmount = round((255 / img.getImageHeight()));
+        int incrementAmount;
+
+        //normalized increment amount to 1 if there are > 255 rows in the image, otherwise assigns increment
+        //amount as normal
+        if (round((255 / img.getImageHeight())) < 1) {
+            incrementAmount = 1;
+        } else {
+            incrementAmount = round((255 / img.getImageHeight()));
+        }
 
         for (int c = 0; c < img.getImageWidth(); c++) {
             for (int r = 0; r < img.getImageHeight(); r++) {
                 int pixIndex = c + (r * img.getImageWidth());
                 int currCompIntensity = (r + 1) * incrementAmount;
 
-                //if currCompIntensity exceeds 255 goes in reverse, if reaches 0 begins performing forward again
-                if (currCompIntensity > 255) {
-                    //decrement by incrementAmount starting from incrementAmount * img.getHeight()
-                } else if (currCompIntensity < 0) {
-                    //increment by incrementAmount starting from incrementAmount
-                }
                 img.getPixelArray()[pixIndex][rgbIndex] = (currCompIntensity);
             }
         }

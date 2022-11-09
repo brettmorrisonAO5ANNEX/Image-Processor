@@ -16,7 +16,6 @@ public class Image implements Writable {
     int[][] pixelArray;
     private int width;
     private int height;
-    private int degreeOfPixelation;
     private String compChoice;
     private String imageResult;
 
@@ -29,7 +28,6 @@ public class Image implements Writable {
         this.pixelArray = new int[width * height][3];
         this.width = width;
         this.height = height;
-        this.degreeOfPixelation = 0;
         this.imageResult = "";
         for (int r = 0; r < this.pixelArray.length; r++) {
             for (int c = 0; c < this.pixelArray[0].length; c++) {
@@ -44,7 +42,6 @@ public class Image implements Writable {
         json.put("listOfFilter", listOfFilterToJson());
         json.put("width", width);
         json.put("height", height);
-        json.put("degreeOfPixelation", degreeOfPixelation);
         json.put("compChoice", compChoice);
         json.put("imageResult", imageResult);
         return json;
@@ -127,8 +124,8 @@ public class Image implements Writable {
         } else {
             for (int i = 0; i < size; i++) {
                 String item = this.listOfFilter.get(i).getFilterName();
-                if (item.equals("pixelate")) {
-                    item = item + "(deg: " + this.degreeOfPixelation + ")";
+                if (item.equals("colorGradient")) {
+                    item = item + "(gradient for: " + this.compChoice + ")";
                 }
                 history[i] = (i + 1) + ": " + item;
             }
@@ -209,14 +206,7 @@ public class Image implements Writable {
     public int getImageWidth() {
         return this.width;
     }
-
-    public void setDegreeOfPixelation(int d) {
-        this.degreeOfPixelation = d;
-    }
-
-    public int getDegreeOfPixelation() {
-        return this.degreeOfPixelation;
-    }
+    
 
     public void setImageResult(String imageResult) {
         this.imageResult = imageResult;

@@ -50,7 +50,6 @@ public class JsonReaderTest {
             assertEquals("negative", img.getListOfFilter().get(0).getFilterName());
             assertEquals("mirror", img.getListOfFilter().get(1).getFilterName());
             assertEquals("pixelate", img.getListOfFilter().get(2).getFilterName());
-            assertEquals(2, img.getDegreeOfPixelation());
             assertEquals(3, img.getUniqueFiltersUsed().size());
             assertEquals("negative", img.getUniqueFiltersUsed().get(0));
             assertEquals("mirror", img.getUniqueFiltersUsed().get(1));
