@@ -1,18 +1,20 @@
 package ui;
 
+import ui.CustomImageCreation.CustomImage;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicReference;
 
 //represents the opening panel that is shown to user when image.(in) is initially run
 public class OpenPanel extends JPanel {
     private JPanel optionPanel;
-
     private JLabel logo;
-
     private final ImageAppGUI iaGUI;
     private CreateImagePanel createImagePanel;
+    private ToolMenuPanel toolMenuPanel;
+    private String fileSource = null;
 
     //EFFECTS: creates an opening panel with logo and options for user ot create new, laod previous, or view gallery
     //         (for the last two options, buttons should be un-clickable if no current projects or no gallery projects)
@@ -40,13 +42,12 @@ public class OpenPanel extends JPanel {
         add(logoPanel);
     }
 
-    //TODO: constrain logo
     //MODIFIES: this
     //EFFECTS: creates JLabel representation of application logo
     private void createLogo() {
 //        ImageIcon icon = new ImageIcon("./data/tobs.jpg");
 //        logo = new JLabel(icon, JLabel.CENTER);
-        logo = new JLabel("", JLabel.CENTER);
+        logo = new JLabel("logo here", JLabel.CENTER);
     }
 
     //MODIFIES: this
@@ -62,6 +63,11 @@ public class OpenPanel extends JPanel {
     //EFFECTS: creates all new, load previous, and view gallery buttons
     public void createButtons() {
         createNewImageButton();
+
+        //for use when creating custom Images from use chosen (locally saved) images
+        createCustomImageButtonAndDropdown();
+        //
+
         createLoadPrevButton();
         createViewGallButton();
     }
@@ -78,14 +84,68 @@ public class OpenPanel extends JPanel {
         c.gridy = 0;
 
         ActionListener newImageAction = e -> {
-            this.setVisible(false);
-
-            createImagePanel = new CreateImagePanel(iaGUI);
-            iaGUI.add(createImagePanel);
+            moveToCreate();
         };
 
         newImage.addActionListener(newImageAction);
         optionPanel.add(newImage, c);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates custom button and dropDown with choices of custom images
+    private void createCustomImageButtonAndDropdown() {
+        createCustomButton();
+        createCustomDropdown();
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates button for confirming creation of custom image
+    private void createCustomButton() {
+        GridBagConstraints c = new GridBagConstraints();
+
+        ActionListener customListener = e -> {
+            moveToTool();
+        };
+
+        JButton createCustom = new JButton("Custom");
+        createCustom.addActionListener(customListener);
+
+        c.gridwidth = 1;
+        c.gridx = 1;
+        c.gridy = 1;
+
+        optionPanel.add(createCustom, c);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates JComboBox with keywords for each custom image choice (all locally saved image files)
+    private void createCustomDropdown() {
+        GridBagConstraints c = new GridBagConstraints();
+        String[] options = {"", "dog"};
+
+        ActionListener comboBoxListener = e -> {
+            JComboBox cb = (JComboBox) e.getSource();
+            fileSource = (String) cb.getSelectedItem();
+            createCustomImage(fileSource);
+        };
+
+        JComboBox customOption = new JComboBox(options);
+        customOption.addActionListener(comboBoxListener);
+
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+
+        optionPanel.add(customOption, c);
+    }
+
+    //MODIFIES: iaGUI
+    //EFFECTS: creates Image object from custom image choice
+    private void createCustomImage(String fileName) {
+        String destinationFile = "./data/" + fileSource + ".png";
+        CustomImage customImage = new CustomImage(destinationFile);
+        customImage.writeCustomToImage();
+        iaGUI.setMyImage(customImage.getCustomImage());
     }
 
     //MODIFIES: this
@@ -97,7 +157,7 @@ public class OpenPanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 2;
 
         ActionListener loadPrevAction = e -> {
             //testing functionality
@@ -117,7 +177,7 @@ public class OpenPanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 1;
-        c.gridy = 1;
+        c.gridy = 2;
 
         ActionListener viewGallAction = e -> {
             //testing functionality
@@ -128,16 +188,21 @@ public class OpenPanel extends JPanel {
         optionPanel.add(viewGall, c);
     }
 
-//    //MODIFIES: this
-//    //EFFECTS: creates main frame for opening page
-//    public void createMainFrame() {
-//        mainFrame = new JFrame();
-//
-//        mainFrame.setTitle("image.(in)");
-//        mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
-//        mainFrame.add(mainPanel);
-//        mainFrame.setVisible(show);
-//        mainFrame.pack();
-//        mainFrame.setBounds(200, 200, 500, 300);
-//    }
+    //MODIFIES: this
+    //EFFECTS: leaves open panel and opens create image panel
+    public void moveToCreate() {
+        this.setVisible(false);
+
+        createImagePanel = new CreateImagePanel(iaGUI);
+        iaGUI.add(createImagePanel);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: leaves open panel and opens tool menu panel
+    public void moveToTool() {
+        this.setVisible(false);
+
+        toolMenuPanel = new ToolMenuPanel(iaGUI);
+        iaGUI.add(toolMenuPanel);
+    }
 }

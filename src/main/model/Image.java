@@ -195,6 +195,13 @@ public class Image implements Writable {
         return this.uniqueFiltersUsed;
     }
 
+    //TODO: marked -- used for running images from the internet into each filter
+    //      creating image objects and setting their pixelArrays to the arrays
+    //      of the locally saved image
+    public void setPixelArray(int[][] newPixArray) {
+        this.pixelArray = newPixArray;
+    }
+
     public int[][] getPixelArray() {
         return this.pixelArray;
     }
@@ -206,7 +213,6 @@ public class Image implements Writable {
     public int getImageWidth() {
         return this.width;
     }
-    
 
     public void setImageResult(String imageResult) {
         this.imageResult = imageResult;
