@@ -121,7 +121,7 @@ public class OpenPanel extends JPanel {
     //EFFECTS: creates JComboBox with keywords for each custom image choice (all locally saved image files)
     private void createCustomDropdown() {
         GridBagConstraints c = new GridBagConstraints();
-        String[] options = {"", "dog"};
+        String[] options = {"", "dog", "map", "ubc", "wolf", "lab", "ahh"};
 
         ActionListener comboBoxListener = e -> {
             JComboBox cb = (JComboBox) e.getSource();
@@ -142,7 +142,7 @@ public class OpenPanel extends JPanel {
     //MODIFIES: iaGUI
     //EFFECTS: creates Image object from custom image choice
     private void createCustomImage(String fileName) {
-        String destinationFile = "./data/" + fileSource + ".png";
+        String destinationFile = "./data/custom/" + fileSource + ".png";
         CustomImage customImage = new CustomImage(destinationFile);
         customImage.writeCustomToImage();
         iaGUI.setMyImage(customImage.getCustomImage());

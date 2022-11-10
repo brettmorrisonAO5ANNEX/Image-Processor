@@ -44,10 +44,10 @@ public class ResultIcon extends ImageIcon {
             for (int j = 0; j < result.getHeight(); j++) {
                 //gets corresponding index in projects pixArray
                 int pixArrayIndex = i + result.getWidth() * j;
-                int redComp = pixArray[pixArrayIndex][0];
-                int greenComp = pixArray[pixArrayIndex][1];
-                int blueComp = pixArray[pixArrayIndex][2];
-                result.setRGB(i, j, new Color(redComp, greenComp, blueComp).getRGB());
+                int redCompnt = pixArray[pixArrayIndex][0];
+                int greenCompnt = pixArray[pixArrayIndex][1];
+                int blueCompnt = pixArray[pixArrayIndex][2];
+                result.setRGB(i, j, new Color(redCompnt, greenCompnt, blueCompnt).getRGB());
             }
         }
         return result;

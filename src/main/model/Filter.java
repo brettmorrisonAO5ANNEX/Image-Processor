@@ -54,15 +54,18 @@ public class Filter implements Writable {
     //EFFECTS: creates image with chosen rgb component decreasing in intensity with each row in pix array
     public void colorGradient(String rgbComponent, Image img) {
         int rgbIndex = getRGBindex(rgbComponent);
-        int incrementAmount;
+        int incrementAmount = round((255 / img.getImageHeight()));
 
-        //normalized increment amount to 1 if there are > 255 rows in the image, otherwise assigns increment
-        //amount as normal
-        if (round((255 / img.getImageHeight())) < 1) {
-            incrementAmount = 1;
-        } else {
-            incrementAmount = round((255 / img.getImageHeight()));
-        }
+        //TODO: needs finalization before if can be implemented because if not properly implemented,
+        //      the following constraints prevent the colorGradient filter from working on on images
+        //      with > 255 rows because the RGB values get too large (> 255)
+//        //normalized increment amount to 1 if there are > 255 rows in the image, otherwise assigns increment
+//        //amount as normal
+//        if (round((255 / img.getImageHeight())) < 1) {
+//            incrementAmount = 1;
+//        } else {
+//            incrementAmount = round((255 / img.getImageHeight()));
+//        }
 
         for (int c = 0; c < img.getImageWidth(); c++) {
             for (int r = 0; r < img.getImageHeight(); r++) {
