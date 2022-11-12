@@ -5,6 +5,7 @@ import model.Image;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 //represents the tool menu panel that is shown while a user is editing
@@ -53,16 +54,13 @@ public class ToolMenuPanel extends JPanel {
     //EFFECTS: adds menu buttons to menuPanel
     private void createButtons() {
         createAddFilterButton();
-
-        JButton undo = new JButton("Undo");
-        menuPanel.add(undo);
+        createUndoButton();
 //        JComboBox undoType = new JComboBox(createOptions());
 //        menuPanel.add(undoType);
-        JButton undoAll = new JButton("Undo All");
-        menuPanel.add(undoAll);
+        createUndoAllButton();
         createProcessButton();
-        JButton quitAndSave = new JButton("Quit And Save");
-        menuPanel.add(quitAndSave);
+//        JButton quitAndSave = new JButton("Quit And Save");
+//        menuPanel.add(quitAndSave);
     }
 
     //MODIFIES: this
@@ -78,6 +76,40 @@ public class ToolMenuPanel extends JPanel {
 
         addFilter.addActionListener(addFilterListener);
         menuPanel.add(addFilter);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates undo button that undoes most recent filter added
+    private void createUndoButton() {
+        JButton undo = new JButton("Undo");
+
+        ActionListener undoListener = e -> {
+            historyPanel.removeAll();
+            setVisible(false);
+            myImage.undoLast();
+            updateHistoryPanel();
+            setVisible(true);
+        };
+
+        undo.addActionListener(undoListener);
+        menuPanel.add(undo);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates undo all button that undoes all filters added
+    private void createUndoAllButton() {
+        JButton undoAll = new JButton("Undo All");
+
+        ActionListener undoAllListener = e -> {
+            historyPanel.removeAll();
+            setVisible(false);
+            myImage.undoAll();
+            updateHistoryPanel();
+            setVisible(true);
+        };
+
+        undoAll.addActionListener(undoAllListener);
+        menuPanel.add(undoAll);
     }
 
     //MODIFIES: this
@@ -125,7 +157,7 @@ public class ToolMenuPanel extends JPanel {
     }
 
     //MODIFIES: this
-    //EFFECTS: creates history panel to show what edits have been made to far
+    //EFFECTS: creates history panel to show what edits have been made so far
     public void updateHistoryPanel() {
         createAndAddJLabels(historyPanel);
     }

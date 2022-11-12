@@ -104,7 +104,9 @@ public class CreateImagePanel extends JPanel {
     //EFFECTS: creates combo box dropdown so user can choose to randomize project color
     public void createRandomizeChooser() {
         GridBagConstraints c = new GridBagConstraints();
-        String[] chooseRandomizeOptions = {"", "yes", "no"};
+        String[] chooseRandomizeOptions = {"yes", "no"};
+
+        createRandomizeLabel();
 
         ActionListener comboBoxListener = e -> {
             JComboBox cb = (JComboBox) e.getSource();
@@ -117,9 +119,22 @@ public class CreateImagePanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 2;
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 3;
 
         add(chooseRandomize, c);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates and adds label for randomize chooser
+    private void createRandomizeLabel() {
+        GridBagConstraints c = new GridBagConstraints();
+        JLabel randomize = new JLabel("Randomize Project Color?");
+
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 2;
+
+        add(randomize, c);
     }
 
     //MODIFIES: this
@@ -140,7 +155,7 @@ public class CreateImagePanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 2;
         c.gridx = 0;
-        c.gridy = 3;
+        c.gridy = 4;
 
         add(confirm, c);
     }
