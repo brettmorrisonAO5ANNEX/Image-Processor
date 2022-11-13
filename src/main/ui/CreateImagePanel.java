@@ -104,7 +104,7 @@ public class CreateImagePanel extends JPanel {
     //EFFECTS: creates combo box dropdown so user can choose to randomize project color
     public void createRandomizeChooser() {
         GridBagConstraints c = new GridBagConstraints();
-        String[] chooseRandomizeOptions = {"yes", "no"};
+        String[] chooseRandomizeOptions = {"", "yes", "no"};
 
         createRandomizeLabel();
 

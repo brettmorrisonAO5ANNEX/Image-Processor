@@ -32,6 +32,7 @@ public class OriginalIcon extends ImageIcon {
 
         c.gridwidth = 1;
         c.gridx = 0;
+        c.gridy = 0;
 
         viewResultPanel.add(originalLabel, c);
         createArrowLabel();
@@ -62,6 +63,7 @@ public class OriginalIcon extends ImageIcon {
 
         c.gridwidth = 1;
         c.gridx = 1;
+        c.gridy = 0;
 
         viewResultPanel.add(arrow, c);
     }

@@ -32,6 +32,7 @@ public class ResultIcon extends ImageIcon {
 
         c.gridwidth = 1;
         c.gridx = 2;
+        c.gridy = 0;
 
         viewResultPanel.add(resultLabel, c);
         iaGUI.add(viewResultPanel);

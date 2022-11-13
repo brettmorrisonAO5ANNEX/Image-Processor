@@ -45,9 +45,8 @@ public class OpenPanel extends JPanel {
     //MODIFIES: this
     //EFFECTS: creates JLabel representation of application logo
     private void createLogo() {
-//        ImageIcon icon = new ImageIcon("./data/tobs.jpg");
-//        logo = new JLabel(icon, JLabel.CENTER);
-        logo = new JLabel("logo here", JLabel.CENTER);
+        ImageIcon icon = new ImageIcon("./data/logo.png");
+        logo = new JLabel(icon, JLabel.CENTER);
     }
 
     //MODIFIES: this

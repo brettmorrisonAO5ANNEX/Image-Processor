@@ -23,7 +23,7 @@ public class ImageAppGUI extends JFrame {
         add(openPanel);
         pack();
         setVisible(true);
-        setBounds(200, 200, 500, 300);
+        setBounds(400, 300, 600, 400);
     }
 
     public void setMyImage(Image myImage) {
