@@ -1,7 +1,6 @@
-package ui.CustomImageCreation;
+package ui;
 
 import model.Image;
-import ui.CustomImageCreation.FailToWriteCustom;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

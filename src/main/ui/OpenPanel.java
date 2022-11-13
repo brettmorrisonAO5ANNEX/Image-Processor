@@ -1,11 +1,9 @@
 package ui;
 
 import persistence.JsonReader;
-import ui.CustomImageCreation.CustomImage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
