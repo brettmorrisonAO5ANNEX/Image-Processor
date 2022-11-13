@@ -2,14 +2,17 @@ package ui;
 
 import model.Filter;
 import model.Image;
+import persistence.JsonWriter;
+import persistence.JsonWriterCurrentProjects;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 
 //represents the tool menu panel that is shown while a user is editing
 public class ToolMenuPanel extends JPanel {
+    private String doRandomize;
     private final ImageAppGUI iaGUI;
     private Image myImage;
     private JPanel menuPanel;
@@ -17,9 +20,14 @@ public class ToolMenuPanel extends JPanel {
     private AddFilterPanel addFilterPanel;
     private OriginalIcon originalIcon;
 
+    private JsonWriter jsonWriter;
+    private JsonWriterCurrentProjects jsonWriterCurrentProjects;
+
     public ToolMenuPanel(ImageAppGUI iaGUI) {
         super();
         this.iaGUI = iaGUI;
+        this.jsonWriter = iaGUI.getJsonWriter();
+        this.jsonWriterCurrentProjects = iaGUI.getCurrentProjectsWriter();
         myImage = iaGUI.getMyImage();
 
         setBorder(BorderFactory.createEmptyBorder());
@@ -43,7 +51,8 @@ public class ToolMenuPanel extends JPanel {
     private void createMenuPanel() {
         menuPanel = new JPanel();
         menuPanel.setBorder(BorderFactory.createEmptyBorder());
-        menuPanel.setLayout(new GridLayout(0,1));
+//        menuPanel.setLayout(new GridLayout(0,1));
+        menuPanel.setLayout(new GridBagLayout());
 
         createButtons();
 
@@ -59,13 +68,14 @@ public class ToolMenuPanel extends JPanel {
 //        menuPanel.add(undoType);
         createUndoAllButton();
         createProcessButton();
-//        JButton quitAndSave = new JButton("Quit And Save");
-//        menuPanel.add(quitAndSave);
+        createRandomizeChooser();
+        createSaveButton();
     }
 
     //MODIFIES: this
     //EFFECTS: creates add filter button such that when pressed, panel changes to add filter panel
     private void createAddFilterButton() {
+        GridBagConstraints c = new GridBagConstraints();
         JButton addFilter = new JButton("Add Filter");
 
         ActionListener addFilterListener = e -> {
@@ -75,12 +85,19 @@ public class ToolMenuPanel extends JPanel {
         };
 
         addFilter.addActionListener(addFilterListener);
-        menuPanel.add(addFilter);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 0;
+
+        menuPanel.add(addFilter, c);
     }
 
     //MODIFIES: this
     //EFFECTS: creates undo button that undoes most recent filter added
     private void createUndoButton() {
+        GridBagConstraints c = new GridBagConstraints();
         JButton undo = new JButton("Undo");
 
         ActionListener undoListener = e -> {
@@ -92,12 +109,19 @@ public class ToolMenuPanel extends JPanel {
         };
 
         undo.addActionListener(undoListener);
-        menuPanel.add(undo);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 1;
+
+        menuPanel.add(undo, c);
     }
 
     //MODIFIES: this
     //EFFECTS: creates undo all button that undoes all filters added
     private void createUndoAllButton() {
+        GridBagConstraints c = new GridBagConstraints();
         JButton undoAll = new JButton("Undo All");
 
         ActionListener undoAllListener = e -> {
@@ -109,20 +133,62 @@ public class ToolMenuPanel extends JPanel {
         };
 
         undoAll.addActionListener(undoAllListener);
-        menuPanel.add(undoAll);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 2;
+
+        menuPanel.add(undoAll, c);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates combo box dropdown so user can choose to randomize project color
+    public void createRandomizeChooser() {
+        GridBagConstraints c = new GridBagConstraints();
+        String[] chooseRandomizeOptions = {"Randomize Color?", "yes", "no"};
+
+        ActionListener comboBoxListener = e -> {
+            JComboBox cb = (JComboBox) e.getSource();
+            doRandomize = (String) cb.getSelectedItem();
+
+            if (doRandomize.equals("yes")) {
+                myImage.randomizeColor();
+            }
+        };
+
+        JComboBox chooseRandomize = new JComboBox(chooseRandomizeOptions);
+        chooseRandomize.addActionListener(comboBoxListener);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 3;
+
+        menuPanel.add(chooseRandomize, c);
     }
 
     //MODIFIES: this
     //EFFECTS: creates process button with action listener to switch to viewResultPanel if pressed
     private void createProcessButton() {
+        GridBagConstraints c = new GridBagConstraints();
+
         ActionListener processListener = e -> {
+            if (doRandomize.equals("yes")) {
+                myImage.randomizeColor();
+            }
             createAndAddFinalResult();
         };
 
         JButton processProject = new JButton("Process Project");
         processProject.addActionListener(processListener);
 
-        menuPanel.add(processProject);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 1;
+        c.gridx = 1;
+        c.gridy = 3;
+
+        menuPanel.add(processProject, c);
     }
 
     //MODIFIES: this
@@ -130,29 +196,16 @@ public class ToolMenuPanel extends JPanel {
     private void createAndAddFinalResult() {
         originalIcon = new OriginalIcon(myImage, iaGUI);
         setVisible(false);
-//        myImage.processImage();
-//        String result = myImage.createVisArray(0);
-//        JLabel visArray = new JLabel();
-//
-//        viewResultPanel = new ViewResultPanel();
-//        setVisible(false);
-//        visArray.setText(convertToMultiline(result));
-//        viewResultPanel.add(visArray);
     }
 
-//    //SOURCE: https://stackoverflow.com/questions/2152742/java-swing-multiline-labels
-//    //MODIFIES: result
-//    //EFFECTS: converts single line string to multi-line string by updating \n to <br> (html notation)
-//    private String convertToMultiline(String result) {
-//        return "<html>" + result.replaceAll("\n", "<br>");
-//    }
-
+    //MODIFIES: this
+    //EFFECTS: creates panel to display history of applied filters
     public void createHistoryPanel() {
         historyPanel = new JPanel();
         historyPanel.setLayout(new GridLayout(0,1));
         historyPanel.setBorder(BorderFactory.createEmptyBorder());
         historyPanel.setBackground(new Color(220,220,220));
-
+        updateHistoryPanel();
         add(historyPanel);
     }
 
@@ -174,18 +227,35 @@ public class ToolMenuPanel extends JPanel {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: creates quit and save button that saves current edit progress
+    private void createSaveButton() {
+        GridBagConstraints c = new GridBagConstraints();
+        JButton quitAndSave = new JButton("Save Progress");
+
+        ActionListener quitListener = e -> {
+            try {
+                jsonWriter.open();
+                jsonWriter.write(myImage);
+                jsonWriter.close();
+                jsonWriterCurrentProjects.open();
+                jsonWriterCurrentProjects.write(iaGUI.getProjects());
+                jsonWriterCurrentProjects.close();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+        };
+
+        quitAndSave.addActionListener(quitListener);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 4;
+
+        menuPanel.add(quitAndSave, c);
+    }
+
     public ImageAppGUI getImageAppGUI() {
         return this.iaGUI;
     }
-
-    //    //MODIFIES: this
-//    //EFFECTS: creates String[] from unique filters used for undo type functionality
-//    private Object[] createOptions() {
-//        int len = myImage.getUniqueFiltersUsed().size();
-//        String[] filterOptions = new String[len];
-//        for (int i = 0; i < len; i++) {
-//            filterOptions[i] = myImage.getUniqueFiltersUsed().get(i);
-//        }
-//        return filterOptions;
-//    }
 }

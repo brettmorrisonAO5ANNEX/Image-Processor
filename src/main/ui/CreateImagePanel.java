@@ -1,7 +1,9 @@
 package ui;
 
 import model.Image;
+import model.exceptions.DuplicateName;
 import model.exceptions.InvalidInputException;
+import model.exceptions.InvalidName;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,34 +28,108 @@ public class CreateImagePanel extends JPanel {
         super();
         setBorder(BorderFactory.createEmptyBorder());
         setLayout(new GridBagLayout());
-//        createChooseNameField();
+        createChooseNameField();
         createChooseDimensions();
-        createRandomizeChooser();
         createConfirm();
 
         this.iaGUI = iaGUI;
     }
 
-//    //INSPIRATION SOURCE:
-//    //https://stackoverflow.com/questions/11200585/adding-a-prompt-text-property-to-jtextfield
-//    //MODIFIES: this
-//    //EFFECTS: creates text field element so user can set project name according to regex specifications
-//    private void createChooseNameField() {
-//        String promptText = "choose name";
-//        String errorMessage = "name does not meet requirements";
-//        GridBagConstraints c = new GridBagConstraints();
-//        JTextField chooseName = new JTextField(promptText);
-//        JLabel errorLabel = createErrorLabel(1, 0, 0, errorMessage);
-//
-//        createListener(chooseName, promptText, errorLabel);
-//
-//        c.fill = GridBagConstraints.HORIZONTAL;
-//        c.gridwidth = 2;
-//        c.gridx = 0;
-//        c.gridy = 1;
-//
-//        add(chooseName, c);
-//    }
+    //INSPIRATION SOURCE:
+    //https://stackoverflow.com/questions/11200585/adding-a-prompt-text-property-to-jtextfield
+    //MODIFIES: this
+    //EFFECTS: creates text field element so user can set project name according to regex specifications
+    private void createChooseNameField() {
+        String promptText = "choose name";
+        String errorMessageGeneral = "name does not meet requirements";
+        String errorMessageDuplicate = "name already used";
+        GridBagConstraints c = new GridBagConstraints();
+        JTextField chooseName = new JTextField(promptText);
+        JLabel errorLabel1 = createErrorLabel(1, 0, 0, errorMessageGeneral);
+        JLabel errorLabel2 = createErrorLabel(1, 0, 0, errorMessageDuplicate);
+
+        createNameListener(chooseName, promptText, errorLabel1, errorLabel2);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 1;
+
+        add(chooseName, c);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates listener for name field that highlights if user choice is invalid
+    private void createNameListener(JTextField chooseName, String promptText, JLabel errorLabel1, JLabel errorLabel2) {
+        chooseName.setForeground(Color.GRAY);
+        errorLabel1.setVisible(false);
+        errorLabel2.setVisible(false);
+
+        FocusListener listener = new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                performFocusedName(chooseName, promptText, errorLabel1, errorLabel2);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                performFocusLostName(chooseName, promptText, errorLabel1, errorLabel2);
+            }
+        };
+
+        chooseName.addFocusListener(listener);
+    }
+
+    //MODIFIES: this
+    //EFFECTS:
+    private void performFocusedName(JTextField chooseName, String promptText, JLabel errorLabel1, JLabel errorLabel2) {
+        if (chooseName.getText().equals(promptText)) {
+            chooseName.setText("");
+            chooseName.setForeground(Color.BLACK);
+        }
+        // for error handling
+        chooseName.setBackground(Color.WHITE);
+        errorLabel1.setVisible(false);
+        errorLabel2.setVisible(false);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: checks name validity and
+    private void performFocusLostName(JTextField chooseName, String promptText, JLabel errorLabel, JLabel errorLabel2) {
+        if (chooseName.getText().isEmpty()) {
+            chooseName.setText(promptText);
+            chooseName.setForeground(Color.GRAY);
+        }
+        // for error handling
+        try {
+            validateName(chooseName);
+        } catch (InvalidName i) {
+            chooseName.setBackground(new Color(255, 166, 166));
+            errorLabel.setVisible(true);
+            errorLabel2.setVisible(false);
+        } catch (DuplicateName i) {
+            chooseName.setBackground(new Color(255, 166, 166));
+            errorLabel.setVisible(false);
+            errorLabel2.setVisible(true);
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: throws exceptions if name is invalid or is duplicate, otherwise sets project name
+    private void validateName(JTextField chooseName) {
+        String projectName = chooseName.getText();
+
+        if (!projectName.matches("(image)\\d{1,2}[A-Z]{1}")) {
+            throw new InvalidName();
+        } else if (iaGUI.getProjects().getCurrentProjects().contains(projectName)) {
+            throw new DuplicateName();
+        } else {
+            String destination = iaGUI.getFileBegin() + projectName + iaGUI.getFileEnd();
+            iaGUI.setJsonWriter(destination);
+            iaGUI.getProjects().addToCurrentProjects(projectName);
+        }
+    }
 
     //MODIFIES: this
     //EFFECTS: creates text boxes for dimensions setting and adds them to main layout
@@ -68,7 +144,7 @@ public class CreateImagePanel extends JPanel {
         String promptText = "width (px)";
         String errorText = "invalid input";
         GridBagConstraints c = new GridBagConstraints();
-        JLabel errorLabel = createErrorLabel(1, 0, 0, errorText);
+        JLabel errorLabel = createErrorLabel(1, 0, 2, errorText);
         chooseWidth = new JTextField(promptText, 10);
 
         createListener(chooseWidth, promptText, errorLabel);
@@ -76,7 +152,7 @@ public class CreateImagePanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 3;
 
         add(chooseWidth, c);
     }
@@ -87,7 +163,7 @@ public class CreateImagePanel extends JPanel {
         String promptText = "height (px)";
         String errorText = "invalid input";
         GridBagConstraints c = new GridBagConstraints();
-        JLabel errorLabel = createErrorLabel(1, 1, 0, errorText);
+        JLabel errorLabel = createErrorLabel(1, 1, 2, errorText);
         chooseHeight = new JTextField(promptText, 10);
 
         createListener(chooseHeight, promptText, errorLabel);
@@ -95,46 +171,9 @@ public class CreateImagePanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 1;
-        c.gridy = 1;
-
-        add(chooseHeight, c);
-    }
-
-    //MODIFIES: this
-    //EFFECTS: creates combo box dropdown so user can choose to randomize project color
-    public void createRandomizeChooser() {
-        GridBagConstraints c = new GridBagConstraints();
-        String[] chooseRandomizeOptions = {"", "yes", "no"};
-
-        createRandomizeLabel();
-
-        ActionListener comboBoxListener = e -> {
-            JComboBox cb = (JComboBox) e.getSource();
-            randomize = (String) cb.getSelectedItem();
-        };
-
-        JComboBox chooseRandomize = new JComboBox(chooseRandomizeOptions);
-        chooseRandomize.addActionListener(comboBoxListener);
-
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 2;
-        c.gridx = 0;
         c.gridy = 3;
 
-        add(chooseRandomize, c);
-    }
-
-    //MODIFIES: this
-    //EFFECTS: creates and adds label for randomize chooser
-    private void createRandomizeLabel() {
-        GridBagConstraints c = new GridBagConstraints();
-        JLabel randomize = new JLabel("Randomize Project Color?");
-
-        c.gridwidth = 2;
-        c.gridx = 0;
-        c.gridy = 2;
-
-        add(randomize, c);
+        add(chooseHeight, c);
     }
 
     //MODIFIES: this
@@ -155,7 +194,7 @@ public class CreateImagePanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 2;
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 5;
 
         add(confirm, c);
     }
@@ -167,9 +206,6 @@ public class CreateImagePanel extends JPanel {
         height = Integer.parseInt(chooseHeight.getText());
         Image myImage = new Image(width, height);
 
-        if (randomize.equals("yes")) {
-            myImage.randomizeColor();
-        }
         return myImage;
     }
 

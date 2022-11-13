@@ -28,6 +28,7 @@ public class Image implements Writable {
         this.pixelArray = new int[width * height][3];
         this.width = width;
         this.height = height;
+        this.compChoice = "";
         this.imageResult = "";
         for (int r = 0; r < this.pixelArray.length; r++) {
             for (int c = 0; c < this.pixelArray[0].length; c++) {

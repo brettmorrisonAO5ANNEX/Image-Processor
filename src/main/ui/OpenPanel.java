@@ -1,11 +1,13 @@
 package ui;
 
+import persistence.JsonReader;
 import ui.CustomImageCreation.CustomImage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.concurrent.atomic.AtomicReference;
+import java.io.IOException;
 
 //represents the opening panel that is shown to user when image.(in) is initially run
 public class OpenPanel extends JPanel {
@@ -16,17 +18,20 @@ public class OpenPanel extends JPanel {
     private ToolMenuPanel toolMenuPanel;
     private String fileSource = null;
 
+    private JsonReader jsonReader;
+
     //EFFECTS: creates an opening panel with logo and options for user ot create new, laod previous, or view gallery
     //         (for the last two options, buttons should be un-clickable if no current projects or no gallery projects)
     public OpenPanel(ImageAppGUI iaGUI) {
         super();
+
+        this.iaGUI = iaGUI;
+
         setBorder(BorderFactory.createEmptyBorder());
         setLayout(new GridLayout(0,1));
         createAddLogoPanel();
         createAddOptionPanel();
         createButtons();
-
-        this.iaGUI = iaGUI;
     }
 
     //MODIFIES: this
@@ -67,7 +72,7 @@ public class OpenPanel extends JPanel {
         createCustomImageButtonAndDropdown();
         //
 
-        createLoadPrevButton();
+        createLoadButtonAndDropdown();
         createViewGallButton();
     }
 
@@ -131,6 +136,7 @@ public class OpenPanel extends JPanel {
         JComboBox customOption = new JComboBox(options);
         customOption.addActionListener(comboBoxListener);
 
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 1;
@@ -148,23 +154,82 @@ public class OpenPanel extends JPanel {
     }
 
     //MODIFIES: this
+    //EFFECTS: creates button and dropdown for load previous
+    private void createLoadButtonAndDropdown() {
+        createLoadPrevButton();
+        createLoadPrevDropdown();
+    }
+
+    //MODIFIES: this
     //EFFECTS: creates load previous button with specified constraints
-    public void createLoadPrevButton() {
+    private void createLoadPrevButton() {
+        GridBagConstraints c = new GridBagConstraints();
+        JButton loadPrev = new JButton("Load");
+
+        ActionListener loadListener = e -> loadPrevious();
+
+        loadPrev.addActionListener(loadListener);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 1;
+        c.gridx = 1;
+        c.gridy = 2;
+        optionPanel.add(loadPrev, c);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates load previous dropdown with all project options to choose from
+    public void createLoadPrevDropdown() {
         GridBagConstraints c = new GridBagConstraints();
 
-        JButton loadPrev = new JButton("Load Project");
+        JComboBox loadPrev = new JComboBox(createOptions());
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 2;
 
         ActionListener loadPrevAction = e -> {
-            //testing functionality
-            logo.setText("loading previous");
+            JComboBox cb = (JComboBox) e.getSource();
+            String choice = (String) cb.getSelectedItem();
+            String destination = iaGUI.getFileBegin() + choice + iaGUI.getFileEnd();
+            iaGUI.setJsonReader(destination);
+            iaGUI.setJsonWriter(destination);
+            this.jsonReader = iaGUI.getJsonReader();
         };
 
         loadPrev.addActionListener(loadPrevAction);
         optionPanel.add(loadPrev, c);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: reads chosen project, throws error if error occurs
+    private void loadPrevious() {
+        try {
+            iaGUI.setMyImage(jsonReader.read());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        moveToTool();
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates array of all previous projects to load from iAGUI.currentProjects
+    private String[] createOptions() {
+        if (iaGUI.getProjects().getCurrentProjects().isEmpty()) {
+            return new String[]{"none"};
+        } else {
+            int numOptions = iaGUI.getProjects().getCurrentProjects().size();
+            String[] options = new String[numOptions + 1];
+            options[0] = "";
+            int count = 1;
+
+            for (String project : iaGUI.getProjects().getCurrentProjects()) {
+                options[count] = project;
+                count++;
+            }
+
+            return options;
+        }
     }
 
     //MODIFIES: this
@@ -174,9 +239,9 @@ public class OpenPanel extends JPanel {
 
         JButton viewGall = new JButton("View Gallery");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 1;
-        c.gridx = 1;
-        c.gridy = 2;
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 3;
 
         ActionListener viewGallAction = e -> {
             //testing functionality
