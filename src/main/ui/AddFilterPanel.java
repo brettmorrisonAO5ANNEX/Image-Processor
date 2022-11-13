@@ -7,9 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-import static java.lang.Math.log;
-import static java.lang.Math.min;
-
 //represents add filter panel that is shown to user when they choose the add filter option from tool menu
 public class AddFilterPanel extends JPanel {
     private final Filter mirrorFilter;
@@ -19,6 +16,8 @@ public class AddFilterPanel extends JPanel {
     private ToolMenuPanel toolMenuPanel;
     private ImageAppGUI iaGUI;
     private Image myImage;
+    private JPanel logoPanel;
+    private JPanel optionPanel;
     private int width;
     private int height;
 
@@ -37,8 +36,38 @@ public class AddFilterPanel extends JPanel {
         this.height = h;
 
         setBorder(BorderFactory.createEmptyBorder());
-        setLayout(new GridBagLayout());
+        setLayout(new GridLayout(0, 1));
+        createSubPanels();
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates logo and option panels then adds them to this
+    private void createSubPanels() {
+        createLogoPanel();
+        createOptionPanel();
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates and adds logo panel to this
+    public void createLogoPanel() {
+        ImageIcon filterLogo = new ImageIcon("./data/UI/filter.png");
+        logoPanel = new JPanel();
+        logoPanel.add(new JLabel(filterLogo, JLabel.CENTER));
+        logoPanel.setBackground(new Color(206, 226, 255));
+
+        add(logoPanel);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates and adds option panel to this
+    private void createOptionPanel() {
+        optionPanel = new JPanel();
+        optionPanel.setLayout(new GridBagLayout());
+        optionPanel.setBackground(new Color(50, 135, 251));
+
         createAndAddButtons();
+
+        add(optionPanel);
     }
 
     //MODIFIES: this
@@ -69,7 +98,7 @@ public class AddFilterPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
 
-        add(mirror, c);
+        optionPanel.add(mirror, c);
     }
 
     //MODIFIES: this, myImage
@@ -91,7 +120,7 @@ public class AddFilterPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 1;
 
-        add(negative, c);
+        optionPanel.add(negative, c);
     }
 
     //MODIFIES: this
@@ -120,7 +149,8 @@ public class AddFilterPanel extends JPanel {
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 2;
-        add(colorGradient, c);
+
+        optionPanel.add(colorGradient, c);
     }
 
     //MODIFIES: this
@@ -141,7 +171,8 @@ public class AddFilterPanel extends JPanel {
         c.gridwidth = 1;
         c.gridx = 1;
         c.gridy = 2;
-        add(gradientButton, c);
+
+        optionPanel.add(gradientButton, c);
     }
 
     //MODIFIES: this, myImage
@@ -162,7 +193,8 @@ public class AddFilterPanel extends JPanel {
         c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 3;
-        add(pixelate, c);
+
+        optionPanel.add(pixelate, c);
     }
 
     //MODIFIES: this

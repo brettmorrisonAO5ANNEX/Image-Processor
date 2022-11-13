@@ -59,12 +59,12 @@ public class OriginalIcon extends ImageIcon {
     //EFFECTS: creates and adds simple array icon to separate original and final products
     private void createArrowLabel() {
         GridBagConstraints c = new GridBagConstraints();
-        JLabel arrow = new JLabel("---->");
+        ImageIcon arrow = new ImageIcon("./data/UI/arrow.png");
 
         c.gridwidth = 1;
         c.gridx = 1;
         c.gridy = 0;
 
-        viewResultPanel.add(arrow, c);
+        viewResultPanel.add(new JLabel(arrow, JLabel.CENTER), c);
     }
 }

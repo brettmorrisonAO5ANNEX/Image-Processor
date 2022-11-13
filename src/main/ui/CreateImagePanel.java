@@ -14,6 +14,8 @@ import java.awt.event.FocusListener;
 //TODO: add code credit to oracle
 //represents panel that is shown when user is creating a new project
 public class CreateImagePanel extends JPanel {
+    private JPanel logoPanel;
+    private JPanel optionPanel;
     private JTextField chooseWidth;
     private JTextField chooseHeight;
     private String randomize;
@@ -27,12 +29,46 @@ public class CreateImagePanel extends JPanel {
     public CreateImagePanel(ImageAppGUI iaGUI) {
         super();
         setBorder(BorderFactory.createEmptyBorder());
-        setLayout(new GridBagLayout());
+        setLayout(new GridLayout(0,1));
+
+        createSubPanels();
+
+        this.iaGUI = iaGUI;
+    }
+
+    //MODIFIES: this
+    //EFFECTS: adds logo and option panels to this
+    private void createSubPanels() {
+        createAndAddLogoPanel();
+        createAndAddOptionPanel();
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates and adds logo panel to this
+    private void createAndAddLogoPanel() {
+        logoPanel = new JPanel();
+        logoPanel.setBorder(BorderFactory.createEmptyBorder());
+        logoPanel.setLayout(new GridLayout(0,1));
+        logoPanel.setBackground(new Color(206, 226, 255));
+
+        ImageIcon logo = new ImageIcon("./data/UI/create.png");
+        logoPanel.add(new JLabel(logo, JLabel.CENTER));
+
+        add(logoPanel);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates and adds option panel to this
+    private void createAndAddOptionPanel() {
+        optionPanel = new JPanel();
+        optionPanel.setLayout(new GridBagLayout());
+        optionPanel.setBackground(new Color(50, 135, 251));
+
         createChooseNameField();
         createChooseDimensions();
         createConfirm();
 
-        this.iaGUI = iaGUI;
+        add(optionPanel);
     }
 
     //INSPIRATION SOURCE:
@@ -45,6 +81,9 @@ public class CreateImagePanel extends JPanel {
         String errorMessageDuplicate = "name already used";
         GridBagConstraints c = new GridBagConstraints();
         JTextField chooseName = new JTextField(promptText);
+//        chooseName.setBorder(BorderFactory.createLineBorder(new Color(50, 135, 251), 2));
+
+
         JLabel errorLabel1 = createErrorLabel(1, 0, 0, errorMessageGeneral);
         JLabel errorLabel2 = createErrorLabel(1, 0, 0, errorMessageDuplicate);
 
@@ -55,7 +94,7 @@ public class CreateImagePanel extends JPanel {
         c.gridx = 0;
         c.gridy = 1;
 
-        add(chooseName, c);
+        optionPanel.add(chooseName, c);
     }
 
     //MODIFIES: this
@@ -146,6 +185,7 @@ public class CreateImagePanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         JLabel errorLabel = createErrorLabel(1, 0, 2, errorText);
         chooseWidth = new JTextField(promptText, 10);
+//        chooseWidth.setBorder(BorderFactory.createLineBorder(new Color(50, 135, 251), 2));
 
         createListener(chooseWidth, promptText, errorLabel);
 
@@ -154,7 +194,7 @@ public class CreateImagePanel extends JPanel {
         c.gridx = 0;
         c.gridy = 3;
 
-        add(chooseWidth, c);
+        optionPanel.add(chooseWidth, c);
     }
 
     //MODIFIES: this
@@ -165,6 +205,7 @@ public class CreateImagePanel extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         JLabel errorLabel = createErrorLabel(1, 1, 2, errorText);
         chooseHeight = new JTextField(promptText, 10);
+//        chooseHeight.setBorder(BorderFactory.createLineBorder(new Color(50, 135, 251), 2));
 
         createListener(chooseHeight, promptText, errorLabel);
 
@@ -173,7 +214,7 @@ public class CreateImagePanel extends JPanel {
         c.gridx = 1;
         c.gridy = 3;
 
-        add(chooseHeight, c);
+        optionPanel.add(chooseHeight, c);
     }
 
     //MODIFIES: this
@@ -196,7 +237,7 @@ public class CreateImagePanel extends JPanel {
         c.gridx = 0;
         c.gridy = 5;
 
-        add(confirm, c);
+        optionPanel.add(confirm, c);
     }
 
     //MODIFIES: this
@@ -274,7 +315,7 @@ public class CreateImagePanel extends JPanel {
         c.gridx = gridx;
         c.gridy = gridy;
 
-        add(errorLabel, c);
+        optionPanel.add(errorLabel, c);
         return errorLabel;
     }
 

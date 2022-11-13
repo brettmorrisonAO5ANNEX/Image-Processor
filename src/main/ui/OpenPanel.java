@@ -42,6 +42,7 @@ public class OpenPanel extends JPanel {
         JPanel logoPanel = new JPanel();
         logoPanel.setBorder(BorderFactory.createEmptyBorder());
         logoPanel.setLayout(new GridLayout(0, 1));
+        logoPanel.setBackground(new Color(206, 226, 255));
         logoPanel.add(logo);
 
         add(logoPanel);
@@ -50,7 +51,7 @@ public class OpenPanel extends JPanel {
     //MODIFIES: this
     //EFFECTS: creates JLabel representation of application logo
     private void createLogo() {
-        ImageIcon icon = new ImageIcon("./data/logo.png");
+        ImageIcon icon = new ImageIcon("./data/UI/logo.png");
         logo = new JLabel(icon, JLabel.CENTER);
     }
 
@@ -60,6 +61,7 @@ public class OpenPanel extends JPanel {
         optionPanel = new JPanel();
         optionPanel.setBorder(BorderFactory.createEmptyBorder());
         optionPanel.setLayout(new GridBagLayout());
+        optionPanel.setBackground(new Color(50, 135, 251));
         add(optionPanel);
     }
 
@@ -125,7 +127,7 @@ public class OpenPanel extends JPanel {
     //EFFECTS: creates JComboBox with keywords for each custom image choice (all locally saved image files)
     private void createCustomDropdown() {
         GridBagConstraints c = new GridBagConstraints();
-        String[] options = {"", "dog", "map", "ubc", "wolf", "lab", "ahh"};
+        String[] options = {"<Templates>", "dog", "map", "ubc", "wolf", "lab", "ahh"};
 
         ActionListener comboBoxListener = e -> {
             JComboBox cb = (JComboBox) e.getSource();
@@ -216,11 +218,11 @@ public class OpenPanel extends JPanel {
     //EFFECTS: creates array of all previous projects to load from iAGUI.currentProjects
     private String[] createOptions() {
         if (iaGUI.getProjects().getCurrentProjects().isEmpty()) {
-            return new String[]{"none"};
+            return new String[]{"N/A"};
         } else {
             int numOptions = iaGUI.getProjects().getCurrentProjects().size();
             String[] options = new String[numOptions + 1];
-            options[0] = "";
+            options[0] = "<Options>";
             int count = 1;
 
             for (String project : iaGUI.getProjects().getCurrentProjects()) {

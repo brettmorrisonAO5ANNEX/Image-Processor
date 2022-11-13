@@ -15,10 +15,12 @@ public class ToolMenuPanel extends JPanel {
     private String doRandomize;
     private final ImageAppGUI iaGUI;
     private Image myImage;
+    private JPanel lowerPanel;
     private JPanel menuPanel;
     private JPanel historyPanel;
     private AddFilterPanel addFilterPanel;
-    private OriginalIcon originalIcon;
+    private LoadingPanel loadingPanel;
+//    private OriginalIcon originalIcon;
 
     private JsonWriter jsonWriter;
     private JsonWriterCurrentProjects jsonWriterCurrentProjects;
@@ -31,7 +33,7 @@ public class ToolMenuPanel extends JPanel {
         myImage = iaGUI.getMyImage();
 
         setBorder(BorderFactory.createEmptyBorder());
-        setLayout(new GridLayout(0,2));
+        setLayout(new GridLayout(0, 1));
         createAndAddSubPanels();
 
         int width = iaGUI.getMyImage().getImageWidth();
@@ -42,8 +44,31 @@ public class ToolMenuPanel extends JPanel {
     //MODIFIES: this
     //EFFECTS: creates subPanels for tool menu view history to be added to this
     private void createAndAddSubPanels() {
+        createLogoPanel();
+        createLowerPanels();
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates and adds logo panel to this
+    private void createLogoPanel() {
+        ImageIcon tool = new ImageIcon("./data/UI/tool.png");
+        JPanel logoPanel = new JPanel();
+        logoPanel.add(new JLabel(tool, JLabel.CENTER));
+        logoPanel.setBackground(new Color(206,226,255));
+
+        add(logoPanel);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: creates and adds lower panels to this
+    private void createLowerPanels() {
+        lowerPanel = new JPanel();
+        lowerPanel.setBorder(BorderFactory.createEmptyBorder());
+        lowerPanel.setLayout(new GridLayout(0,2));
         createMenuPanel();
         createHistoryPanel();
+
+        add(lowerPanel);
     }
 
     //MODIFIES: this
@@ -51,12 +76,12 @@ public class ToolMenuPanel extends JPanel {
     private void createMenuPanel() {
         menuPanel = new JPanel();
         menuPanel.setBorder(BorderFactory.createEmptyBorder());
-//        menuPanel.setLayout(new GridLayout(0,1));
         menuPanel.setLayout(new GridBagLayout());
+        menuPanel.setBackground(new Color(50, 135, 251));
 
         createButtons();
 
-        add(menuPanel);
+        lowerPanel.add(menuPanel);
     }
 
     //MODIFIES: this
@@ -175,9 +200,10 @@ public class ToolMenuPanel extends JPanel {
 
         ActionListener processListener = e -> {
             if (doRandomize.equals("yes")) {
-                myImage.randomizeColor();
+                iaGUI.getMyImage().randomizeColor();
             }
-            createAndAddFinalResult();
+            loadingPanel = new LoadingPanel(iaGUI);
+            setVisible(false);
         };
 
         JButton processProject = new JButton("Process Project");
@@ -192,37 +218,35 @@ public class ToolMenuPanel extends JPanel {
     }
 
     //MODIFIES: this
-    //EFFECTS: creates new ViewResultsPanel, adds resulting pixel array, and displays the ViewResultPanel
-    private void createAndAddFinalResult() {
-        originalIcon = new OriginalIcon(myImage, iaGUI);
-        setVisible(false);
-    }
-
-    //MODIFIES: this
     //EFFECTS: creates panel to display history of applied filters
     public void createHistoryPanel() {
         historyPanel = new JPanel();
         historyPanel.setLayout(new GridLayout(0,1));
-        historyPanel.setBorder(BorderFactory.createEmptyBorder());
-        historyPanel.setBackground(new Color(220,220,220));
+        historyPanel.setBorder(BorderFactory.createLineBorder(new Color(50, 135, 251), 10));
+        historyPanel.setBackground(new Color(79, 153, 253));
+
         updateHistoryPanel();
-        add(historyPanel);
+
+        lowerPanel.add(historyPanel);
     }
 
     //MODIFIES: this
     //EFFECTS: creates history panel to show what edits have been made so far
     public void updateHistoryPanel() {
-        createAndAddJLabels(historyPanel);
+        createAndAddJLabels();
     }
 
     //MODIFIES: this
     //EFFECTS: creates JLabel for each applied filter and adds it to historyPanel
-    private void createAndAddJLabels(JPanel historyPanel) {
+    private void createAndAddJLabels() {
         int index = 1;
         for (Filter filter: myImage.getListOfFilter()) {
+            JPanel editPanel = new JPanel();
+            editPanel.setBackground(new Color(79, 153, 253));
             String name = filter.getFilterName();
             JLabel edit = new JLabel(index + ": " + name);
-            historyPanel.add(edit);
+            editPanel.add(edit);
+            historyPanel.add(editPanel);
             index++;
         }
     }
