@@ -56,3 +56,22 @@ a personal interest in!
 - As a user, I want to be able to ***abandon a project*** to remove it from being accessed again
 - As a user, I want to be able to ***save my project to a gallery*** after processing the final product
 - As a user, I want to be able to ***view my finished projects in a gallery***
+
+# Instructions for Grader
+
+- You can generate the first required event related to adding Xs to a Y by clicking
+the ***new project*** button and filling out the required fields (name must match "image4U"
+where the number can be any digit and the capital letter must be from the English
+alphabet), then you can ***add a filter*** by clicking the add filter button and choosing
+the desired filter. Changes can be viewed in the history panel in the right of the tool menu panel.
+- You can generate the second required event related to adding Xs to a Y by clicking
+either the ***undo*** or ***undo all*** buttons which will update which filters are added the image.
+Changes can be viewed in the history panel in the right of the tool menu
+- You can locate my visual component by either looking at the top of each panel
+at the indicative logo/icon or by pressing ***process project*** to see the final
+product of your edit (best view if you choose yes to "randomize color?" before
+processing).
+- You can save the state of my application by clicking the ***save progress*** button in the
+tool menu panel.
+- You can reload the state of my application by choosing the desired project
+from the dropdown ***\<options>*** and clicking the load button to the right.
