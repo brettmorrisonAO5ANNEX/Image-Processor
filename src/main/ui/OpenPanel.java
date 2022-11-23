@@ -125,7 +125,7 @@ public class OpenPanel extends JPanel {
     //EFFECTS: creates JComboBox with keywords for each custom image choice (all locally saved image files)
     private void createCustomDropdown() {
         GridBagConstraints c = new GridBagConstraints();
-        String[] options = {"<Templates>", "dog", "map", "ubc", "wolf", "lab", "ahh"};
+        String[] options = {"<Templates>", "dog", "map", "ubc", "wolf", "lab", "ahh", "TLJ", "Leif", "zuk"};
 
         ActionListener comboBoxListener = e -> {
             JComboBox cb = (JComboBox) e.getSource();

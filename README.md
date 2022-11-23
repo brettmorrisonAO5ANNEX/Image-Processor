@@ -57,7 +57,7 @@ a personal interest in!
 - As a user, I want to be able to ***save my project to a gallery*** after processing the final product
 - As a user, I want to be able to ***view my finished projects in a gallery***
 
-# Instructions for Grader
+## *Instructions for Grader*
 
 - You can generate the first required event related to adding Xs to a Y by clicking
 the ***new project*** button and filling out the required fields (name must match "image4U"
@@ -75,3 +75,16 @@ processing).
 tool menu panel.
 - You can reload the state of my application by choosing the desired project
 from the dropdown ***\<options>*** and clicking the load button to the right.
+
+## *Phase 4: Task 2*
+image created with height (128) and width (128)
+mirror filter has been added to current Image
+previous filter has been removed
+negative filter has been added to current Image
+mirror filter has been added to current Image
+edit history has been cleared
+colorGradient filter has been added to current Image
+previous filter has been removed
+colorGradient filter has been added to current Image
+pixelate filter has been added to current Image
+image has been processed

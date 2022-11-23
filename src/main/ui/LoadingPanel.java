@@ -78,11 +78,9 @@ public class LoadingPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (progress < 101) {
             progress++;
-//            degRot++;
         } else {
             createAndAddFinalResult();
         }
-        repaint();
     }
 
     //MODIFIES: this

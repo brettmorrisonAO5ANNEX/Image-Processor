@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 //represents icon version of original image before applying any filters/edits
 public class OriginalIcon extends ImageIcon {
     private int[][] pixArray;
-    private ResultIcon resultIcon;
     private ViewResultPanel viewResultPanel;
 
     public OriginalIcon(Image myImage, ImageAppGUI iaGUI) {
@@ -36,7 +35,7 @@ public class OriginalIcon extends ImageIcon {
 
         viewResultPanel.add(originalLabel, c);
         createArrowLabel();
-        resultIcon = new ResultIcon(myImage, viewResultPanel, iaGUI);
+        new ResultIcon(myImage, viewResultPanel, iaGUI);
     }
 
     //MODIFIES: result

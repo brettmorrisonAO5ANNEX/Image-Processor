@@ -35,6 +35,9 @@ public class Image implements Writable {
                 this.pixelArray[r][c] = 255;
             }
         }
+
+        EventLog.getInstance().logEvent(new Event("image created with height ("
+                + height + ") and width (" + width + ")"));
     }
 
     @Override
@@ -45,6 +48,9 @@ public class Image implements Writable {
         json.put("height", height);
         json.put("compChoice", compChoice);
         json.put("imageResult", imageResult);
+
+        EventLog.getInstance().logEvent(new Event("project saved to JSON file"));
+
         return json;
     }
 
@@ -62,6 +68,9 @@ public class Image implements Writable {
     public void addFilter(Filter filter) {
         this.listOfFilter.add(filter);
         this.addIfUnique(filter);
+
+        EventLog.getInstance().logEvent(new Event(filter.getFilterName()
+                + " filter has been added to current Image"));
     }
 
     //MODIFIES: this
@@ -84,6 +93,8 @@ public class Image implements Writable {
             this.listOfFilter.remove(lastIndex);
             this.removeFromUnique(lastFilter);
         }
+
+        EventLog.getInstance().logEvent(new Event("previous filter has been removed"));
     }
 
     //REQUIRES: listOfFilter is not empty
@@ -96,6 +107,8 @@ public class Image implements Writable {
                 this.uniqueFiltersUsed.clear();
             }
         }
+
+        EventLog.getInstance().logEvent(new Event("edit history has been cleared"));
     }
 
     //REQUIRES: listOfFilter contains filter matching filterName at least once
@@ -137,7 +150,7 @@ public class Image implements Writable {
     //MODIFIES: this
     //EFFECTS: applies each filter in this.listOfFilter to this
     public void processImage() {
-        for (Filter filter: this.listOfFilter) {
+        for (Filter filter: listOfFilter) {
             if (filter.getFilterName().equals("negative")) {
                 filter.negative(this);
             } else if (filter.getFilterName().equals("mirror")) {
@@ -148,6 +161,8 @@ public class Image implements Writable {
                 filter.pixelate(this);
             }
         }
+
+        EventLog.getInstance().logEvent(new Event("image has been processed"));
     }
 
     //REQUIRES: processImage() has been called on image instance and method is initialized with 0

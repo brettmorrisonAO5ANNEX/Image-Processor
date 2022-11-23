@@ -202,7 +202,8 @@ public class ToolMenuPanel extends JPanel {
             if (doRandomize.equals("yes")) {
                 iaGUI.getMyImage().randomizeColor();
             }
-            loadingPanel = new LoadingPanel(iaGUI);
+//            loadingPanel = new LoadingPanel(iaGUI);
+            new OriginalIcon(myImage, iaGUI);
             setVisible(false);
         };
 

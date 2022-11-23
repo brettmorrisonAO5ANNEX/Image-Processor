@@ -1,7 +1,8 @@
 package ui;
 
 import model.CurrentProjects;
-import model.Gallery;
+import model.Event;
+import model.EventLog;
 import model.Image;
 import persistence.JsonReader;
 import persistence.JsonReaderCurrentProjects;
@@ -9,6 +10,8 @@ import persistence.JsonWriter;
 import persistence.JsonWriterCurrentProjects;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 //represents the main GUI of image.(in)
@@ -25,6 +28,13 @@ public class ImageAppGUI extends JFrame {
     private JsonReaderCurrentProjects currentProjectsReader;
     private JsonWriterCurrentProjects currentProjectsWriter;
 
+    //EFFECTS: prints out all events logged during session
+    public void printLog(EventLog el) {
+        for (Event e: el) {
+            System.out.println(e.getDescription());
+        }
+    }
+
     //EFFECTS: sets up editing window from which user can choose to create new project or choose to
     //         load previous or view finished projects
     public ImageAppGUI() throws IOException {
@@ -34,12 +44,20 @@ public class ImageAppGUI extends JFrame {
         currentProjectsWriter = new JsonWriterCurrentProjects(currentProjectsDest);
         currentProjects = currentProjectsReader.read();
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         openPanel = new OpenPanel(this);
         add(openPanel);
         pack();
         setVisible(true);
         setBounds(400, 300, 600, 400);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                printLog(EventLog.getInstance());
+                System.exit(0);
+            }
+        });
     }
 
     public String getFileBegin() {
