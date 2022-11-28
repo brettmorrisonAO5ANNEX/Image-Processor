@@ -16,7 +16,7 @@ public class Image implements Writable {
     int[][] pixelArray;
     private int width;
     private int height;
-    private int degreeOfPixelation;
+    private String compChoice;
     private String imageResult;
 
     //REQUIRES: width, height > 0
@@ -28,13 +28,16 @@ public class Image implements Writable {
         this.pixelArray = new int[width * height][3];
         this.width = width;
         this.height = height;
-        this.degreeOfPixelation = 0;
+        this.compChoice = "";
         this.imageResult = "";
         for (int r = 0; r < this.pixelArray.length; r++) {
             for (int c = 0; c < this.pixelArray[0].length; c++) {
                 this.pixelArray[r][c] = 255;
             }
         }
+
+        EventLog.getInstance().logEvent(new Event("image created with height ("
+                + height + ") and width (" + width + ")"));
     }
 
     @Override
@@ -43,8 +46,11 @@ public class Image implements Writable {
         json.put("listOfFilter", listOfFilterToJson());
         json.put("width", width);
         json.put("height", height);
-        json.put("degreeOfPixelation", degreeOfPixelation);
+        json.put("compChoice", compChoice);
         json.put("imageResult", imageResult);
+
+        EventLog.getInstance().logEvent(new Event("project saved to JSON file"));
+
         return json;
     }
 
@@ -62,6 +68,9 @@ public class Image implements Writable {
     public void addFilter(Filter filter) {
         this.listOfFilter.add(filter);
         this.addIfUnique(filter);
+
+        EventLog.getInstance().logEvent(new Event(filter.getFilterName()
+                + " filter has been added to current Image"));
     }
 
     //MODIFIES: this
@@ -84,6 +93,8 @@ public class Image implements Writable {
             this.listOfFilter.remove(lastIndex);
             this.removeFromUnique(lastFilter);
         }
+
+        EventLog.getInstance().logEvent(new Event("previous filter has been removed"));
     }
 
     //REQUIRES: listOfFilter is not empty
@@ -96,6 +107,8 @@ public class Image implements Writable {
                 this.uniqueFiltersUsed.clear();
             }
         }
+
+        EventLog.getInstance().logEvent(new Event("edit history has been cleared"));
     }
 
     //REQUIRES: listOfFilter contains filter matching filterName at least once
@@ -125,8 +138,8 @@ public class Image implements Writable {
         } else {
             for (int i = 0; i < size; i++) {
                 String item = this.listOfFilter.get(i).getFilterName();
-                if (item.equals("pixelate")) {
-                    item = item + "(deg: " + this.degreeOfPixelation + ")";
+                if (item.equals("colorGradient")) {
+                    item = item + "(gradient for: " + this.compChoice + ")";
                 }
                 history[i] = (i + 1) + ": " + item;
             }
@@ -137,15 +150,19 @@ public class Image implements Writable {
     //MODIFIES: this
     //EFFECTS: applies each filter in this.listOfFilter to this
     public void processImage() {
-        for (Filter filter: this.listOfFilter) {
+        for (Filter filter: listOfFilter) {
             if (filter.getFilterName().equals("negative")) {
                 filter.negative(this);
             } else if (filter.getFilterName().equals("mirror")) {
                 filter.mirror(this);
+            } else if (filter.getFilterName().equals("colorGradient")) {
+                filter.colorGradient(compChoice, this);
             } else {
                 filter.pixelate(this);
             }
         }
+
+        EventLog.getInstance().logEvent(new Event("image has been processed"));
     }
 
     //REQUIRES: processImage() has been called on image instance and method is initialized with 0
@@ -194,6 +211,13 @@ public class Image implements Writable {
         return this.uniqueFiltersUsed;
     }
 
+    //TODO: marked -- used for running images from the internet into each filter
+    //      creating image objects and setting their pixelArrays to the arrays
+    //      of the locally saved image
+    public void setPixelArray(int[][] newPixArray) {
+        this.pixelArray = newPixArray;
+    }
+
     public int[][] getPixelArray() {
         return this.pixelArray;
     }
@@ -206,30 +230,20 @@ public class Image implements Writable {
         return this.width;
     }
 
-    public void setDegreeOfPixelation(int d) {
-        this.degreeOfPixelation = d;
-    }
-
-    public int getDegreeOfPixelation() {
-        return this.degreeOfPixelation;
-    }
-
-    //REQUIRES: imageResult is not empty
-    //MODIFIES: this
-    //EFFECTS: sets this image result to imageResult
     public void setImageResult(String imageResult) {
         this.imageResult = imageResult;
     }
 
-//    //REQUIRES: dimensions of newPixArray must match dimensions of this
-//    //MODIFIES: this
-//    //EFFECTS: sets this.pixelArray to newPixArray
-//    public void setPixelArray(int[][] newPixArray) {
-//        this.pixelArray = newPixArray;
-//    }
-
     public String getImageResult() {
         return this.imageResult;
+    }
+
+    public String getCompChoice() {
+        return this.compChoice;
+    }
+
+    public void setCompChoice(String chosenComp) {
+        this.compChoice = chosenComp;
     }
 }
 

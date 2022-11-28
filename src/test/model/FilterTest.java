@@ -11,6 +11,7 @@ class FilterTest {
     private Filter pixelate = new Filter("pixelate");
     private Filter mirror = new Filter("mirror");
     private Filter negative = new Filter("negative");
+    private Filter colorGradient = new Filter("colorGradient");
     private Image imgTestOneElement;
     private Image imgTestEightElement;
     private Image imgTestNineElement;
@@ -101,162 +102,128 @@ class FilterTest {
     }
 
     @Test
-    public void testPixelateFourByTwoDZero() {
-        //test 4x2 (rowxcol) array with each sub array having elements corresponding to its index + 1
-        Image fourByTwo = new Image(2, 4);
-        fourByTwo.setDegreeOfPixelation(0);
-        for (int r = 0; r < fourByTwo.getPixelArray().length; r++) {
-            for (int c = 0; c < fourByTwo.getPixelArray()[0].length; c++) {
-                fourByTwo.getPixelArray()[r][c] = r + 1;
+    public void testColorGradientOneByOneRed() {
+        assertEquals(255, imgTestOneElement.getPixelArray()[0][0]);
+        colorGradient.colorGradient("red", imgTestOneElement);
+        assertEquals(255, imgTestOneElement.getPixelArray()[0][0]);
+    }
+
+    @Test
+    public void testColorGradientTwoByFourGreen() {
+        assertEquals(255, imgTestEightElement.getPixelArray()[0][1]);
+        assertEquals(255, imgTestEightElement.getPixelArray()[1][1]);
+        assertEquals(255, imgTestEightElement.getPixelArray()[2][1]);
+        assertEquals(255, imgTestEightElement.getPixelArray()[3][1]);
+        assertEquals(255, imgTestEightElement.getPixelArray()[4][1]);
+        assertEquals(255, imgTestEightElement.getPixelArray()[5][1]);
+        assertEquals(255, imgTestEightElement.getPixelArray()[6][1]);
+        assertEquals(255, imgTestEightElement.getPixelArray()[7][1]);
+        colorGradient.colorGradient("green", imgTestEightElement);
+        assertEquals(63, imgTestEightElement.getPixelArray()[0][1]);
+        assertEquals(63, imgTestEightElement.getPixelArray()[1][1]);
+        assertEquals(126, imgTestEightElement.getPixelArray()[2][1]);
+        assertEquals(126, imgTestEightElement.getPixelArray()[3][1]);
+        assertEquals(189, imgTestEightElement.getPixelArray()[4][1]);
+        assertEquals(189, imgTestEightElement.getPixelArray()[5][1]);
+        assertEquals(252, imgTestEightElement.getPixelArray()[6][1]);
+        assertEquals(252, imgTestEightElement.getPixelArray()[7][1]);
+    }
+
+    @Test
+    public void testColorGradientTwoByTwoBlue() {
+        Image testTwoByTwo = new Image (2, 3);
+        assertEquals(255, testTwoByTwo.getPixelArray()[0][2]);
+        assertEquals(255, testTwoByTwo.getPixelArray()[1][2]);
+        assertEquals(255, testTwoByTwo.getPixelArray()[2][2]);
+        assertEquals(255, testTwoByTwo.getPixelArray()[3][2]);
+        assertEquals(255, testTwoByTwo.getPixelArray()[4][2]);
+        assertEquals(255, testTwoByTwo.getPixelArray()[5][2]);
+        colorGradient.colorGradient("blue", testTwoByTwo);
+        assertEquals(85, testTwoByTwo.getPixelArray()[0][2]);
+        assertEquals(85, testTwoByTwo.getPixelArray()[1][2]);
+        assertEquals(170, testTwoByTwo.getPixelArray()[2][2]);
+        assertEquals(170, testTwoByTwo.getPixelArray()[3][2]);
+        assertEquals(255, testTwoByTwo.getPixelArray()[4][2]);
+        assertEquals(255, testTwoByTwo.getPixelArray()[5][2]);
+    }
+
+    @Test
+    public void testPixelateTwoByFour() {
+        //update rgb values in test array for more comprehensive testing of average gathering
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 3; j++) {
+                imgTestEightElement.getPixelArray()[i][j] = i + 1;
             }
         }
-        fourByTwo.addFilter(pixelate);
-        pixelate.pixelate(fourByTwo);
-        assertEquals(1, fourByTwo.getPixelArray()[0][0]);
-        assertEquals(2, fourByTwo.getPixelArray()[1][0]);
-        assertEquals(1, fourByTwo.getPixelArray()[2][0]);
-        assertEquals(2, fourByTwo.getPixelArray()[3][0]);
-        assertEquals(5, fourByTwo.getPixelArray()[4][0]);
-        assertEquals(6, fourByTwo.getPixelArray()[5][0]);
-        assertEquals(5, fourByTwo.getPixelArray()[6][0]);
-        assertEquals(6, fourByTwo.getPixelArray()[7][0]);
 
+        //rest of test
+        pixelate.pixelate((imgTestEightElement));
+        assertEquals(2, imgTestEightElement.getPixelArray()[0][0]);
+        assertEquals(3, imgTestEightElement.getPixelArray()[1][0]);
+        assertEquals(2, imgTestEightElement.getPixelArray()[2][0]);
+        assertEquals(3, imgTestEightElement.getPixelArray()[3][0]);
+        assertEquals(6, imgTestEightElement.getPixelArray()[4][0]);
+        assertEquals(7, imgTestEightElement.getPixelArray()[5][0]);
+        assertEquals(6, imgTestEightElement.getPixelArray()[6][0]);
+        assertEquals(7, imgTestEightElement.getPixelArray()[7][0]);
     }
 
     @Test
-    public void testPixelateFourByTwoDOne() {
-        //test 4x2 (rowxcol) arrray with each sub array having elements corresponding to its index + 1
-        Image fourByTwo = new Image(2, 4);
-        fourByTwo.setDegreeOfPixelation(1);
-        for (int r = 0; r < fourByTwo.getPixelArray().length; r++) {
-            for (int c = 0; c < fourByTwo.getPixelArray()[0].length; c++) {
-                fourByTwo.getPixelArray()[r][c] = r + 1;
+    public void testPixelateFourByFour() {
+        //update rgb values in test array for more comprehensive testing of average gathering
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 3; j++) {
+                imgTestSixteenElement.getPixelArray()[i][j] = i + 1;
             }
         }
-        fourByTwo.addFilter(pixelate);
-        pixelate.pixelate(fourByTwo);
-        assertEquals(1, fourByTwo.getPixelArray()[0][0]);
-        assertEquals(1, fourByTwo.getPixelArray()[1][0]);
-        assertEquals(1, fourByTwo.getPixelArray()[2][0]);
-        assertEquals(1, fourByTwo.getPixelArray()[3][0]);
-        assertEquals(1, fourByTwo.getPixelArray()[4][0]);
-        assertEquals(1, fourByTwo.getPixelArray()[5][0]);
-        assertEquals(1, fourByTwo.getPixelArray()[6][0]);
-        assertEquals(1, fourByTwo.getPixelArray()[7][0]);
 
+        //rest of test
+        pixelate.pixelate(imgTestSixteenElement);
+        assertEquals(3, imgTestSixteenElement.getPixelArray()[0][0]);
+        assertEquals(3, imgTestSixteenElement.getPixelArray()[1][0]);
+        assertEquals(5, imgTestSixteenElement.getPixelArray()[2][0]);
+        assertEquals(5, imgTestSixteenElement.getPixelArray()[3][0]);
+        assertEquals(3, imgTestSixteenElement.getPixelArray()[4][0]);
+        assertEquals(3, imgTestSixteenElement.getPixelArray()[5][0]);
+        assertEquals(5, imgTestSixteenElement.getPixelArray()[6][0]);
+        assertEquals(5, imgTestSixteenElement.getPixelArray()[7][0]);
+        assertEquals(11, imgTestSixteenElement.getPixelArray()[8][0]);
+        assertEquals(11, imgTestSixteenElement.getPixelArray()[9][0]);
+        assertEquals(13, imgTestSixteenElement.getPixelArray()[10][0]);
+        assertEquals(13, imgTestSixteenElement.getPixelArray()[11][0]);
+        assertEquals(11, imgTestSixteenElement.getPixelArray()[12][0]);
+        assertEquals(11, imgTestSixteenElement.getPixelArray()[13][0]);
+        assertEquals(13, imgTestSixteenElement.getPixelArray()[14][0]);
+        assertEquals(13, imgTestSixteenElement.getPixelArray()[15][0]);
     }
 
     @Test
-    public void testPixelateFourByFourDZero() {
-        //test 4x4 (rowxcol) array with each sub array having elements corresponding to its index + 1
-        Image fourByFour = new Image(4, 4);
-        fourByFour.setDegreeOfPixelation(0);
-        for (int r = 0; r < fourByFour.getPixelArray().length; r++) {
-            for (int c = 0; c < fourByFour.getPixelArray()[0].length; c++) {
-                fourByFour.getPixelArray()[r][c] = r + 1;
-            }
-        }
-        fourByFour.addFilter(pixelate);
-        pixelate.pixelate(fourByFour);
-        assertEquals(1, fourByFour.getPixelArray()[0][0]);
-        assertEquals(2, fourByFour.getPixelArray()[1][0]);
-        assertEquals(3, fourByFour.getPixelArray()[2][0]);
-        assertEquals(4, fourByFour.getPixelArray()[3][0]);
-        assertEquals(5, fourByFour.getPixelArray()[4][0]);
-        assertEquals(6, fourByFour.getPixelArray()[5][0]);
-        assertEquals(7, fourByFour.getPixelArray()[6][0]);
-        assertEquals(8, fourByFour.getPixelArray()[7][0]);
-        assertEquals(9, fourByFour.getPixelArray()[8][0]);
-        assertEquals(10, fourByFour.getPixelArray()[9][0]);
-        assertEquals(11, fourByFour.getPixelArray()[10][0]);
-        assertEquals(12, fourByFour.getPixelArray()[11][0]);
-        assertEquals(13, fourByFour.getPixelArray()[12][0]);
-        assertEquals(14, fourByFour.getPixelArray()[13][0]);
-        assertEquals(15, fourByFour.getPixelArray()[14][0]);
-        assertEquals(16, fourByFour.getPixelArray()[15][0]);
+    public void testGetNumberDivisionsOneNotBorderCase() {
+        //maxDiv = 1 which is =< 2
+        int numDivisions = pixelate.getNumDivisions(imgTestEightElement);
+        assertEquals(1, numDivisions);
     }
 
     @Test
-    public void testPixelateFourByFourDOne() {
-        //test 4x4 (rowxcol) arraywith each sub array having elements corresponding to its index + 1
-        Image fourByFour = new Image(4, 4);
-        fourByFour.setDegreeOfPixelation(1);
-        for (int r = 0; r < fourByFour.getPixelArray().length; r++) {
-            for (int c = 0; c < fourByFour.getPixelArray()[0].length; c++) {
-                fourByFour.getPixelArray()[r][c] = r + 1;
-            }
-        }
-        fourByFour.addFilter(pixelate);
-        pixelate.pixelate(fourByFour);
-        assertEquals(1, fourByFour.getPixelArray()[0][0]);
-        assertEquals(1, fourByFour.getPixelArray()[1][0]);
-        assertEquals(3, fourByFour.getPixelArray()[2][0]);
-        assertEquals(3, fourByFour.getPixelArray()[3][0]);
-        assertEquals(1, fourByFour.getPixelArray()[4][0]);
-        assertEquals(1, fourByFour.getPixelArray()[5][0]);
-        assertEquals(3, fourByFour.getPixelArray()[6][0]);
-        assertEquals(3, fourByFour.getPixelArray()[7][0]);
-        assertEquals(9, fourByFour.getPixelArray()[8][0]);
-        assertEquals(9, fourByFour.getPixelArray()[9][0]);
-        assertEquals(11, fourByFour.getPixelArray()[10][0]);
-        assertEquals(11, fourByFour.getPixelArray()[11][0]);
-        assertEquals(9, fourByFour.getPixelArray()[12][0]);
-        assertEquals(9, fourByFour.getPixelArray()[13][0]);
-        assertEquals(11, fourByFour.getPixelArray()[14][0]);
-        assertEquals(11, fourByFour.getPixelArray()[15][0]);
+    public void testGetNumberDivisionsBorderCase() {
+        //maxDiv = 2 which is at border to =< 2
+        int numDivisions = pixelate.getNumDivisions(imgTestSixteenElement);
+        assertEquals(1, numDivisions);
     }
 
     @Test
-    public void testCreateApparentDegPixZeroFourByFour() {
-        int appDegPixTest = createApparentDegPix(imgTestSixteenElement, 0);
-        assertEquals(2, appDegPixTest);
+    public void testGetNumberDivisionsTallArray() {
+        //maxDiv = 3 which reaches beyond border case, so we subtract 2 to get numDivisions
+        Image imgTestOneTwentyEightElement = new Image(8, 16);
+        int numDivisions = pixelate.getNumDivisions(imgTestOneTwentyEightElement);
+        assertEquals(1, numDivisions);
     }
 
     @Test
-    public void testCreateApparentDegPixOneFourByFour()  {
-        int appDegPixTest = createApparentDegPix(imgTestSixteenElement, 1);
-        assertEquals(1, appDegPixTest);
-    }
-
-    @Test
-    public void testCreateApparentDegPixTwoFourByFour()  {
-        int appDegPixTest = createApparentDegPix(imgTestSixteenElement, 2);
-        assertEquals(0, appDegPixTest);
-    }
-
-    @Test
-    public void testCreateApparentDegPixZeroFourByTwo() {
-        int appDegPixTest = createApparentDegPix(imgTestEightElement, 0);
-        assertEquals(1, appDegPixTest);
-    }
-
-    @Test
-    public void testCreateApparentDegPixOneFourByTwo() {
-        int appDegPixTest = createApparentDegPix(imgTestEightElement, 1);
-        assertEquals(0, appDegPixTest);
-    }
-
-    @Test
-    public void testCreateSubsectionHeightTwoFourByFour() {
-        int testSubSecHeight = createSubsectionHeight(imgTestSixteenElement, 2);
-        assertEquals(1, testSubSecHeight);
-    }
-
-    @Test
-    public void testCreateSubsectionHeightOneFourByTwo() {
-        int testSubSecHeight = createSubsectionHeight(imgTestEightElement, 1);
-        assertEquals(2, testSubSecHeight);
-    }
-
-    @Test
-    public void testCreateSubsectionWidthZeroFourByFour() {
-        int testSubSecWidth = createSubsectionWidth(imgTestSixteenElement, 0);
-        assertEquals(4, testSubSecWidth);
-    }
-
-    @Test
-    public void testCreateSubsectionWidthOneFourByFour() {
-        int testSubSecWidth = createSubsectionWidth(imgTestSixteenElement, 1);
-        assertEquals(2, testSubSecWidth);
+    public void testGetNumberDivisionsAboveBorderCase() {
+        //maxDiv = 4 which reaches beyond border case, so we subtract 2 to get numDivisions
+        Image imgTestTwoFiftySixElement = new Image(16, 16);
+        int numDivisions = pixelate.getNumDivisions(imgTestTwoFiftySixElement);
+        assertEquals(2, numDivisions);
     }
 }
