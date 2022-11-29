@@ -77,14 +77,29 @@ tool menu panel.
 from the dropdown ***\<options>*** and clicking the load button to the right.
 
 ## *Phase 4: Task 2*
-image created with height (128) and width (128)
-mirror filter has been added to current Image
-previous filter has been removed
-negative filter has been added to current Image
-mirror filter has been added to current Image
-edit history has been cleared
-colorGradient filter has been added to current Image
-previous filter has been removed
-colorGradient filter has been added to current Image
-pixelate filter has been added to current Image
+image created with height (128) and width (128) \
+mirror filter has been added to current Image\
+previous filter has been removed\
+negative filter has been added to current Image\
+mirror filter has been added to current Image\
+edit history has been cleared\
+colorGradient filter has been added to current Image\
+previous filter has been removed\
+colorGradient filter has been added to current Image\
+pixelate filter has been added to current Image\
 image has been processed
+
+## *Phase 4: Task 3*
+If I had more time, I would refactor the design of my GUI. 
+Currently, there are too many unnecessary places where fields are
+passed down from class-to-class which leads to a UML mess and
+code that is not easily updatable. Here's what I would do to 
+refactor:
+- Use the Singleton pattern to ensure that ImageAppGUI is instantiated once
+and is globally accessible (this would reduce the excessive presence of 
+ImageAppGUI field types along the chain of GUI panels)
+- I would remove all the Image field types from GUI panels
+along the chain from ImageAppGUI because the panels could access
+the image from the single instance of ImageAppGUI that is globally accessible
+  (this would reduce the excessive presence of Image field types along the chain
+of GUI panels)
