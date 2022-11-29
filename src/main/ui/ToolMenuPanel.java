@@ -19,7 +19,7 @@ public class ToolMenuPanel extends JPanel {
     private JPanel menuPanel;
     private JPanel historyPanel;
     private AddFilterPanel addFilterPanel;
-    private LoadingPanel loadingPanel;
+//    private LoadingPanel loadingPanel;
 //    private OriginalIcon originalIcon;
 
     private JsonWriter jsonWriter;
