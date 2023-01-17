@@ -34,6 +34,15 @@ application will allow me to gain a better understanding of
 software development in the context of an industry that I have
 a personal interest in!
 
+<img width="712" alt="Screen Shot 2023-01-16 at 5 21 28 PM" src="https://user-images.githubusercontent.com/49254129/212790234-fc5899fa-4f3f-47a2-a21f-c454f6a76302.png">
+<img width="712" alt="Screen Shot 2023-01-16 at 5 24 01 PM" src="https://user-images.githubusercontent.com/49254129/212790444-01e5db2e-7a6a-4b46-84f8-83eaff84dab8.png">
+<img width="712" alt="Screen Shot 2023-01-16 at 5 21 45 PM" src="https://user-images.githubusercontent.com/49254129/212790471-cb852cfd-d622-45ab-b928-f4b0f399901b.png">
+<img width="712" alt="Screen Shot 2023-01-16 at 5 21 58 PM" src="https://user-images.githubusercontent.com/49254129/212790483-0245fdf4-781f-4923-b08e-583000c00b18.png">
+<img width="712" alt="Screen Shot 2023-01-16 at 5 22 09 PM" src="https://user-images.githubusercontent.com/49254129/212790490-7e798a1a-82de-48db-9306-b339feae9c64.png">
+<img width="712" alt="Screen Shot 2023-01-16 at 5 22 34 PM" src="https://user-images.githubusercontent.com/49254129/212790501-68809933-6814-4598-bc2d-37425bf65126.png">
+<img width="712" alt="Screen Shot 2023-01-16 at 5 23 03 PM" src="https://user-images.githubusercontent.com/49254129/212790508-ad2c77cd-f15b-4b3b-a3df-dc7a5b720ed8.png">
+<img width="712" alt="Screen Shot 2023-01-16 at 5 23 29 PM" src="https://user-images.githubusercontent.com/49254129/212790513-2a086570-a4a3-4fab-8532-078d80d33953.png">
+
 ## *User Stories:*
 
 - As a user, I want to be able to ***choose the name of my project*** (which will dictate the file name to which
